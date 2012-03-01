@@ -52,7 +52,7 @@ public class TuioController implements TuioListener {
 							+ " motionAccel: " + o.getMotionAccel()
 							+ " motionSpeed: " + o.getMotionSpeed()
 							+ " pathLength: " + o.getPath().size()
-							+ " position: " + o.getPosition()
+							+ " position: " + tuioPointToString(o.getPosition())
 							+ " sessionId: " + o.getSessionID()
 							+ " tuioState: " + o.getTuioState()
 							+ ">");
@@ -64,13 +64,17 @@ public class TuioController implements TuioListener {
 							+ " motionAccel: " + o.getMotionAccel()
 							+ " motionSpeed: " + o.getMotionSpeed()
 							+ " pathLength: " + o.getPath().size()
-							+ " position: " + o.getPosition()
+							+ " position: " + tuioPointToString(o.getPosition())
 							+ " rotationAccel: " + o.getRotationAccel()
 							+ " rotationSpeed: " + o.getRotationSpeed()
 							+ " sessionId: " + o.getSessionID()
 							+ " symbolId: " + o.getSymbolID()
 							+ " tuioState: " + o.getTuioState()
 							+ ">");
+	}
+	
+	private String tuioPointToString(TuioPoint p) {
+		return "[" + p.getX() + "," + p.getY() + "]";
 	}
 		
 }
