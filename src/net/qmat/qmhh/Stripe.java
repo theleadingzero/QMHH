@@ -1,3 +1,9 @@
+/*
+ * We use ProcessingObject to create objects that have to draw themselves 
+ * to the screen. Example of how to create subclasses of ProcessingObject.
+ * 
+ */
+
 package net.qmat.qmhh;
 
 import processing.core.PApplet;
