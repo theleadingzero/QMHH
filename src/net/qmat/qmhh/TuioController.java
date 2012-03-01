@@ -1,49 +1,61 @@
 package net.qmat.qmhh;
 
 import TUIO.*;
+import processing.core.*;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.*;
 
-public class TuioController implements TuioListener {
-	TuioClient client = null;
+public class TuioController extends ProcessingObject implements TuioListener {
 	
-	public TuioController() {
+	TuioClient client;
+	ConcurrentHashMap<Long, TuioCursor> cursors;
+	
+	public TuioController(PApplet p) {
+		super(p);
+		cursors = new ConcurrentHashMap<Long, TuioCursor>();
 		client = new TuioClient();
 		client.addTuioListener(this);
 	    client.connect();
 	}
 
 	@Override
-	public void addTuioCursor(TuioCursor arg0) {
-		printTuioCursor(arg0);
+	public void addTuioCursor(TuioCursor tc) {
+		cursors.put(tc.getSessionID(), tc);
 	}
 
 	@Override
 	public void addTuioObject(TuioObject arg0) {
-		printTuioObject(arg0);
+		//printTuioObject(arg0);
 	}
 
 	@Override
 	public void refresh(TuioTime arg0) {
-		System.out.println("#<TuioTime ms: " + arg0.getTotalMilliseconds() + ">");
+		//System.out.println("#<TuioTime ms: " + arg0.getTotalMilliseconds() + ">");
 	}
 
 	@Override
-	public void removeTuioCursor(TuioCursor arg0) {
-		printTuioCursor(arg0);
+	public void removeTuioCursor(TuioCursor tc) {
+		//drawTuioCursor(arg0);
+		//printTuioCursor(arg0);
+		cursors.remove(tc.getSessionID());
 	}
 
 	@Override
 	public void removeTuioObject(TuioObject arg0) {
-		printTuioObject(arg0);
+		//printTuioObject(arg0);
 	}
 
 	@Override
-	public void updateTuioCursor(TuioCursor arg0) {
-		printTuioCursor(arg0);
+	public void updateTuioCursor(TuioCursor tc) {
+		//drawTuioCursor(arg0);
+		//printTuioCursor(arg0);
+		cursors.put(tc.getSessionID(), tc);
 	}
 
 	@Override
 	public void updateTuioObject(TuioObject arg0) {
-		printTuioObject(arg0);
+		//printTuioObject(arg0);
 	}
 	
 	private void printTuioCursor(TuioCursor o) {
@@ -75,6 +87,27 @@ public class TuioController implements TuioListener {
 	
 	private String tuioPointToString(TuioPoint p) {
 		return "[" + p.getX() + "," + p.getY() + "]";
+	}
+	
+	private void drawTuioCursor(TuioCursor o) {
+		//System.out.println(o);
+		if(o != null)
+		{
+			p.pushMatrix();
+			p.translate(o.getPosition().getX() * p.width, o.getPosition().getY() * p.height);
+			p.stroke(255);
+			p.fill(255);
+			p.ellipse(0, 0, 10, 10);
+			p.text("" + o.getSessionID());
+			p.popMatrix();
+		}
+	}
+	
+	public void draw() {
+		Iterator<Entry<Long, TuioCursor>> entries = cursors.entrySet().iterator();
+		while(entries.hasNext()) {
+			drawTuioCursor(entries.next().getValue());
+		}
 	}
 		
 }
