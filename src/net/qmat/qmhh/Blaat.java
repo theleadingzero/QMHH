@@ -3,10 +3,15 @@ package net.qmat.qmhh;
 import processing.core.*;
 
 public class Blaat extends PApplet {
+	
+  TuioController tuioController;
 
   public void setup() {
     size(200,200);
     background(0);
+    
+    tuioController = new TuioController(); 
+
   }
 
   public void draw() {
