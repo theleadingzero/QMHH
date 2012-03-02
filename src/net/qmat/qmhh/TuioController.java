@@ -58,6 +58,7 @@ public class TuioController extends ProcessingObject implements TuioListener {
 		//printTuioObject(arg0);
 	}
 	
+	@SuppressWarnings("unused")
 	private void printTuioCursor(TuioCursor o) {
 		System.out.println("#<TuioCursor"
 							+ " cursorId: " + o.getCursorID()
@@ -70,6 +71,7 @@ public class TuioController extends ProcessingObject implements TuioListener {
 							+ ">");
 	}
 	
+	@SuppressWarnings("unused")
 	private void printTuioObject(TuioObject o) {
 		System.out.println("#<TuioObject"
 							+ " angleDegrees: " + o.getAngleDegrees() 
@@ -90,7 +92,6 @@ public class TuioController extends ProcessingObject implements TuioListener {
 	}
 	
 	private void drawTuioCursor(TuioCursor o) {
-		//System.out.println(o);
 		if(o != null)
 		{
 			p.pushMatrix();
@@ -106,7 +107,9 @@ public class TuioController extends ProcessingObject implements TuioListener {
 	public void draw() {
 		Iterator<Entry<Long, TuioCursor>> entries = cursors.entrySet().iterator();
 		while(entries.hasNext()) {
-			drawTuioCursor(entries.next().getValue());
+			TuioCursor tc = entries.next().getValue();
+			//p.println(""+tc.getPosition().getX()+","+tc.getPosition().getY());
+			drawTuioCursor(tc);
 		}
 	}
 		

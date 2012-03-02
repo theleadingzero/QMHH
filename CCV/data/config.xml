@@ -46,7 +46,7 @@
         <LABELS>1</LABELS>
         <OUTLINES>1</OUTLINES>
         <LEARNBG>0</LEARNBG>
-        <TUIO>0</TUIO>
+        <TUIO>1</TUIO>
         <VMIRROR>0</VMIRROR>
         <HMIRROR>0</HMIRROR>
         <HIGHPASS>0</HIGHPASS>

@@ -8,4 +8,6 @@ public class ProcessingObject {
 	{
 		this.p = p;
 	}
+	
+	public void draw() {}
 }
