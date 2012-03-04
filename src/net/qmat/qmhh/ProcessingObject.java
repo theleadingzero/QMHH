@@ -4,9 +4,9 @@ import processing.core.*;
 public class ProcessingObject {
 	protected PApplet p;
 	
-	public ProcessingObject(PApplet p)
+	public ProcessingObject()
 	{
-		this.p = p;
+		this.p = Main.p;
 	}
 	
 	public void draw() {}

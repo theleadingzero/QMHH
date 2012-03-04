@@ -7,29 +7,36 @@ import processing.opengl.*;
 
 public class Main extends PApplet {
 	
+	public static Main p;
+	
 	private static final long serialVersionUID = 1L;
 	TuioController tuioController;
 	//FullScreen fs; 
 
 	public void setup() {
+		
+		p = this;
     
 	    /* Load settings at the start of the program so all the settings
 	     * are cached before the rest of the code needs them. You should use the
 	     * settings manager like so:
 	     * 
-	     * 	Settings.get(Settings.SETTING_NAME);
-	     * 
-	     * which will return a string. 
+	     *  // returns a string
+	     * 	Settings.get(Settings.SETTING_NAME); 
+	     *  // tries to interpret the setting as a boolean and returns it.
+	     *  Settings.getBoolean(Settings.SETTING_NAME);
+	     *  // tries to interpret the setting as an integer and returns it.
+	     *  Settings.getBoolean(Settings.SETTING_NAME); 
+	     *  
 	     */
-		Settings.getInstance();
+		Settings.init();
 		
-	    /* Set up processing stuff.
-		 */
+	    /* Set up processing stuff. */
 		size(Settings.getInteger(Settings.PR_WIDTH), 
 			 Settings.getInteger(Settings.PR_HEIGHT),
 			 OPENGL);
 		
-		/*
+		/* Fullscreen doesn't work at the moment because we use OPENGL.
 		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
 			fs = new FullScreen(this);
 			fs.setResolution(Settings.getInteger(Settings.PR_WIDTH), 
@@ -38,16 +45,25 @@ public class Main extends PApplet {
 		} 
 		*/
 	    
-	    /* N.B. The TuioController should be loaded at the end of setup(), otherwise
+	    /* N.B. The controllers should be loaded at the end of setup(), otherwise
 	     * the tuio events might trigger actions before everything is set up properly.
 	     */
-	    tuioController = new TuioController(this); 
+		Models.init();
+		Controllers.init(); 
     
 	}
 
 	public void draw() {
 		background(0);
 	    stroke(255);
-	    tuioController.draw();
+	    Models.draw();
+	}
+	
+	public static float relativeToPixelsX(float x) {
+		return x * p.width;
+	}
+	
+	public static float relativeToPixelsY(float y) {
+		return y * p.height;
 	}
 }

@@ -1,19 +1,32 @@
+/*
+ * The TuioController takes care of receiving the Tuio messages and passing them
+ * on to the rest of the application. It currently takes care of talking to the
+ * HandModel, but later we should perhaps add a HandController if game logic 
+ * becomes more complex.
+ * 
+ * N.B. this is not proper MVC design, but should the application become too
+ * complex to manage we should be able to switch relatively easily if we keep
+ * functionality separated like this.
+ * 
+ * A TuioCursor is a blob (i.e. a finger or hand).
+ * A TuioObject is a fiducial.
+ *  
+ */
+
 package net.qmat.qmhh;
 
 import TUIO.*;
-import processing.core.*;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.*;
 
-public class TuioController extends ProcessingObject implements TuioListener {
+/* 
+ * TODO: when CCV crashes or is restarted while the processing app is running 
+ * 	     the cursor cache could retain blobs forever. 
+ */
+
+public class TuioController implements TuioListener {
 	
 	TuioClient client;
-	ConcurrentHashMap<Long, TuioCursor> cursors;
 	
-	public TuioController(PApplet p) {
-		super(p);
-		cursors = new ConcurrentHashMap<Long, TuioCursor>();
+	public TuioController() {
 		client = new TuioClient();
 		client.addTuioListener(this);
 	    client.connect();
@@ -21,7 +34,9 @@ public class TuioController extends ProcessingObject implements TuioListener {
 
 	@Override
 	public void addTuioCursor(TuioCursor tc) {
-		cursors.put(tc.getSessionID(), tc);
+		//.put(tc.getSessionID(), tc);
+		TuioPoint p = tc.getPosition();
+		Controllers.getHandsController().addHand(tc.getSessionID(), p.getX(), p.getY());
 	}
 
 	@Override
@@ -36,9 +51,8 @@ public class TuioController extends ProcessingObject implements TuioListener {
 
 	@Override
 	public void removeTuioCursor(TuioCursor tc) {
-		//drawTuioCursor(arg0);
 		//printTuioCursor(arg0);
-		cursors.remove(tc.getSessionID());
+		Controllers.getHandsController().removeHand(tc.getSessionID());
 	}
 
 	@Override
@@ -48,9 +62,9 @@ public class TuioController extends ProcessingObject implements TuioListener {
 
 	@Override
 	public void updateTuioCursor(TuioCursor tc) {
-		//drawTuioCursor(arg0);
 		//printTuioCursor(arg0);
-		cursors.put(tc.getSessionID(), tc);
+		TuioPoint p = tc.getPosition();
+		Controllers.getHandsController().updateHand(tc.getSessionID(), p.getX(), p.getY());
 	}
 
 	@Override
@@ -89,28 +103,6 @@ public class TuioController extends ProcessingObject implements TuioListener {
 	
 	private String tuioPointToString(TuioPoint p) {
 		return "[" + p.getX() + "," + p.getY() + "]";
-	}
-	
-	private void drawTuioCursor(TuioCursor o) {
-		if(o != null)
-		{
-			p.pushMatrix();
-			p.translate(o.getPosition().getX() * p.width, o.getPosition().getY() * p.height);
-			p.stroke(255);
-			p.fill(255);
-			p.ellipse(0, 0, 10, 10);
-			p.text("" + o.getSessionID());
-			p.popMatrix();
-		}
-	}
-	
-	public void draw() {
-		Iterator<Entry<Long, TuioCursor>> entries = cursors.entrySet().iterator();
-		while(entries.hasNext()) {
-			TuioCursor tc = entries.next().getValue();
-			//p.println(""+tc.getPosition().getX()+","+tc.getPosition().getY());
-			drawTuioCursor(tc);
-		}
 	}
 		
 }

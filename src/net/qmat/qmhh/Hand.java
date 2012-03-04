@@ -1,17 +1,22 @@
 package net.qmat.qmhh;
 
-import processing.core.PApplet;
-
 public class Hand extends ProcessingObject {
 	
-	private float angle = 0.0f;
+	private float x = 0.0f;
+	private float y = 0.0f;
+	private float radius = 10.0f;
 	
-	public Hand(PApplet p) {
-		super(p);
+	public Hand(float x, float y) {
+		updatePosition(x, y);
+	}
+	
+	public void updatePosition(float x, float y) {
+		this.x = x;
+		this.y = y;
 	}
 	
 	public void draw() {
-		
+		p.ellipse(x, y, radius, radius);
 	}
 	
 }

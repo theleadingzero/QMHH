@@ -26,7 +26,7 @@
     </VIDEO>
     <!--// BLOB SETTINGS // -->
     <BLOBS>
-        <MAXNUMBER>20</MAXNUMBER>
+        <MAXNUMBER>10</MAXNUMBER>
     </BLOBS>
     <!--/////////////////////////////////////////
 

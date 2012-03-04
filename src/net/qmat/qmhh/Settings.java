@@ -15,10 +15,13 @@ public class Settings {
 	Properties properties = new Properties();
 	
     public static Settings getInstance() {
-       if(instance == null) {
-          instance = new Settings();
-       }
        return instance;
+    }
+    
+    public static void init() {
+    	if(instance == null) {
+            instance = new Settings();
+        }
     }
 	
 	protected Settings() {

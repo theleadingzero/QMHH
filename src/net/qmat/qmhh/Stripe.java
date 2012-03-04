@@ -15,8 +15,7 @@ public class Stripe extends ProcessingObject {
 	float w;       // width of stripe
 	boolean mouse; // state of stripe (mouse is over or not?)
 
-	Stripe(PApplet p) {
-		super(p);
+	Stripe() {
 		x = 0;              // All stripes start at 0
 		speed = p.random(1);  // All stripes have a random positive speed
 		w = p.random(10,30);
