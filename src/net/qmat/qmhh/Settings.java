@@ -14,8 +14,12 @@ public class Settings {
 	// where to center the ecosystem and outer ring size
 	public static String PR_CENTER_X = "PR_CENTER_X";
 	public static String PR_CENTER_Y = "PR_CENTER_Y";
-	public static String PR_RING_INNER_DIAMETER = "PR_RING_INNER_DIAMETER";
-	public static String PR_RING_OUTER_DIAMETER = "PR_RING_OUTER_DIAMETER";
+	public static String PR_RING_INNER_RADIUS = "PR_RING_INNER_RADIUS";
+	public static String PR_RING_OUTER_RADIUS = "PR_RING_OUTER_RADIUS";
+	
+	// settings for the orb
+	public static String PR_ORB_MAX_RADIUS = "PR_ORB_MAX_RADIUS";
+	public static String PR_ORB_MIN_RADIUS = "PR_ORB_MIN_RADIUS"; 
 	
 	private static Settings instance = null;
 	String propertyFile = "preferences.properties";

@@ -16,7 +16,11 @@ public class Hand extends ProcessingObject {
 	}
 	
 	public void draw() {
+		p.noStroke();
+		p.fill(p.color(0, 155, 0));
 		p.ellipse(x, y, radius, radius);
+		p.stroke(p.color(200, 200, 0));
+		p.line(x, y, p.centerX, p.centerY);
 	}
 	
 }

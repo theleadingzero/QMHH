@@ -39,13 +39,14 @@ public class HandsModel extends ProcessingObject {
 		hands.remove(id);
 	}
 	
+	public boolean containsHandAlreadyP(Long id) {
+		return hands.contains(id);
+	}
+	
 	public void draw() {
 		
 		// set up the look for the hands here for efficiency
 		p.ellipseMode(PApplet.CENTER);
-		p.noFill();
-		p.stroke(HAND_STROKE_COLOR);
-		p.stroke(255);
 		
 		// draw each hand
 		Iterator<Entry<Long, Hand>> entries = hands.entrySet().iterator();

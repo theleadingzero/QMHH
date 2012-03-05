@@ -11,8 +11,8 @@ public class HandsController {
 	private float ringInnerRadius, ringOuterRadius;
 	
 	public HandsController() {
-		ringInnerRadius = Settings.getInteger(Settings.PR_RING_INNER_DIAMETER) / 2.0f;
-		ringOuterRadius = Settings.getInteger(Settings.PR_RING_OUTER_DIAMETER) / 2.0f;
+		ringInnerRadius = Settings.getInteger(Settings.PR_RING_INNER_RADIUS) / 1.0f;
+		ringOuterRadius = Settings.getInteger(Settings.PR_RING_OUTER_RADIUS) / 1.0f;
 	}
 	
 	// N.B. takes relative positions [0.0 ... 1.0]
@@ -20,6 +20,7 @@ public class HandsController {
 		float pixelX = Main.relativeToPixelsX(x);
 		float pixelY = Main.relativeToPixelsY(y);
 		if(handInBoundsP(pixelX, pixelY)) {
+			Models.getOrbModel().increaseRadius();
 			Models.getHandsModel().addHand(id, pixelX, pixelY);
 		}
 	}
@@ -30,15 +31,21 @@ public class HandsController {
 		float pixelX = Main.relativeToPixelsX(x);
 		float pixelY = Main.relativeToPixelsY(y);
 		if(handInBoundsP(pixelX, pixelY)) {
-			Models.getHandsModel().updateHand(id, pixelX, pixelY);
+			if(Models.getHandsModel().containsHandAlreadyP(id)) {
+				Models.getHandsModel().updateHand(id, pixelX, pixelY);
+			} else {
+				Models.getOrbModel().increaseRadius();
+				Models.getHandsModel().addHand(id, pixelX, pixelY);
+			}
 		} else {
-			Models.getHandsModel().removeHand(id);
+			removeHand(id);
 		}
 	}
 	
 	// N.B. takes relative positions [0.0 ... 1.0]
 	public void removeHand(Long id) {
 		// TODO: Think about what happens if a player's hand is removed.
+		Models.getOrbModel().decreaseRadius();
 		Models.getHandsModel().removeHand(id);
 	}
 	

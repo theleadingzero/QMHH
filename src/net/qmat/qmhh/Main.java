@@ -4,11 +4,8 @@ import processing.core.*;
 
 public class Main extends PApplet {
 	
-	
-	public static Main p;
-	
-	
 	private static final long serialVersionUID = 1L;
+	public static Main p;
 	
 	/* 
 	 * The static visual stuff..
@@ -16,9 +13,9 @@ public class Main extends PApplet {
 	private Background bg;
 	
 	/*
-	 * Remember for speed.
+	 * Cache for speed.
 	 */
-	private int centerX, centerY;
+	public int centerX, centerY;
 	
 	public Main() {
 

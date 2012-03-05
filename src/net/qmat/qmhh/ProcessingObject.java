@@ -2,7 +2,7 @@ package net.qmat.qmhh;
 import processing.core.*;
 
 public class ProcessingObject {
-	protected PApplet p;
+	protected Main p;
 	
 	public ProcessingObject()
 	{

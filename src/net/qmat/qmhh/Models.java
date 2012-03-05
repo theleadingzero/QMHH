@@ -10,9 +10,11 @@ public class Models {
 	private static Models instance = null;
 	
 	private HandsModel handsModel;
+	private OrbModel orbModel;
 	
 	protected Models() {
 		handsModel = new HandsModel();
+		orbModel = new OrbModel();
 	}
 	
     public static Models getInstance() {
@@ -40,6 +42,10 @@ public class Models {
     	return instance.handsModel;
     }
     
+    public static OrbModel getOrbModel() {
+    	return instance.orbModel;
+    }
+    
     /* 
      * Draw!
      */
@@ -47,6 +53,7 @@ public class Models {
     public static void draw() {
     	// Call all the models' draw functions here.
     	Models models = Models.getInstance();
+    	models.orbModel.draw();
     	models.handsModel.draw();
     }
 }

@@ -2,14 +2,14 @@ package net.qmat.qmhh;
 
 public class Background extends ProcessingObject {
 	
-	private int centerX, centerY;
-	private int innerDiameter, outerDiameter;
+	private float centerX, centerY;
+	private float innerDiameter, outerDiameter;
 	
 	public Background() {
 		centerX = Settings.getInteger(Settings.PR_CENTER_X);
 		centerY = Settings.getInteger(Settings.PR_CENTER_Y);
-		innerDiameter = Settings.getInteger(Settings.PR_RING_INNER_DIAMETER);
-		outerDiameter = Settings.getInteger(Settings.PR_RING_OUTER_DIAMETER);
+		innerDiameter = Settings.getInteger(Settings.PR_RING_INNER_RADIUS) * 2.0f;
+		outerDiameter = Settings.getInteger(Settings.PR_RING_OUTER_RADIUS) * 2.0f;
 	}
 	
 	@SuppressWarnings("static-access")
