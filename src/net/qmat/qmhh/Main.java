@@ -1,9 +1,8 @@
 package net.qmat.qmhh;
 
-import fullscreen.FullScreen;
 import processing.core.*;
 import processing.opengl.*;
-//import fullscreen.*; 
+
 
 public class Main extends PApplet {
 	
@@ -11,15 +10,14 @@ public class Main extends PApplet {
 	
 	private static final long serialVersionUID = 1L;
 	TuioController tuioController;
-	//FullScreen fs; 
-
-	public void setup() {
-		
-		p = this;
-    
-	    /* Load settings at the start of the program so all the settings
-	     * are cached before the rest of the code needs them. You should use the
-	     * settings manager like so:
+	
+	public Main() {
+		/* 
+		 * Load settings at the start of the program so all the settings
+	     * are cached before the rest of the code needs them. Sadly, can't be 
+	     * loaded before setup(), otherwise code in setup could execute twice.
+	     * 
+	     * You should use the settings manager like so:
 	     * 
 	     *  // returns a string
 	     * 	Settings.get(Settings.SETTING_NAME); 
@@ -30,11 +28,16 @@ public class Main extends PApplet {
 	     *  
 	     */
 		Settings.init();
+	}
+
+	public void setup() {
 		
-	    /* Set up processing stuff. */
-		size(Settings.getInteger(Settings.PR_WIDTH), 
+	    /* Set up processing stuff, size() should always be the first call in setup() */
+		size(Settings.getInteger(Settings.PR_WIDTH),
 			 Settings.getInteger(Settings.PR_HEIGHT),
 			 OPENGL);
+		
+		p = this;
 		
 		/* Fullscreen doesn't work at the moment because we use OPENGL.
 		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
@@ -50,7 +53,7 @@ public class Main extends PApplet {
 	     */
 		Models.init();
 		Controllers.init(); 
-    
+			
 	}
 
 	public void draw() {
