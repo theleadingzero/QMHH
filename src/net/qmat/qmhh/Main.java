@@ -9,7 +9,6 @@ public class Main extends PApplet {
 	public static Main p;
 	
 	private static final long serialVersionUID = 1L;
-	private boolean runSetupJustOncePlease = false;
 	TuioController tuioController;
 	
 	public Main() {
