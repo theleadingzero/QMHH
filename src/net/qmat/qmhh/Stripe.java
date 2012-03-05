@@ -6,8 +6,6 @@
 
 package net.qmat.qmhh;
 
-import processing.core.PApplet;
-
 public class Stripe extends ProcessingObject {
 	
 	float x;       // horizontal location of stripe

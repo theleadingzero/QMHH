@@ -5,8 +5,6 @@
 
 package net.qmat.qmhh;
 
-import processing.core.PApplet;
-
 public class Models {
 
 	private static Models instance = null;

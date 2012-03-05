@@ -1,8 +1,6 @@
 package net.qmat.qmhh;
 
 import processing.core.*;
-import processing.opengl.*;
-
 
 public class Main extends PApplet {
 	
