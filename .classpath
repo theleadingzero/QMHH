@@ -10,7 +10,11 @@
 	<classpathentry kind="lib" path="libs/slf4j-nop-1.6.4.jar"/>
 	<classpathentry kind="lib" path="libs/libTUIO.jar"/>
 	<classpathentry kind="lib" path="libs/fullscreen.jar" sourcepath="/Users/vakkermans/Downloads/kritzikratzi-fullscreen-p5-31758f6/dist/fullscreen-src.zip"/>
-	<classpathentry kind="lib" path="libs/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="libs/gluegen-rt.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="QMHH/data/opengl/linux64"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="libs/jogl.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="QMHH/data/opengl/macosx"/>
