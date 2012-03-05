@@ -6,9 +6,16 @@ import java.util.Properties;
 
 public class Settings {
 	
+	// size and fullscreen settings
 	public static String PR_WIDTH = "PR_WIDTH";
 	public static String PR_HEIGHT = "PR_HEIGHT";
 	public static String PR_FULLSCREEN = "PR_FULLSCREEN";
+	
+	// where to center the ecosystem and outer ring size
+	public static String PR_CENTER_X = "PR_CENTER_X";
+	public static String PR_CENTER_Y = "PR_CENTER_Y";
+	public static String PR_RING_INNER_DIAMETER = "PR_RING_INNER_DIAMETER";
+	public static String PR_RING_OUTER_DIAMETER = "PR_RING_OUTER_DIAMETER";
 	
 	private static Settings instance = null;
 	String propertyFile = "preferences.properties";

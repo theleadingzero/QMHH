@@ -6,12 +6,26 @@ import processing.opengl.*;
 
 public class Main extends PApplet {
 	
+	
 	public static Main p;
 	
+	
 	private static final long serialVersionUID = 1L;
-	TuioController tuioController;
+	
+	/* 
+	 * The static visual stuff..
+	 */
+	private Background bg;
+	
+	/*
+	 * Remember for speed.
+	 */
+	private int centerX, centerY;
 	
 	public Main() {
+
+		p = this;
+		
 		/* 
 		 * Load settings at the start of the program so all the settings
 	     * are cached before the rest of the code needs them. Sadly, can't be 
@@ -28,6 +42,11 @@ public class Main extends PApplet {
 	     *  
 	     */
 		Settings.init();
+		
+		centerX = Settings.getInteger(Settings.PR_CENTER_X);
+		centerY = Settings.getInteger(Settings.PR_CENTER_Y);
+		
+		bg = new Background();
 	}
 
 	public void setup() {
@@ -36,8 +55,6 @@ public class Main extends PApplet {
 		size(Settings.getInteger(Settings.PR_WIDTH),
 			 Settings.getInteger(Settings.PR_HEIGHT),
 			 OPENGL);
-		
-		p = this;
 		
 		/* Fullscreen doesn't work at the moment because we use OPENGL.
 		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
@@ -57,10 +74,14 @@ public class Main extends PApplet {
 	}
 
 	public void draw() {
-		background(0);
+		bg.draw();
 	    stroke(255);
 	    Models.draw();
 	}
+	
+	/*
+	 * Utility functions! It's funny because they're useful.
+	 */
 	
 	public static float relativeToPixelsX(float x) {
 		return x * p.width;
@@ -68,5 +89,17 @@ public class Main extends PApplet {
 	
 	public static float relativeToPixelsY(float y) {
 		return y * p.height;
+	}
+	
+	// polar to cartesian
+	public static CPoint2 p2c(float r, float t) {
+		return new CPoint2((float)(r * Math.cos(t)), (float)(r * Math.sin(t)));
+	}
+	
+	// cartesian to polar conversion
+	public static PPoint2 c2p(float x, float y) {
+		return new PPoint2((float)Math.sqrt((x - p.centerX) * (x - p.centerX) +
+									 (y - p.centerY) * (y - p.centerY)),
+						   (float)Math.atan2(y, x));
 	}
 }
