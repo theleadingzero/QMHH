@@ -7,8 +7,6 @@ import processing.core.PApplet;
 
 public class HandsModel extends ProcessingObject {
 	
-	private static int HAND_STROKE_COLOR = 0xffffff;
-	
 	private ConcurrentHashMap<Long, Hand> hands;
 	
 	public HandsModel() {

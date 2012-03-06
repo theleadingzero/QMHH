@@ -1,11 +1,19 @@
+/*
+ * Main class, this is the main processing applet, the origin of EVERYTHING.
+ * 
+ * TODO: change separate x, y coordinates to CPoint2.
+ */
+
 package net.qmat.qmhh;
 
+import pbox2d.PBox2D;
 import processing.core.*;
 
 public class Main extends PApplet {
 	
 	private static final long serialVersionUID = 1L;
 	public static Main p;
+	public static PBox2D box2d;
 	
 	/* 
 	 * The static visual stuff..
@@ -15,7 +23,7 @@ public class Main extends PApplet {
 	/*
 	 * Cache for speed.
 	 */
-	public int centerX, centerY;
+	public static int centerX, centerY;
 	
 	public Main() {
 
@@ -41,7 +49,6 @@ public class Main extends PApplet {
 		centerX = Settings.getInteger(Settings.PR_CENTER_X);
 		centerY = Settings.getInteger(Settings.PR_CENTER_Y);
 		
-		bg = new Background();
 	}
 
 	public void setup() {
@@ -50,6 +57,12 @@ public class Main extends PApplet {
 		size(Settings.getInteger(Settings.PR_WIDTH),
 			 Settings.getInteger(Settings.PR_HEIGHT),
 			 OPENGL);
+		
+		box2d = new PBox2D(this);
+		box2d.createWorld();
+		box2d.setGravity(0.0f, 0.0f);
+		
+		bg = new Background();
 		
 		/* Fullscreen doesn't work at the moment because we use OPENGL.
 		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
@@ -65,12 +78,20 @@ public class Main extends PApplet {
 	     */
 		Models.init();
 		Controllers.init(); 
-			
+		
+		/*
+		 * Creatures some creatures for testing
+		 */
+		for(int i=0; i<30; i++) {
+			Models.getCreaturesModel().addCreature();
+		}
 	}
 
 	public void draw() {
+		box2d.step();
 		bg.draw();
-	    stroke(255);
+	    
+		Models.update();
 	    Models.draw();
 	}
 	

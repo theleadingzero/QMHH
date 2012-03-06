@@ -4,8 +4,6 @@
 	<classpathentry kind="src" path="data"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/core.jar"/>
-	<classpathentry kind="lib" path="libs/jbox2d_2.1.2_ds_v2.jar"/>
-	<classpathentry kind="lib" path="libs/pbox2d.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-api-1.6.4.jar"/>
 	<classpathentry kind="lib" path="libs/slf4j-nop-1.6.4.jar"/>
 	<classpathentry kind="lib" path="libs/libTUIO.jar"/>
@@ -21,5 +19,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/opengl.jar"/>
+	<classpathentry kind="lib" path="libs/jbox2d-library-2.1.2.2-jar-with-dependencies.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

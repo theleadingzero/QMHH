@@ -4,6 +4,8 @@
 
 package net.qmat.qmhh;
 
+import org.jbox2d.common.Vec2;
+
 public class PPoint2 {
 	
 	public float r, t;
@@ -11,5 +13,13 @@ public class PPoint2 {
 	public PPoint2(float r, float t) {
 		this.r = r;
 		this.t = t;
+	}
+	
+	public CPoint2 toCPoint2() {
+		return new CPoint2((float)(r * Math.cos(t)), (float)(r * Math.sin(t)));
+	}
+	
+	public Vec2 toVec2() {
+		return toCPoint2().toVec2();
 	}
 }

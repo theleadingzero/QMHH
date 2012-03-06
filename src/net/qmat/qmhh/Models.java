@@ -11,10 +11,12 @@ public class Models {
 	
 	private HandsModel handsModel;
 	private OrbModel orbModel;
+	private CreaturesModel creaturesModel;
 	
 	protected Models() {
 		handsModel = new HandsModel();
 		orbModel = new OrbModel();
+		creaturesModel = new CreaturesModel();
 	}
 	
     public static Models getInstance() {
@@ -46,6 +48,10 @@ public class Models {
     	return instance.orbModel;
     }
     
+    public static CreaturesModel getCreaturesModel() {
+    	return instance.creaturesModel;
+    }
+    
     /* 
      * Draw!
      */
@@ -55,5 +61,11 @@ public class Models {
     	Models models = Models.getInstance();
     	models.orbModel.draw();
     	models.handsModel.draw();
+    	models.creaturesModel.draw();
+    }
+    
+    public static void update() {
+    	Models models = Models.getInstance();
+    	models.creaturesModel.update();
     }
 }
