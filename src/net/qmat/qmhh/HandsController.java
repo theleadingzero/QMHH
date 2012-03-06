@@ -37,7 +37,10 @@ public class HandsController {
 		float angle = new CPoint2(pixelX, pixelY).toPPoint2().t;
 		ArrayList<Creature> creatures = Models.getCreaturesModel().getTargeters(angle);
 		for(int i=0; i<creatures.size() && i<2; i++) {
-			this.addCreatureToHand(id, creatures.get(i));
+			// TODO: remove this later:
+			if(!creatures.get(i).hasTargetP()) {
+				this.addCreatureToHand(id, creatures.get(i));
+			}
 		}
 	}
 
@@ -79,6 +82,8 @@ public class HandsController {
 		}
 		if(!al.contains(creature)) {
 			al.add(creature);
+			System.out.println("Following: " + handID);
+			creature.setTarget(Models.getHandsModel().getHand(handID));
 		}
 	}
 	

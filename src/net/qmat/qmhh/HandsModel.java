@@ -31,6 +31,10 @@ public class HandsModel extends ProcessingObject {
 		}
 	}
 	
+	public Hand getHand(Long id) {
+		return hands.get(id);
+	}
+	
 	public void removeHand(Long id) {
 		// TODO: If the hand isn't there, just ignore the call.
 		// TODO: Don't remove immediately, but mark the hand for removal.

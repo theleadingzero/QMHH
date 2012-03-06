@@ -1,5 +1,7 @@
 package net.qmat.qmhh;
 
+import org.jbox2d.common.Vec2;
+
 public class Hand extends ProcessingObject {
 	
 	private float x = 0.0f;

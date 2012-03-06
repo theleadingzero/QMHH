@@ -15,7 +15,7 @@ public class Creature extends ProcessingObject {
 	private int stage = 0;
 	private float w = 10;
 	private float h = 10;
-	private float maxForce = 10.0f;
+	private float maxForce = 5.0f;
 	private float maxSpeed = 20.0f;
 	private Hand target = null;
 	private Body body;
@@ -98,26 +98,30 @@ public class Creature extends ProcessingObject {
 	    body.applyForce(coh,loc);
 	}
 	
-	private Vec2 seek(Vec2 target) {
+	private Vec2 seek(Vec2 t, float force) {
 		Vec2 loc = body.getWorldCenter();
-		Vec2 desired = target.sub(loc);
+		Vec2 desired = t.sub(loc);
 		if (desired.length() == 0) 
 			return new Vec2(0, 0);
 		desired.normalize();
 		desired.mulLocal(maxSpeed);
 		Vec2 vel = body.getLinearVelocity();
 		Vec2 steer = desired.sub(vel);
-		if(steer.length() > maxForce) {
+		if(steer.length() > force) {
 			steer.normalize();
-			steer.mulLocal(maxForce);
+			steer.mulLocal(force);
 		}
 		return steer;
 	}
 	
+	private Vec2 seek(Vec2 t) {
+		return seek(t, maxForce);
+	}
+	
 	private void target() {
 		if(target != null) {
-			body.applyForce(seek(target.getCPosition().toVec2()), 
-							body.getWorldCenter());
+			body.applyForce(seek(box2d.coordPixelsToWorld(target.getCPosition().toVec2().mulLocal(5.0f)), maxForce * 2.0f), 
+						    body.getWorldCenter());
 		}
 	}
 	
