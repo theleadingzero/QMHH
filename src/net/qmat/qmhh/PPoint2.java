@@ -16,7 +16,8 @@ public class PPoint2 {
 	}
 	
 	public CPoint2 toCPoint2() {
-		return new CPoint2((float)(r * Math.cos(t)), (float)(r * Math.sin(t)));
+		return new CPoint2((float)(r * Math.cos(t) + Main.centerX), 
+						   (float)(r * Math.sin(t) + Main.centerY));
 	}
 	
 	public Vec2 toVec2() {

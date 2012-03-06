@@ -17,7 +17,7 @@ public class Creature extends ProcessingObject {
 	private float h = 10;
 	private float maxForce = 10.0f;
 	private float maxSpeed = 20.0f;
-	private CPoint2 target = null;
+	private Hand target = null;
 	private Body body;
 	
 	private static float DESIRED_SEPARATION = 30.0f;
@@ -79,7 +79,7 @@ public class Creature extends ProcessingObject {
 		}
 	}
 	
-	public void setTarget(CPoint2 target) {
+	public void setTarget(Hand target) {
 		if(target != null)
 			this.target = target;
 	}
@@ -116,7 +116,7 @@ public class Creature extends ProcessingObject {
 	
 	private void target() {
 		if(target != null) {
-			body.applyForce(seek(target.toVec2()), 
+			body.applyForce(seek(target.getCPosition().toVec2()), 
 							body.getWorldCenter());
 		}
 	}
@@ -225,5 +225,17 @@ public class Creature extends ProcessingObject {
 		return sum;
 	}
 
+	public PPoint2 getPPosition() {
+		return getCPosition().toPPoint2();
+	}
+	
+	public CPoint2 getCPosition() {
+		Vec2 pos = box2d.getBodyPixelCoord(body);
+		return new CPoint2(pos);
+	}
+	
+	public boolean hasTargetP() {
+		return target != null;
+	}
 	
 }

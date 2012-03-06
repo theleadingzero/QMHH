@@ -15,6 +15,10 @@ public class Hand extends ProcessingObject {
 		this.y = y;
 	}
 	
+	public CPoint2 getCPosition() {
+		return new CPoint2(x, y);
+	}
+	
 	public void draw() {
 		p.noStroke();
 		p.fill(p.color(0, 155, 0));
