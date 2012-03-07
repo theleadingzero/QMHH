@@ -15,6 +15,11 @@ public class CPoint2 {
 		this.y = y;
 	}
 	
+	public CPoint2(Vec2 p) {
+		this.x = p.x;
+		this.y = p.y;
+	}
+	
 	public Vec2 toVec2() {
 		return new Vec2(x, y);
 	}

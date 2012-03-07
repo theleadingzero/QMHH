@@ -58,7 +58,7 @@ public class Background extends ProcessingObject {
 	private Vec2 calculateChainPosition(float angle) {
 		PPoint2 pos1 = new PPoint2(innerDiameter / 2.0f, angle);
 		Vec2 pos2 = pos1.toVec2();
-		Vec2 pos3 = new Vec2(pos2.x + Main.centerX, pos2.y + Main.centerY);
+		Vec2 pos3 = new Vec2(pos2.x, pos2.y);
 		Vec2 pos4 = box2d.coordPixelsToWorld(pos3);
 		return pos4;
 	}
