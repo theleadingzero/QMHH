@@ -8,6 +8,7 @@ package net.qmat.qmhh;
 
 import pbox2d.PBox2D;
 import processing.core.*;
+//import fullscreen.*;
 
 public class Main extends PApplet {
 	
@@ -19,6 +20,7 @@ public class Main extends PApplet {
 	 * The static visual stuff..
 	 */
 	private Background bg;
+	//private FullScreen fs;
 	
 	/*
 	 * Cache for speed.
@@ -56,7 +58,7 @@ public class Main extends PApplet {
 	    /* Set up processing stuff, size() should always be the first call in setup() */
 		size(Settings.getInteger(Settings.PR_WIDTH),
 			 Settings.getInteger(Settings.PR_HEIGHT),
-			 OPENGL);
+			 P3D);
 		
 		box2d = new PBox2D(this);
 		box2d.createWorld();
@@ -64,14 +66,13 @@ public class Main extends PApplet {
 		
 		bg = new Background();
 		
-		/* Fullscreen doesn't work at the moment because we use OPENGL.
+		/*Fullscreen doesn't work at the moment because we use OPENGL.
 		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
 			fs = new FullScreen(this);
 			fs.setResolution(Settings.getInteger(Settings.PR_WIDTH), 
 							 Settings.getInteger(Settings.PR_HEIGHT));
 			fs.enter(); 
-		} 
-		*/
+		} */
 	    
 	    /* N.B. The controllers should be loaded at the end of setup(), otherwise
 	     * the tuio events might trigger actions before everything is set up properly.
@@ -118,4 +119,8 @@ public class Main extends PApplet {
 									 (y - p.centerY) * (y - p.centerY)),
 						   (float)Math.atan2(y, x));
 	}
+	
+	public static void main(String args[]) {
+	    PApplet.main(new String[] { "--present", "Main" });
+	  }
 }
