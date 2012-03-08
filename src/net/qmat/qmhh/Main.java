@@ -58,7 +58,7 @@ public class Main extends PApplet {
 	    /* Set up processing stuff, size() should always be the first call in setup() */
 		size(Settings.getInteger(Settings.PR_WIDTH),
 			 Settings.getInteger(Settings.PR_HEIGHT),
-			 P3D);
+			 OPENGL);
 		
 		box2d = new PBox2D(this);
 		box2d.createWorld();
