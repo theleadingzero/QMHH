@@ -22,7 +22,7 @@ public class Settings {
 	public static String PR_ORB_MIN_RADIUS = "PR_ORB_MIN_RADIUS"; 
 	
 	private static Settings instance = null;
-	String propertyFile = "preferences.properties";
+	String propertyFile = "/data/preferences.properties";
 	Properties properties = new Properties();
 	
     public static Settings getInstance() {
@@ -37,7 +37,7 @@ public class Settings {
 	
 	protected Settings() {
 		try {
-			properties.load(new FileReader(new File(propertyFile)));
+			properties.load(new FileReader(new File(System.getProperty("user.dir")+propertyFile)));
 		} catch (Exception e) {
 			System.err.println("Something went wrong while loading the preferences.");
 			e.printStackTrace();

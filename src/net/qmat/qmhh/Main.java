@@ -122,6 +122,6 @@ public class Main extends PApplet {
 	}
 	
 	public static void main(String args[]) {
-	    PApplet.main(new String[] { "--present", "Main" });
+	    PApplet.main(new String[] { "--present", "net.qmat.qmhh.Main" });
 	  }
 }
