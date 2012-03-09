@@ -8,7 +8,6 @@ package net.qmat.qmhh;
 
 import pbox2d.PBox2D;
 import processing.core.*;
-//import fullscreen.*;
 
 public class Main extends PApplet {
 	
@@ -20,7 +19,6 @@ public class Main extends PApplet {
 	 * The static visual stuff..
 	 */
 	private Background bg;
-	//private FullScreen fs;
 	
 	/*
 	 * Cache for speed.
@@ -28,29 +26,9 @@ public class Main extends PApplet {
 	public static int centerX, centerY;
 	
 	public Main() {
-
 		p = this;
-		
-		/* 
-		 * Load settings at the start of the program so all the settings
-	     * are cached before the rest of the code needs them. Sadly, can't be 
-	     * loaded before setup(), otherwise code in setup could execute twice.
-	     * 
-	     * You should use the settings manager like so:
-	     * 
-	     *  // returns a string
-	     * 	Settings.get(Settings.SETTING_NAME); 
-	     *  // tries to interpret the setting as a boolean and returns it.
-	     *  Settings.getBoolean(Settings.SETTING_NAME);
-	     *  // tries to interpret the setting as an integer and returns it.
-	     *  Settings.getBoolean(Settings.SETTING_NAME); 
-	     *  
-	     */
-		Settings.init();
-		
 		centerX = Settings.getInteger(Settings.PR_CENTER_X);
 		centerY = Settings.getInteger(Settings.PR_CENTER_Y);
-		
 	}
 
 	public void setup() {
@@ -65,14 +43,6 @@ public class Main extends PApplet {
 		box2d.setGravity(0.0f, 0.0f);
 		
 		bg = new Background();
-		
-		/*Fullscreen doesn't work at the moment because we use OPENGL.
-		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
-			fs = new FullScreen(this);
-			fs.setResolution(Settings.getInteger(Settings.PR_WIDTH), 
-							 Settings.getInteger(Settings.PR_HEIGHT));
-			fs.enter(); 
-		} */
 	    
 	    /* N.B. The controllers should be loaded at the end of setup(), otherwise
 	     * the tuio events might trigger actions before everything is set up properly.
@@ -122,6 +92,27 @@ public class Main extends PApplet {
 	}
 	
 	public static void main(String args[]) {
-	    PApplet.main(new String[] { "--present", "net.qmat.qmhh.Main" });
-	  }
+		/* 
+		 * Load settings at the start of the program so all the settings
+	     * are cached before the rest of the code needs them. Sadly, can't be 
+	     * loaded before setup(), otherwise code in setup could execute twice.
+	     * 
+	     * You should use the settings manager like so:
+	     * 
+	     *  // returns a string
+	     * 	Settings.get(Settings.SETTING_NAME); 
+	     *  // tries to interpret the setting as a boolean and returns it.
+	     *  Settings.getBoolean(Settings.SETTING_NAME);
+	     *  // tries to interpret the setting as an integer and returns it.
+	     *  Settings.getBoolean(Settings.SETTING_NAME); 
+	     *  
+	     */
+		Settings.init();
+		
+		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
+			PApplet.main(new String[] { "--present", "net.qmat.qmhh.Main" });
+		} else {
+			PApplet.main(new String[] { "net.qmat.qmhh.Main" });
+		}
+	}
 }

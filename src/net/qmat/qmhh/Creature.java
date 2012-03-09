@@ -19,6 +19,7 @@ public class Creature extends ProcessingObject {
 	private float maxSpeed = 20.0f;
 	private Hand target = null;
 	private Body body;
+	private int followDebugColor = 0;
 	
 	private static float DESIRED_SEPARATION = 30.0f;
 	private static float NEIGHBOR_DISTANCE  = 50.0f;
@@ -62,6 +63,12 @@ public class Creature extends ProcessingObject {
 	}
 	
 	public void draw() {
+		if(target != null) {
+			p.fill(followDebugColor);
+		} else {
+			p.noFill();
+		}
+		
 		p.pushMatrix();
 		Vec2 loc = box2d.getBodyPixelCoord(body);
 		p.translate(loc.x, loc.y);
@@ -69,6 +76,16 @@ public class Creature extends ProcessingObject {
 		p.rect(0, 0, w, h);
 		p.popMatrix();
 		
+		if(target != null) {
+			p.pushMatrix();
+			p.ellipseMode(p.CENTER);
+			CPoint2 targetPos = target.getCPosition();
+			p.translate(targetPos.x + p.random(0, 10), targetPos.y + p.random(0, 10));
+			p.fill(followDebugColor);
+			p.ellipse(0, 0, 5, 5);
+			p.popMatrix();
+		}
+		p.noFill();
 	}
 	
 	public void update(ArrayList<Creature> creatures) {
@@ -80,8 +97,12 @@ public class Creature extends ProcessingObject {
 	}
 	
 	public void setTarget(Hand target) {
-		if(target != null)
+		if(target != null) {
+			followDebugColor = p.color(p.random(100, 255), p.random(100, 255), p.random(100, 255));
 			this.target = target;
+			body.setLinearVelocity(body.getLinearVelocity().mulLocal(0.0f));
+		}
+			
 	}
 	
 	public void removeTarget() {
@@ -98,6 +119,7 @@ public class Creature extends ProcessingObject {
 	    body.applyForce(coh,loc);
 	}
 	
+	// N.B. t is in box2d location!
 	private Vec2 seek(Vec2 t, float force) {
 		Vec2 loc = body.getWorldCenter();
 		Vec2 desired = t.sub(loc);
@@ -120,14 +142,14 @@ public class Creature extends ProcessingObject {
 	
 	private void target() {
 		if(target != null) {
-			body.applyForce(seek(box2d.coordPixelsToWorld(target.getCPosition().toVec2().mulLocal(5.0f)), maxForce * 2.0f), 
+			body.applyForce(seek(box2d.coordPixelsToWorld(target.getCPosition().toVec2()).mulLocal(5.0f), maxForce * 2.0f), 
 						    body.getWorldCenter());
 		}
 	}
 	
 	// Separation - method checks for nearby boids and steers away
 	@SuppressWarnings("static-access")
-	private Vec2 separate (ArrayList<Creature> creatures) {
+	private Vec2 separate(ArrayList<Creature> creatures) {
 		float desiredSeparation = box2d.scalarPixelsToWorld(DESIRED_SEPARATION);
 
 		Vec2 steer = new Vec2(0,0);

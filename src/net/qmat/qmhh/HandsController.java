@@ -17,7 +17,6 @@ public class HandsController {
 	public HandsController() {
 		ringInnerRadius = Settings.getInteger(Settings.PR_RING_INNER_RADIUS) / 1.0f;
 		ringOuterRadius = Settings.getInteger(Settings.PR_RING_OUTER_RADIUS) / 1.0f;
-		
 		handCreatures = new HashMap<Long, ArrayList<Creature>>();
 	}
 	
