@@ -1,7 +1,5 @@
 package net.qmat.qmhh;
 
-import org.jbox2d.common.Vec2;
-
 public class Hand extends ProcessingObject {
 	
 	private float x = 0.0f;
@@ -26,7 +24,7 @@ public class Hand extends ProcessingObject {
 		p.fill(p.color(0, 155, 0));
 		p.ellipse(x, y, radius, radius);
 		p.stroke(p.color(200, 200, 0));
-		p.line(x, y, p.centerX, p.centerY);
+		p.line(x, y, Main.centerX, Main.centerY);
 	}
 	
 }

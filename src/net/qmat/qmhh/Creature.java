@@ -12,7 +12,7 @@ import org.jbox2d.collision.shapes.*;
 
 public class Creature extends ProcessingObject {
 	
-	private int stage = 0;
+	//private int stage = 0;
 	private float w = 10;
 	private float h = 10;
 	private float maxForce = 5.0f;
@@ -78,7 +78,7 @@ public class Creature extends ProcessingObject {
 		
 		if(target != null) {
 			p.pushMatrix();
-			p.ellipseMode(p.CENTER);
+			p.ellipseMode(Main.CENTER);
 			CPoint2 targetPos = target.getCPosition();
 			p.translate(targetPos.x + p.random(0, 10), targetPos.y + p.random(0, 10));
 			p.fill(followDebugColor);

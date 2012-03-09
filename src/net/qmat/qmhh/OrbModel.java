@@ -13,7 +13,7 @@ public class OrbModel extends ProcessingObject {
 	
 	public void draw() {
 		p.pushMatrix();
-		p.translate(p.centerX, p.centerY);
+		p.translate(Main.centerX, Main.centerY);
 		p.fill(0x000077);
 		p.noStroke();
 		p.ellipse(0, 0, radius, radius);

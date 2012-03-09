@@ -1,0 +1,85 @@
+The ecosystem consists of several types of objects: an orb in the center, 
+plants that grow outwards from the orb, creatures, and spores. The ecosystem is
+enclosed in an outer ring. Users interact with the game in this ring. Each of 
+the objects and the interactions between them are described below.  
+
+* The ecosystem is divided into three circular 'depth' zones. The first zone
+  is closest to the orb. The third zone is closest to the outer ring. 
+  
+* The outer ring is where the users interact with the game.
+
+* All objects in the game are bounded by the outer ring. This means they cannot 
+  move into the outer ring. Only spores can move through the outer ring. The 
+  spore behavior will be detailed below. 
+
+* A small orb, or seed, lies at the heart of the ecosystem.
+
+* Plants grow outwards from the orb. 
+
+* Creatures move around the orb, in between the plants. 
+
+* The creatures and the plant collide, which means the creatures cause the plant
+  to move.
+  
+* There is only one type of creature per ecosystem. This creature has several
+  evolutionary stages, but each creature in the ecosystem starts out in the 
+  first stage.
+
+* A creature has three evolutionary stages. Creatures in the first stage are
+  bound to the first depth zone, etc.
+
+* When a user puts their hand down on the outer ring, energy starts building up
+  around it. After X seconds this energy is beamed into the orb in the middle
+  of the ecosystem. 
+
+* When the energy beam from the hand reaches the orb, the orb grows in size.
+
+* Multiple users can put their hands down at the same time. This makes the orb
+  grow even bigger in size.
+  
+* Energy particles, or spores, are emitted from the orb at a frequency dependent 
+  on the orb's size. When no user interacts with the game, no spores are emitted
+  at all, and the ecosystem does not grow.
+  
+* The spores are emitted much like the ripples in a pond. This means the spores
+  are emitted in bursts. The frequency with which the bursts occur depends on
+  the orb's size.
+
+* When a spore hits one of the most outward branches of the plant, a new branch
+  grows from the tip of the branch that was hit.
+  
+* When a spore hits a creature the creature grows in size. When a creature has
+  grown big enough, it reaches its next evolutionary stage. The creatures have
+  a different visual look for each evolutionary stage.
+  
+* All creatures in the ecosystem start in the first stage of their evolution.
+
+* When a creature reaches its next stage, it moves to the next depth zone.
+
+* When a spore hits a creature in the third zone, the spore is removed, but the
+  creature does not grow any more.
+
+* Creatures in the third zone, and therefore in their third evolutionary stage,
+  flock towards where users have put their hands down.
+  
+* Creatures in the third zone block the energy beam that flows from the hands to
+  the orb. This stops the energy beam from reaching the orb.
+
+* Creatures, in all zones, exhibit a light erratic flocking behavior, but only 
+  if they're not targeting a hand. 
+
+* When a hand is detected, the two creatures that are closest to it, and are not 
+  targeting a hand already, are set to target the hand. The other creatures 
+  follow because of their flocking behavior.
+  
+* Creatures aggressively target the hands (they react quickly and move fast).
+
+* The spores that don't hit any object in the ecosystem move through the outer 
+  ring and reach the other tables from the outside.
+  
+
+
+  
+
+
+  
