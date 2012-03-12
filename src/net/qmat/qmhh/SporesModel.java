@@ -16,6 +16,11 @@ public class SporesModel extends ProcessingObject {
 		}
 	}
 	
+	public void removeSpore(Spore spore) {
+		spore.destroy();
+		spores.remove(spore);
+	}
+	
 	public void draw() {
 		for(Spore spore : spores) {
 			spore.draw();
