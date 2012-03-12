@@ -12,11 +12,13 @@ public class Models {
 	private HandsModel handsModel;
 	private OrbModel orbModel;
 	private CreaturesModel creaturesModel;
+	private PlayheadModel playheadModel;
 	
 	protected Models() {
 		handsModel = new HandsModel();
 		orbModel = new OrbModel();
 		creaturesModel = new CreaturesModel();
+		playheadModel = new PlayheadModel();
 	}
 	
     public static Models getInstance() {
@@ -52,6 +54,10 @@ public class Models {
     	return instance.creaturesModel;
     }
     
+    public static PlayheadModel getPlayheadModel() {
+    	return instance.playheadModel;
+    }
+    
     /* 
      * Draw!
      */
@@ -60,6 +66,7 @@ public class Models {
     	// Call all the models' draw functions here.
     	Models models = Models.getInstance();
     	models.orbModel.draw();
+    	models.playheadModel.draw();
     	models.handsModel.draw();
     	models.creaturesModel.draw();
     }
@@ -67,5 +74,6 @@ public class Models {
     public static void update() {
     	Models models = Models.getInstance();
     	models.creaturesModel.update();
+    	models.playheadModel.update();
     }
 }

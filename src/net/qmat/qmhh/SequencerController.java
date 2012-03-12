@@ -56,22 +56,20 @@ public class SequencerController {
 		if(theOscMessage.checkAddrPattern("/seq/setAngle")==true) {
 			if(theOscMessage.checkTypetag("f")) {
 				float angle = theOscMessage.get(0).floatValue();
-				// TODO: something
+				Models.getPlayheadModel().setAngle(angle);
 			}  
 		} else if(theOscMessage.checkAddrPattern("/seq/setDuration")==true) {
 			if(theOscMessage.checkTypetag("f")) {
 				float duration = theOscMessage.get(0).floatValue();
-				// TODO: something
+				Models.getPlayheadModel().setDuration(duration);
 			}  
 		} else if(theOscMessage.checkAddrPattern("/seq/start")==true) {
 			if(theOscMessage.checkTypetag("")) {
-				// TODO: something
-				System.out.println("start");
+				Models.getPlayheadModel().start();
 			}  
 		} else if(theOscMessage.checkAddrPattern("/seq/stop")==true) {
 			if(theOscMessage.checkTypetag("")) {
-				// TODO: something
-				System.out.println("stop");
+				Models.getPlayheadModel().stop();
 			}  
 		}
 		
