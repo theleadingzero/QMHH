@@ -40,9 +40,9 @@ public class CreaturesModel extends ProcessingObject {
 				PPoint2 c2p = c2.getPPosition();
 				// if one of the creatures has a target and the other doesn't, no need to check angles
 				if(c1.hasTargetP() && !c2.hasTargetP())
-					return -1;
-				if(c2.hasTargetP() && !c1.hasTargetP())
 					return 1;
+				if(c2.hasTargetP() && !c1.hasTargetP())
+					return -1;
 				// so they both don't have targets, or they both do, check angles
 				// TODO: check whether the ones with targets have companion hunters
 				if(calculateAngularDistance(angle, c1p.t) < calculateAngularDistance(angle, c1p.t))
