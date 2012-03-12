@@ -52,10 +52,10 @@ public class Creature extends ProcessingObject {
 
 	    body = box2d.createBody(bd);
 	    body.createFixture(fd);
-	    
 	    body.setLinearVelocity(new Vec2(p.random(-0.5f, 0.5f),
 	    								p.random(-0.5f, 0.5f)));
 	    body.setAngularVelocity(0.0f);
+	    body.setUserData(this);
 	}
 	  
 	public void destroy() {

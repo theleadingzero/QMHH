@@ -42,7 +42,7 @@ public class HandsModel extends ProcessingObject {
 	}
 	
 	public boolean containsHandAlreadyP(Long id) {
-		return hands.contains(id);
+		return hands.get(id) != null;
 	}
 	
 	public void draw() {

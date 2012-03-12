@@ -42,6 +42,7 @@ public class Main extends PApplet {
 		box2d = new PBox2D(this);
 		box2d.createWorld();
 		box2d.setGravity(0.0f, 0.0f);
+		box2d.world.setContactListener(new ContactController());
 		
 		bg = new Background();
 	    

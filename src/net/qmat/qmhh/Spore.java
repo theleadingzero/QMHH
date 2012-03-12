@@ -47,6 +47,7 @@ public class Spore extends ProcessingObject {
 	    direction.normalize();
 	    body.setLinearVelocity(direction);
 	    body.setAngularVelocity(0.0f);
+	    body.setUserData(this);
 	}
 	
 	public void draw() {
