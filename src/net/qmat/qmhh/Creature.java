@@ -13,16 +13,16 @@ import org.jbox2d.collision.shapes.*;
 public class Creature extends ProcessingObject {
 	
 	//private int stage = 0;
-	private float w = 10;
-	private float h = 10;
-	private float maxForce = 5.0f;
-	private float maxSpeed = 20.0f;
+	private float w = 10.0f;
+	private float h = 10.0f;
+	private float maxForce = 3.0f;
+	private float maxSpeed = 10.0f;
 	private Hand target = null;
 	private Body body;
 	private int followDebugColor = 0;
 	
-	private static float DESIRED_SEPARATION = 30.0f;
-	private static float NEIGHBOR_DISTANCE  = 50.0f;
+	private static float DESIRED_SEPARATION = 60.0f;
+	private static float NEIGHBOR_DISTANCE  = 20.0f;
 	
 	public Creature() {
 		makeBody();
@@ -33,16 +33,16 @@ public class Creature extends ProcessingObject {
 
 	    // Define a polygon (this is what we use for a rectangle)
 	    PolygonShape sd = new PolygonShape();
-	    sd.setAsBox(box2d.scalarPixelsToWorld(w), 
-	    			box2d.scalarPixelsToWorld(h));
+	    sd.setAsBox(box2d.scalarPixelsToWorld(w/2.0f), 
+	    			box2d.scalarPixelsToWorld(h/2.0f));
 
 	    // Define a fixture
 	    FixtureDef fd = new FixtureDef();
 	    fd.shape = sd;
 	    // Parameters that affect physics
-	    fd.density = 1;
-	    fd.friction = 0.3f;
-	    fd.restitution = 0.5f;
+	    fd.density = 1.0f;
+	    fd.friction = 1.2f;
+	    fd.restitution = 0.0f;
 
 	    // Define the body and make it from the shape
 	    BodyDef bd = new BodyDef();
@@ -82,7 +82,7 @@ public class Creature extends ProcessingObject {
 			CPoint2 targetPos = target.getCPosition();
 			p.translate(targetPos.x + p.random(0, 10), targetPos.y + p.random(0, 10));
 			p.fill(followDebugColor);
-			p.ellipse(0, 0, 5, 5);
+			p.ellipse(0, 0, w, h);
 			p.popMatrix();
 		}
 		p.noFill();

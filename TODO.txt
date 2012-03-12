@@ -1,4 +1,8 @@
 * change separate x, y coordinates to CPoint2.
 * make creatures flocking movement slower.
-* check that the relative positions of the from tuio are converted correctly to pixel values!
+* check that the relative positions of the from TUIO are converted correctly to pixel values!
 * look at how hands are targeted, rules need to be improved
+* creatures should have different stages
+* creatures should stay in their own area (dependent on their stage)
+* orb should release spores
+* ContactListener, or CollisionController

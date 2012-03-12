@@ -86,7 +86,6 @@ public class HandsController {
 		}
 		if(!al.contains(creature)) {
 			al.add(creature);
-			System.out.println("Following: " + handID);
 			creature.setTarget(Models.getHandsModel().getHand(handID));
 		}
 	}

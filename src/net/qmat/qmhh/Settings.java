@@ -28,6 +28,9 @@ public class Settings {
 	public static String OSC_SEQUENCER_PORT = "OSC_SEQUENCER_PORT";
 	public static String OSC_SEQUENCER_IP = "OSC_SEQUENCER_IP";
 	
+	// collision settings
+	public static String PR_SPORE_COLLISION_GROUP = "PR_SPORE_COLLISION_GROUP";
+	
 	private static Settings instance = null;
 	String propertyFile = "/data/preferences.properties";
 	Properties properties = new Properties();

@@ -13,12 +13,14 @@ public class Models {
 	private OrbModel orbModel;
 	private CreaturesModel creaturesModel;
 	private PlayheadModel playheadModel;
+	private SporesModel sporesModel;
 	
 	protected Models() {
 		handsModel = new HandsModel();
 		orbModel = new OrbModel();
 		creaturesModel = new CreaturesModel();
 		playheadModel = new PlayheadModel();
+		sporesModel = new SporesModel();
 	}
 	
     public static Models getInstance() {
@@ -58,6 +60,10 @@ public class Models {
     	return instance.playheadModel;
     }
     
+    public static SporesModel getSporesModel() {
+    	return instance.sporesModel;
+    }
+    
     /* 
      * Draw!
      */
@@ -69,6 +75,7 @@ public class Models {
     	models.playheadModel.draw();
     	models.handsModel.draw();
     	models.creaturesModel.draw();
+    	models.sporesModel.draw();
     }
     
     public static void update() {

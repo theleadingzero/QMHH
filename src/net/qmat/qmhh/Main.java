@@ -116,4 +116,8 @@ public class Main extends PApplet {
 			PApplet.main(new String[] { "net.qmat.qmhh.Main" });
 		}
 	}
+	
+	public void mousePressed() {
+		Models.getSporesModel().startRipple();
+	}
 }

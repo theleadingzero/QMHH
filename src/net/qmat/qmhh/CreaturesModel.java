@@ -22,9 +22,8 @@ public class CreaturesModel extends ProcessingObject {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
 	public void draw() {
-		p.rectMode(p.CENTER);
+		p.rectMode(Main.CENTER);
 		p.noFill();
 		p.stroke(200);
 		for(Creature creature : creatures) {
