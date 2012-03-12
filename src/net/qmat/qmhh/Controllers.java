@@ -11,9 +11,11 @@ public class Controllers {
 	
 	private HandsController handsController;
 	private TuioController tuioController;
+	private SequencerController sequencerController;
 	
 	protected Controllers() {
 		handsController = new HandsController();
+		sequencerController = new SequencerController();
 		// N.B. Instantiate the TuioController last!
 		tuioController = new TuioController();
 	}
@@ -45,6 +47,10 @@ public class Controllers {
 
 	public static TuioController getTuioController() {
 		return getInstance().tuioController;
+	}
+
+	public static SequencerController getSequencerController() {
+		return getInstance().sequencerController;
 	}
 
 }

@@ -20,5 +20,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/opengl.jar"/>
 	<classpathentry kind="lib" path="libs/jbox2d-library-2.1.2.2-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="libs/oscP5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,6 +6,9 @@ import java.util.Properties;
 
 public class Settings {
 	
+	// what table are we?
+	public static String TABLE = "TABLE";
+	
 	// size and fullscreen settings
 	public static String PR_WIDTH = "PR_WIDTH";
 	public static String PR_HEIGHT = "PR_HEIGHT";
@@ -19,7 +22,11 @@ public class Settings {
 	
 	// settings for the orb
 	public static String PR_ORB_MAX_RADIUS = "PR_ORB_MAX_RADIUS";
-	public static String PR_ORB_MIN_RADIUS = "PR_ORB_MIN_RADIUS"; 
+	public static String PR_ORB_MIN_RADIUS = "PR_ORB_MIN_RADIUS";
+	
+	// osc settings for sound
+	public static String OSC_SEQUENCER_PORT = "OSC_SEQUENCER_PORT";
+	public static String OSC_SEQUENCER_IP = "OSC_SEQUENCER_IP";
 	
 	private static Settings instance = null;
 	String propertyFile = "/data/preferences.properties";

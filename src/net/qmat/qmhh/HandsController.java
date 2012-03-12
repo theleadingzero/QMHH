@@ -32,8 +32,10 @@ public class HandsController {
 	private void addHandHelper(Long id, float pixelX, float pixelY) {
 		Models.getOrbModel().increaseRadius();
 		Models.getHandsModel().addHand(id, pixelX, pixelY);
+		PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
+		Controllers.getSequencerController().addHand(id, ppos);
 		// Let's get some bad ass creatures to eat that energy
-		float angle = new CPoint2(pixelX, pixelY).toPPoint2().t;
+		float angle = ppos.t;
 		ArrayList<Creature> creatures = Models.getCreaturesModel().getTargeters(angle);
 		for(int i=0; i<creatures.size() && i<2; i++) {
 			// TODO: remove this later:
@@ -51,6 +53,8 @@ public class HandsController {
 		if(handInBoundsP(pixelX, pixelY)) {
 			if(Models.getHandsModel().containsHandAlreadyP(id)) {
 				Models.getHandsModel().updateHand(id, pixelX, pixelY);
+				PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
+				Controllers.getSequencerController().updateHand(id, ppos);
 			} else {
 				addHandHelper(id, pixelX, pixelY);
 			}
@@ -65,6 +69,7 @@ public class HandsController {
 		removeCreaturesFromHand(id);
 		Models.getOrbModel().decreaseRadius();
 		Models.getHandsModel().removeHand(id);
+		Controllers.getSequencerController().removeHand(id);
 	}
 	
 	// N.B. takes actual pixel values, not relative ones (like the one from Tuio)

@@ -1,7 +1,6 @@
 /*
  * Main class, this is the main processing applet, the origin of EVERYTHING.
  * 
- * TODO: change separate x, y coordinates to CPoint2.
  */
 
 package net.qmat.qmhh;
@@ -24,11 +23,13 @@ public class Main extends PApplet {
 	 * Cache for speed.
 	 */
 	public static int centerX, centerY;
+	public static int table;
 	
 	public Main() {
 		p = this;
 		centerX = Settings.getInteger(Settings.PR_CENTER_X);
 		centerY = Settings.getInteger(Settings.PR_CENTER_Y);
+		table = Settings.getInteger(Settings.TABLE);
 	}
 
 	public void setup() {

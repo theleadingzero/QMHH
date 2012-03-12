@@ -1,0 +1,5 @@
+* change separate x, y coordinates to CPoint2.
+* make creatures flocking movement slower.
+
+
+* check that the relative positions of the from tuio are converted correctly to pixel values!
