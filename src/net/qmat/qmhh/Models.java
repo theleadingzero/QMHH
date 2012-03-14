@@ -80,6 +80,7 @@ public class Models {
     
     public static void update() {
     	Models models = Models.getInstance();
+    	models.sporesModel.update();
     	models.creaturesModel.update();
     	models.playheadModel.update();
     }

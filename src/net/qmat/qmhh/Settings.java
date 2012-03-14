@@ -31,6 +31,9 @@ public class Settings {
 	// collision settings
 	public static String PR_SPORE_COLLISION_GROUP = "PR_SPORE_COLLISION_GROUP";
 	
+	// growth settings
+	public static String PR_MINIMAL_GROWTH_INTERVAL = "PR_MINIMAL_GROWTH_INTERVAL";
+	
 	private static Settings instance = null;
 	String propertyFile = "/data/preferences.properties";
 	Properties properties = new Properties();
@@ -67,6 +70,10 @@ public class Settings {
 	
 	public static Integer getInteger(String key) {
 		return Integer.parseInt(getString(key));
+	}
+	
+	public static float getFloat(String key) {
+		return Float.parseFloat(getString(key));
 	}
 	
 }

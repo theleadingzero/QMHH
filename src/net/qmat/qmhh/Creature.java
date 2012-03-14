@@ -12,7 +12,7 @@ import org.jbox2d.collision.shapes.*;
 
 public class Creature extends ProcessingObject {
 	
-	//private int stage = 0;
+	private int stage = 0;
 	private float w = 10.0f;
 	private float h = 10.0f;
 	private float maxForce = 3.0f;
@@ -20,11 +20,17 @@ public class Creature extends ProcessingObject {
 	private Hand target = null;
 	private Body body;
 	private int followDebugColor = 0;
+	// these timestamps/durations are in seconds
+	private float lastGrowthTimestamp = 0;
+	private float minimalGrowthInterval; 
 	
 	private static float DESIRED_SEPARATION = 60.0f;
 	private static float NEIGHBOR_DISTANCE  = 20.0f;
 	
 	public Creature() {
+		// TODO: start in stage 0;
+		stage = (int)p.random(0, 2.999f);
+		minimalGrowthInterval = Settings.getFloat(Settings.PR_MINIMAL_GROWTH_INTERVAL);
 		makeBody();
 	}
 	
@@ -63,11 +69,15 @@ public class Creature extends ProcessingObject {
 	}
 	
 	public void draw() {
+		
 		if(target != null) {
 			p.fill(followDebugColor);
 		} else {
 			p.noFill();
 		}
+		
+		// TODO: delete the next line when debugging targeting
+		p.fill(followDebugColor);
 		
 		p.pushMatrix();
 		Vec2 loc = box2d.getBodyPixelCoord(body);
@@ -88,11 +98,69 @@ public class Creature extends ProcessingObject {
 		p.noFill();
 	}
 	
+	// TODO: DRY this out!
 	public void update(ArrayList<Creature> creatures) {
-		if(target != null) {
-			target();
+		// flock, but keep within the zone.
+		float zoneWidth = Main.outerRingInnerRadius / 3.0f;
+		float force = 1.0f;
+		Vec2 loc = body.getWorldCenter();
+		PPoint2 ppos = new CPoint2(box2d.getBodyPixelCoord(body)).toPPoint2();
+		// if in stage 1 
+		if(stage == 1) {
+			// too far outwards?
+			if(ppos.r > zoneWidth * 2.0f) {
+				followDebugColor = p.color(155, 0 ,0);
+				body.setLinearVelocity(body.getLinearVelocity().mulLocal(0.98f));
+				Vec2 towards = seek(box2d.coordPixelsToWorld(
+										new Vec2(Main.centerX, Main.centerY)),
+									force);
+				body.applyForce(towards, loc);
+			// too far inwards?
+			} else if(ppos.r < zoneWidth) {
+				followDebugColor = p.color(0, 155 ,0);
+				Vec2 towards = seek(box2d.coordPixelsToWorld(
+						new Vec2(Main.centerX, Main.centerY)),
+					force);
+				towards.negateLocal();
+				body.applyForce(towards, loc);
+			// in the zone? booyah!
+			} else {
+				followDebugColor = p.color(0);
+				flock(creatures);
+			}
+		} else if(stage == 0) {
+			// too far outwards?
+			if(ppos.r > zoneWidth) {
+				followDebugColor = p.color(55, 0 ,0);
+				// slow down
+				body.setLinearVelocity(body.getLinearVelocity().mulLocal(0.98f));
+				Vec2 towards = seek(box2d.coordPixelsToWorld(
+						new Vec2(Main.centerX, Main.centerY)),
+					force);
+				body.applyForce(towards, loc);
+			// in the zone
+			} else {
+				followDebugColor = p.color(0);
+				flock(creatures);
+			}
+		// in stage 2, so target, get back into the third zone, or flock
 		} else {
-			flock(creatures);
+			// if the creature has a target, ignore the flocking behavior
+			if(target != null) {
+				target();
+			} else if(ppos.r < zoneWidth * 2.0f) {
+				followDebugColor = p.color(0, 255 ,0);
+				Vec2 towards = seek(box2d.coordPixelsToWorld(
+						new Vec2(Main.centerX, Main.centerY)),
+					force);
+				towards.negateLocal();
+				body.applyForce(towards, loc);
+			// in the zone
+			} else {
+				followDebugColor = p.color(0);
+				flock(creatures);
+			}
+
 		}
 	}
 	
@@ -262,6 +330,14 @@ public class Creature extends ProcessingObject {
 	
 	public boolean hasTargetP() {
 		return target != null;
+	}
+	
+	public void grow() {
+		float newTimestamp = System.nanoTime() / 1000000000.0f;
+		if(stage < 2 && newTimestamp - lastGrowthTimestamp > minimalGrowthInterval) {
+			stage += 1;
+			lastGrowthTimestamp = newTimestamp;
+		}
 	}
 	
 }

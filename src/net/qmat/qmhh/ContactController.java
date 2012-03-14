@@ -25,14 +25,15 @@ public class ContactController implements ContactListener {
 		Object objB = contact.getFixtureB().getBody().getUserData();
 		if(objA == null || objB == null)
 			return;
-		contactPair(contact, manifold, objA, objB, Creature.class, Spore.class, CreatureSporeContact.class);
+		if(contactPair(contact, manifold, objA, objB, Creature.class, Spore.class, CreatureSporeContact.class)) return;
+		if(contactPair(contact, manifold, objA, objB, Background.class, Spore.class, BackgroundSporeContact.class)) return;
 	}
 	
 	/*
 	 * N.B. Some JAVA magic: this calls the right ContactLogic class with the 
 	 * arguments in the right order.
 	 */
-	private void contactPair(Contact contact, 
+	private boolean contactPair(Contact contact, 
 							 Manifold manifold, 
 							 Object objA, 
 							 Object objB, 
@@ -43,13 +44,16 @@ public class ContactController implements ContactListener {
 			if(objA.getClass().equals(clA) && objB.getClass().equals(clB)) {
 				ContactLogic cl = clCL.newInstance();
 				cl.contact(contact, manifold, objA, objB);
+				return true;
 			} else if(objA.getClass().equals(clB) && objB.getClass().equals(clA)) {
 				ContactLogic cl = clCL.newInstance();
 				cl.contact(contact, manifold, objB, objA);
+				return true;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 }

@@ -69,6 +69,8 @@ public class Background extends ProcessingObject {
 		float stepSize = Main.TWO_PI / steps;
 		vertices = new Vec2[steps];
 		body = box2d.getGroundBody();
+		// N.B. link the only static body to the background.
+		body.setUserData(this);
 		for(int i=0; i<steps; i++) {
 			float angle = stepSize * i;
 			vertices[i] = calculateChainPosition(angle);

@@ -24,12 +24,15 @@ public class Main extends PApplet {
 	 */
 	public static int centerX, centerY;
 	public static int table;
+	public static float outerRingInnerRadius, outerRingOuterRadius;
 	
 	public Main() {
 		p = this;
 		centerX = Settings.getInteger(Settings.PR_CENTER_X);
 		centerY = Settings.getInteger(Settings.PR_CENTER_Y);
 		table = Settings.getInteger(Settings.TABLE);
+		outerRingInnerRadius = Settings.getInteger(Settings.PR_RING_INNER_RADIUS);
+		outerRingOuterRadius = Settings.getInteger(Settings.PR_RING_OUTER_RADIUS);
 	}
 
 	public void setup() {
@@ -55,7 +58,7 @@ public class Main extends PApplet {
 		/*
 		 * Creatures some creatures for testing
 		 */
-		for(int i=0; i<10; i++) {
+		for(int i=0; i<20; i++) {
 			Models.getCreaturesModel().addCreature();
 		}
 	}

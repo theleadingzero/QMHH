@@ -54,6 +54,15 @@ public class Spore extends ProcessingObject {
 		box2d.destroyBody(body);
 	}
 	
+	public PPoint2 getPPosition() {
+		return getCPosition().toPPoint2();
+	}
+	
+	public CPoint2 getCPosition() {
+		Vec2 pos = box2d.getBodyPixelCoord(body);
+		return new CPoint2(pos);
+	}
+	
 	public void draw() {
 		Vec2 pos = box2d.getBodyPixelCoord(body);
 		p.pushMatrix();
