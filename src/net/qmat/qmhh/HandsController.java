@@ -74,7 +74,7 @@ public class HandsController {
 	
 	// N.B. takes actual pixel values, not relative ones (like the one from Tuio)
 	private boolean handInBoundsP(float x, float y) {
-		PPoint2 ppoint = Main.c2p(x, y);
+		PPoint2 ppoint = new CPoint2(x, y).toPPoint2();
 		return (ppoint.r > ringInnerRadius && ppoint.r < ringOuterRadius);
 	}
 	

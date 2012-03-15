@@ -31,11 +31,11 @@ public class OrbModel extends ProcessingObject {
 	}
 	
 	public void increaseRadius() {
-		setRadius(radius+1.0f);
+		setRadius(radius+10.0f);
 	}
 	
 	public void decreaseRadius() {
-		setRadius(radius-1.0f);
+		setRadius(radius-10.0f);
 	}
 
 }

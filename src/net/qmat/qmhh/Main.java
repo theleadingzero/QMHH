@@ -86,19 +86,6 @@ public class Main extends PApplet {
 		return y * p.height;
 	}
 	
-	// polar to cartesian
-	public static CPoint2 p2c(float r, float t) {
-		return new CPoint2((float)(r * Math.cos(t) + Main.centerX), 
-						   (float)(r * Math.sin(t) + Main.centerY));
-	}
-	
-	// cartesian to polar conversion
-	public static PPoint2 c2p(float x, float y) {
-		return new PPoint2((float)Math.sqrt((x - Main.centerX) * (x - Main.centerX) +
-										    (y - Main.centerY) * (y - Main.centerY)),
-						   (float)Math.atan2(y, x));
-	}
-	
 	public static void main(String args[]) {
 		/* 
 		 * Load settings at the start of the program so all the settings

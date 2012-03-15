@@ -51,7 +51,7 @@ public class HandsModel extends ProcessingObject {
 	
 	public void draw() {
 		// draw the fancy patterns underneath the hands
-		//drawHandBackdrops();
+		drawHandBackdrops();
 		
 		// set up the look for the hands here for efficiency
 		p.ellipseMode(Main.CENTER);
@@ -74,11 +74,16 @@ public class HandsModel extends ProcessingObject {
 		while(entries.hasNext()) {
 			Hand hand = entries.next().getValue();
 			PPoint2 ppos = hand.getCPosition().toPPoint2();
-			ArrayList<Vec2> addTo = intermediate.get((int)(ppos.t / (Main.TWO_PI/nrSections)));
+			float handAngle = ppos.t < 0.0f ? ppos.t + Main.TWO_PI : ppos.t;
+			ArrayList<Vec2> addTo = intermediate.get((int)(handAngle / (Main.TWO_PI/nrSections)));
 			addTo.add(hand.getCPosition().toVec2());
 		}
 		for(int i=0; i<intermediate.size(); i++) {
 			ArrayList<Vec2> sectionVectors = intermediate.get(i);
+			if(sectionVectors.size()==0) {
+				result.add(null);
+				continue;
+			}
 			Vec2 vTotal = new Vec2(0,0);
 			for(Vec2 vAdd : sectionVectors) {
 				vTotal = vTotal.add(vAdd);
@@ -107,9 +112,7 @@ public class HandsModel extends ProcessingObject {
 			//PPoint2 handPpos = new PPoint2((Main.outerRingInnerRadius * 0.25f + Main.outerRingOuterRadius * 0.75f),
 			//							   (angle1 * 0.25f + angle2 * 0.75f));
 			PPoint2 handPpos = new CPoint2(averageHandPositions.get(section)).toPPoint2();
-			// TODO: x and y are NaN at times
-			//System.out.println(handPpos.toCPoint2().x + " " + handPpos.toCPoint2().y);
-			float angleHand = handPpos.t;
+			float angleHand = handPpos.t < 0.0f ? handPpos.t + Main.TWO_PI : handPpos.t;
 			float radiusHand = handPpos.r;
 			float lineAngleStep;
 			float lineAngleStepTemp;
