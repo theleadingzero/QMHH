@@ -30,6 +30,7 @@ public class Settings {
 	
 	// collision settings
 	public static String PR_SPORE_COLLISION_GROUP = "PR_SPORE_COLLISION_GROUP";
+	public static String PR_BRANCH_COLLISION_GROUP = "PR_BRANCH_COLLISION_GROUP";
 	
 	// growth settings
 	public static String PR_MINIMAL_GROWTH_INTERVAL = "PR_MINIMAL_GROWTH_INTERVAL";

@@ -14,6 +14,7 @@ public class Models {
 	private CreaturesModel creaturesModel;
 	private PlayheadModel playheadModel;
 	private SporesModel sporesModel;
+	private TreesModel treesModel;
 	
 	protected Models() {
 		handsModel = new HandsModel();
@@ -21,6 +22,7 @@ public class Models {
 		creaturesModel = new CreaturesModel();
 		playheadModel = new PlayheadModel();
 		sporesModel = new SporesModel();
+		treesModel = new TreesModel();
 	}
 	
     public static Models getInstance() {
@@ -64,6 +66,10 @@ public class Models {
     	return instance.sporesModel;
     }
     
+    public static TreesModel getTreesModel() {
+    	return instance.treesModel;
+    }
+    
     /* 
      * Draw!
      */
@@ -71,6 +77,7 @@ public class Models {
     public static void draw() {
     	// Call all the models' draw functions here.
     	Models models = Models.getInstance();
+    	models.treesModel.draw();
     	models.orbModel.draw();
     	models.playheadModel.draw();
     	models.handsModel.draw();
