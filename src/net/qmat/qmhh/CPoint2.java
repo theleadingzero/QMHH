@@ -27,6 +27,6 @@ public class CPoint2 {
 	public PPoint2 toPPoint2() {
 		return new PPoint2((float)Math.sqrt((x - Main.centerX) * (x - Main.centerX) +
 				 							(y - Main.centerY) * (y - Main.centerY)),
-				 		   (float)Math.atan2(y, x));
+				 		   (float)Math.atan2(Main.centerY - y, x - Main.centerX));
 	}
 }

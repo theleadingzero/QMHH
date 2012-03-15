@@ -42,7 +42,7 @@ public class Spore extends ProcessingObject {
 	    direction.normalize();
 	    
 	    bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX + direction.x * 10.0f, 
-	    												  Main.centerY + direction.y * 10.0f)));
+	    												  Main.centerY - direction.y * 10.0f)));
 
 	    body = box2d.createBody(bd);
 	    body.createFixture(fd);

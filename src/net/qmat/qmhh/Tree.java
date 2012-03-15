@@ -35,7 +35,7 @@ public class Tree extends ProcessingObject {
 						   int levels, 
 						   float startAngle, 
 						   Body centerBody) {
-		CPoint2 cpos = new PPoint2(10.0f, startAngle).toCPoint2();
+		CPoint2 cpos = new PPoint2(10.0f, -startAngle).toCPoint2();
 		root = new Branch(null, 
 						  startLength, 
 						  levels, 
@@ -50,8 +50,8 @@ public class Tree extends ProcessingObject {
         Vec2 anchor = box2d.coordPixelsToWorld(new Vec2(Main.centerX, Main.centerY));
         rjd.localAnchorA = centerBody.getLocalPoint(anchor);
         rjd.localAnchorB = root.body.getLocalPoint(anchor);
-        rjd.lowerAngle =  Main.PI / 2.0f - startAngle - 0.25f * internalAngle;
-        rjd.upperAngle =  Main.PI / 2.0f - startAngle + 0.25f * internalAngle;
+        rjd.lowerAngle = -startAngle - 0.9f * internalAngle;
+        rjd.upperAngle = -startAngle + 0.9f * internalAngle;
         rjd.enableLimit = true;
         box2d.createJoint(rjd);
 	}
@@ -122,8 +122,8 @@ public class Tree extends ProcessingObject {
 							  float angle) {
 		    // Define a polygon (this is what we use for a rectangle)
 		    PolygonShape sd = new PolygonShape();
-		    sd.setAsBox(box2d.scalarPixelsToWorld(1.0f), 
-		    			box2d.scalarPixelsToWorld(length/2.0f));
+		    sd.setAsBox(box2d.scalarPixelsToWorld(length/2.0f), 
+		    		box2d.scalarPixelsToWorld(1.0f));
 
 		    // Define a fixture
 		    FixtureDef fd = new FixtureDef();
@@ -139,7 +139,9 @@ public class Tree extends ProcessingObject {
 		    bd.type = BodyType.DYNAMIC;
 		    // set the right position and angle
 		    bd.position.set(box2d.coordPixelsToWorld(new Vec2((x+endX)/2.0f, (y+endY)/2.0f)));
-		    bd.angle = 0.5f * Main.PI - angle;
+		    /*float correctAngle = Main.PI * 0.5f - angle;
+		    bd.angle = normalizeAngle(correctAngle);*/
+		    bd.angle = -angle;
 
 		    body = box2d.createBody(bd);
 		    body.createFixture(fd);
@@ -153,8 +155,12 @@ public class Tree extends ProcessingObject {
 		        Vec2 anchor = box2d.coordPixelsToWorld(new Vec2(x, y));
         		rjd.localAnchorA = parent.body.getLocalPoint(anchor);
         		rjd.localAnchorB = body.getLocalPoint(anchor);
-		        rjd.lowerAngle = -1.0f * internalAngle;
-		        rjd.upperAngle =  1.0f * internalAngle;
+        		/*float a1 = normalizeAngle(correctAngle - internalAngle);
+        		float a2 = normalizeAngle(correctAngle + internalAngle);
+		        rjd.lowerAngle = a1 < a2 ? a1 : a2;
+		        rjd.upperAngle = a1 > a2 ? a1 : a2;*/
+        		rjd.lowerAngle = -internalAngle;
+		        rjd.upperAngle = internalAngle;
 		        rjd.enableLimit = true;
 		        box2d.createJoint(rjd);
 		    }
@@ -184,6 +190,12 @@ public class Tree extends ProcessingObject {
 				branch.draw();
 			}
 		}
+	}
+	
+	private float normalizeAngle(float angle) {
+		float na = angle;
+		while(na < 0.0f) na += Main.TWO_PI;
+		return na % Main.TWO_PI;
 	}
 
 	

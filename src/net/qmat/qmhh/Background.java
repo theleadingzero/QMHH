@@ -32,7 +32,7 @@ public class Background extends ProcessingObject {
 		p.translate(centerX, centerY);
 		p.ellipseMode(p.CENTER);
 		p.stroke(255);
-		p.fill(255);
+		p.fill(30, 25, 135);
 		p.ellipse(0, 0, outerDiameter, outerDiameter);
 		p.fill(0);
 		p.ellipse(0, 0, innerDiameter, innerDiameter);
@@ -51,7 +51,7 @@ public class Background extends ProcessingObject {
 			p.line(cpos3.x, cpos3.y, cpos4.x, cpos4.y);
 		}
 		
-		/* Debug the ring boundary. N.B. a = -a for box2d.
+		/* Debug the ring boundary.
 		int steps = 60;
 		float stepSize = Main.TWO_PI / steps;
 		p.rectMode(p.CENTER);
@@ -93,7 +93,7 @@ public class Background extends ProcessingObject {
 			float angle = stepSize * i;
 			vertices[i] = calculateChainPosition(angle);
 			PolygonShape shape = new PolygonShape();
-			shape.setAsBox(0.1f, 2.0f, vertices[i], -angle);
+			shape.setAsBox(0.1f, 5.0f, vertices[i], angle);
 			body.createFixture(shape, 0.0f);
 		}
 	}

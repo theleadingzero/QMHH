@@ -44,7 +44,7 @@ public class CreaturesModel extends ProcessingObject {
 					return -1;
 				// so they both don't have targets, or they both do, check angles
 				// TODO: check whether the ones with targets have companion hunters
-				if(calculateAngularDistance(angle, c1p.t) < calculateAngularDistance(angle, c1p.t))
+				if(calculateAngularDistance(angle, c1p.t) < calculateAngularDistance(angle, c2p.t))
 					return -1;
 				else if(calculateAngularDistance(angle, c2p.t) > calculateAngularDistance(angle, c1p.t))
 					return 1;
@@ -56,8 +56,10 @@ public class CreaturesModel extends ProcessingObject {
 	}
 	
 	private float calculateAngularDistance(float a1, float a2) {
-		float d = Math.abs(a1 - a2);
-		return d < Main.PI ? d : Main.TWO_PI - d;
+		float d = a1 - a2;
+		if(d < -Main.PI) return d + Main.PI;
+		if(d > Main.PI) return d - Main.PI;
+		return d;
 	}
 	
 

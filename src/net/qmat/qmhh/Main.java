@@ -71,6 +71,7 @@ public class Main extends PApplet {
 	    
 		Models.update();
 	    Models.draw();
+	    
 	}
 	
 	/*

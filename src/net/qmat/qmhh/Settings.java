@@ -35,6 +35,9 @@ public class Settings {
 	// growth settings
 	public static String PR_MINIMAL_GROWTH_INTERVAL = "PR_MINIMAL_GROWTH_INTERVAL";
 	
+	// sequencer settings
+	public static String PR_SEQUENCER_SECTIONS = "PR_SEQUENCER_SECTIONS"; 
+	
 	private static Settings instance = null;
 	String propertyFile = "/data/preferences.properties";
 	Properties properties = new Properties();
