@@ -29,15 +29,18 @@ public class Tree extends ProcessingObject {
 		buildTree(BRANCH_START_LENGTH, BRANCH_LEVELS, startAngle, centerBody);
 	}
 	
+	
+	
 	private void buildTree(float startLength, 
 						   int levels, 
 						   float startAngle, 
 						   Body centerBody) {
+		CPoint2 cpos = new PPoint2(10.0f, startAngle).toCPoint2();
 		root = new Branch(null, 
 						  startLength, 
 						  levels, 
-						  Main.centerX, 
-						  Main.centerY, 
+						  cpos.x, //Main.centerX, 
+						  cpos.y, //Main.centerY, 
 						  startAngle);
 
 		RevoluteJointDef rjd = new RevoluteJointDef();
@@ -60,10 +63,14 @@ public class Tree extends ProcessingObject {
 	
 	private class Branch {
 		
-		float length;
-		ArrayList<Branch> branches = new ArrayList<Branch>();
-		Body body;
-		Branch parent;
+		private float length;
+		private ArrayList<Branch> branches = new ArrayList<Branch>();
+		private Body body;
+		private Branch parent;
+		
+		private float startX, startY;
+		private float endX, endY;
+		
 		
 		public Branch(Branch parent, 
 					  float length, 
@@ -74,25 +81,38 @@ public class Tree extends ProcessingObject {
 			this.parent = parent;
 			this.length = p.random(0.5f * length, 1.2f * length);
 			
-			float endX, endY;
 			endX = x + this.length * Main.cos(angle);
 			endY = y + this.length * Main.sin(angle);
+			startX = x;
+			startY = y;
+			
 			makeBody(x, y, endX, endY, angle);
 
 			if(levels > 0) {
-					branches.add(new Branch(this, 
-											0.6f * length, 
-											levels-1,
-											endX,
-											endY,
-											angle - internalAngle));
-					branches.add(new Branch(this, 
-								            0.6f * length, 
-								            levels-1,
-								            endX,
-								            endY,
-								            angle + internalAngle));
+				Branch b1 = new Branch(this, 
+										0.6f * length, 
+										levels-1,
+										endX,
+										endY,
+										angle - internalAngle);
+				if(b1.withinEcosystemP())
+					branches.add(b1);
+				Branch b2 = new Branch(this, 
+						0.6f * length, 
+						levels-1,
+						endX,
+						endY,
+						angle + internalAngle);
+				if(b1.withinEcosystemP())
+					branches.add(b2);
 			}
+		}
+		
+		public boolean withinEcosystemP() {
+			PPoint2 ppos1 = new CPoint2(endX, endY).toPPoint2();
+			PPoint2 ppos2 = new CPoint2(startX, startY).toPPoint2();
+			return ppos1.r < Main.outerRingInnerRadius - 10.f &&
+				   ppos2.r < Main.outerRingInnerRadius - 10.f;
 		}
 		
 		private void makeBody(float x, 

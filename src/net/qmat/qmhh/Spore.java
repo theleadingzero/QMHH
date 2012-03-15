@@ -37,14 +37,15 @@ public class Spore extends ProcessingObject {
 	    // Define the body and make it from the shape
 	    BodyDef bd = new BodyDef();
 	    bd.type = BodyType.DYNAMIC;
-	    bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX, 
-	    												  Main.centerY)));
+	    Vec2 direction = new Vec2(p.random(-0.5f, 0.5f),
+				  				  p.random(-0.5f, 0.5f));
+	    direction.normalize();
+	    
+	    bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX + direction.x * 10.0f, 
+	    												  Main.centerY + direction.y * 10.0f)));
 
 	    body = box2d.createBody(bd);
 	    body.createFixture(fd);
-	    Vec2 direction = new Vec2(p.random(-0.5f, 0.5f),
-								  p.random(-0.5f, 0.5f));
-	    direction.normalize();
 	    body.setLinearVelocity(direction);
 	    body.setAngularVelocity(0.0f);
 	    body.setUserData(this);

@@ -3,6 +3,8 @@
  * 
  */
 
+// TODO: change implementation of spore moving through outer perimeter to categoryBits
+
 package net.qmat.qmhh;
 
 import pbox2d.PBox2D;

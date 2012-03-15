@@ -46,9 +46,48 @@ public class HandsModel extends ProcessingObject {
 	}
 	
 	public void draw() {
+		// draw the fancy patterns underneath the hands
+		
+		float angleStep = Main.TWO_PI / 16.0f;
+		float lineSpace = 5.0f;
+		p.strokeWeight(0.5f);
+		p.stroke(0);
+		
+		// TODO: replace 16 by setting
+		System.out.println("------");
+		for(int section=0; section<16; section++) {
+			int nrLines = 7;
+			float angle1 = section * angleStep;
+			float angle2 = (section+1) * angleStep;
+			
+			PPoint2 handPpos = new PPoint2((Main.outerRingInnerRadius + Main.outerRingOuterRadius) / 2.0f,
+					  				  (angle1+angle2)/2.0f);
+			float angleHand = handPpos.t;
+			float lineAngleStep = (angleHand - angle1) / nrLines / 2.0f;
+			float lineAngleStepTemp;
+			int line;
+			
+			PPoint2 ppos = new PPoint2(200,Main.PI/2.0f);
+			p.ellipse(ppos.toCPoint2().x, ppos.toCPoint2().y, 10, 10);
+			
+			lineAngleStepTemp = lineAngleStep;
+			line=0;
+			for(float angleAdd=0.0f; angle1+angleAdd<angleHand; angleAdd+=lineAngleStepTemp, line++, lineAngleStepTemp*=1.1f) {
+				CPoint2 startPos = new PPoint2(Main.outerRingOuterRadius, angle1+angleAdd).toCPoint2();
+				CPoint2 endPos = new PPoint2((Main.outerRingOuterRadius-handPpos.r)/nrLines*line+handPpos.r, angleHand).toCPoint2();
+				p.line(startPos.x, startPos.y, endPos.x, endPos.y);
+				if(section==0) {
+					p.fill(255,0,0);
+					p.ellipse(startPos.x, startPos.y, 3, 3);
+					p.fill(255,0,255);
+					p.ellipse(endPos.x, endPos.y, 3, 3);
+				}
+			}
+		}
+		p.strokeWeight(1.0f);
 		
 		// set up the look for the hands here for efficiency
-		p.ellipseMode(PApplet.CENTER);
+		p.ellipseMode(Main.CENTER);
 		
 		// draw each hand
 		Iterator<Entry<Long, Hand>> entries = hands.entrySet().iterator();

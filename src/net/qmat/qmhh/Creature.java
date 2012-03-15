@@ -53,8 +53,9 @@ public class Creature extends ProcessingObject {
 	    // Define the body and make it from the shape
 	    BodyDef bd = new BodyDef();
 	    bd.type = BodyType.DYNAMIC;
-	    bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX, 
-	    												  Main.centerY)));
+	    CPoint2 cpos = new PPoint2(20.0f, p.random(0, Main.TWO_PI)).toCPoint2();
+	    bd.position.set(box2d.coordPixelsToWorld(new Vec2(cpos.x, 
+	    												  cpos.y)));
 
 	    body = box2d.createBody(bd);
 	    body.createFixture(fd);

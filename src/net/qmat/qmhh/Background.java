@@ -6,8 +6,11 @@ import org.jbox2d.dynamics.Body;
 
 public class Background extends ProcessingObject {
 	
+	private static int NR_SECTIONS = 16;
+	
 	private float centerX, centerY;
 	private float innerDiameter, outerDiameter;
+	private float innerRadius, outerRadius;
 	private Body body;
 	Vec2[] vertices;
 	
@@ -16,6 +19,8 @@ public class Background extends ProcessingObject {
 		centerY = Settings.getInteger(Settings.PR_CENTER_Y);
 		innerDiameter = Settings.getInteger(Settings.PR_RING_INNER_RADIUS) * 2.0f;
 		outerDiameter = Settings.getInteger(Settings.PR_RING_OUTER_RADIUS) * 2.0f;
+		innerRadius = innerDiameter / 2.0f;
+		outerRadius = outerDiameter / 2.0f;
 		
 		createRingBox2D();
 	}
@@ -27,11 +32,24 @@ public class Background extends ProcessingObject {
 		p.translate(centerX, centerY);
 		p.ellipseMode(p.CENTER);
 		p.stroke(255);
-		p.noFill();
+		p.fill(255);
 		p.ellipse(0, 0, outerDiameter, outerDiameter);
-		p.fill(0x000033);
+		p.fill(0);
 		p.ellipse(0, 0, innerDiameter, innerDiameter);
 		p.popMatrix();
+		
+		float angleStep = Main.TWO_PI / 16.0f;
+		for(int i=0; i<NR_SECTIONS; i++) {
+			CPoint2 cpos1 = new PPoint2(innerRadius, i*angleStep).toCPoint2();
+			CPoint2 cpos2 = new PPoint2(outerRadius, i*angleStep).toCPoint2();
+			CPoint2 cpos3 = new PPoint2(innerRadius, (i+1)*angleStep).toCPoint2();
+			CPoint2 cpos4 = new PPoint2(outerRadius, (i+1)*angleStep).toCPoint2();
+			
+			p.noFill();
+			p.stroke(0);
+			p.line(cpos1.x, cpos1.y, cpos2.x, cpos2.y);
+			p.line(cpos3.x, cpos3.y, cpos4.x, cpos4.y);
+		}
 		
 		/* Debug the ring boundary. N.B. a = -a for box2d.
 		int steps = 60;
