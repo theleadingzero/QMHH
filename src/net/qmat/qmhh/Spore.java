@@ -15,7 +15,7 @@ public class Spore extends ProcessingObject {
 	Body body;
 	
 	
-	public Spore() {
+	public Spore(float startRadius) {
 		w = 2.0f;
 		h = 2.0f;
 		
@@ -41,8 +41,8 @@ public class Spore extends ProcessingObject {
 				  				  p.random(-0.5f, 0.5f));
 	    direction.normalize();
 	    
-	    bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX + direction.x * 10.0f, 
-	    												  Main.centerY - direction.y * 10.0f)));
+	    bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX + direction.x * startRadius, 
+	    												  Main.centerY - direction.y * startRadius)));
 
 	    body = box2d.createBody(bd);
 	    body.createFixture(fd);
@@ -68,10 +68,7 @@ public class Spore extends ProcessingObject {
 		Vec2 pos = box2d.getBodyPixelCoord(body);
 		p.pushMatrix();
 		p.translate(pos.x, pos.y);
-		p.ellipseMode(Main.CENTER);
-		p.stroke(p.color(230, 230, 255));
-		p.fill(p.color(230, 230, 255));
-		p.ellipse(0, 0, w, h);
+		p.point(0, 0);
 		p.popMatrix();
 	}
 

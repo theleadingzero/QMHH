@@ -13,9 +13,9 @@ public class SporesModel extends ProcessingObject {
 		spores = new ArrayList<Spore>();
 	}
 	
-	public void startRipple() {
+	public void startRipple(float startRadius) {
 		for(int i=0; i<40; i++) {
-			spores.add(new Spore());
+			spores.add(new Spore(startRadius));
 		}
 	}
 	
@@ -38,9 +38,13 @@ public class SporesModel extends ProcessingObject {
 	}
 	
 	public void draw() {
+		p.ellipseMode(Main.CENTER);
+		p.stroke(150, 150, 255);
+		p.strokeWeight(2.0f);
 		for(Spore spore : spores) {
 			spore.draw();
 		}
+		p.strokeWeight(1.0f);
 	}
 	
 }

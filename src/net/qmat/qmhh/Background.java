@@ -31,8 +31,8 @@ public class Background extends ProcessingObject {
 		p.pushMatrix();
 		p.translate(centerX, centerY);
 		p.ellipseMode(p.CENTER);
-		p.stroke(255);
-		p.fill(30, 25, 135);
+		p.noStroke();
+		p.fill(90, 40, 190);
 		p.ellipse(0, 0, outerDiameter, outerDiameter);
 		p.fill(0);
 		p.ellipse(0, 0, innerDiameter, innerDiameter);

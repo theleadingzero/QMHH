@@ -10,15 +10,16 @@ import org.jbox2d.dynamics.*;
 import org.jbox2d.common.*;
 import org.jbox2d.collision.shapes.*;
 
-public class Creature extends ProcessingObject {
+public class CreatureBase extends ProcessingObject {
 	
-	private int stage = 0;
-	private float w = 10.0f;
-	private float h = 10.0f;
+	protected int stage = 0;
+	protected int maxStage = 2;
+	protected float w = 10.0f;
+	protected float h = 10.0f;
 	private float maxForce = 3.0f;
 	private float maxSpeed = 10.0f;
 	private Hand target = null;
-	private Body body;
+	protected Body body;
 	private int followDebugColor = 0;
 	// these timestamps/durations are in seconds
 	private float lastGrowthTimestamp = 0;
@@ -27,15 +28,24 @@ public class Creature extends ProcessingObject {
 	private static float DESIRED_SEPARATION = 60.0f;
 	private static float NEIGHBOR_DISTANCE  = 20.0f;
 	
-	public Creature() {
-		// TODO: start in stage 0;
+	public CreatureBase() {
+		float angle = p.random(0, Main.TWO_PI);
+		CPoint2 cpos = new PPoint2(20.0f, angle).toCPoint2();
+		init(cpos, angle);
+	}
+	
+	public CreatureBase(CPoint2 cpos, float angle) {
+		init(cpos, angle);
+	}
+	
+	private void init(CPoint2 cpos, float angle) {
 		stage = (int)p.random(0, 2.999f);
 		minimalGrowthInterval = Settings.getFloat(Settings.PR_MINIMAL_GROWTH_INTERVAL);
-		makeBody();
+		makeBody(cpos, angle);
 	}
 	
 	// This function adds the rectangle to the box2d world
-	private void makeBody() {
+	private void makeBody(CPoint2 cpos, float angle) {
 
 	    // Define a polygon (this is what we use for a rectangle)
 	    PolygonShape sd = new PolygonShape();
@@ -53,7 +63,6 @@ public class Creature extends ProcessingObject {
 	    // Define the body and make it from the shape
 	    BodyDef bd = new BodyDef();
 	    bd.type = BodyType.DYNAMIC;
-	    CPoint2 cpos = new PPoint2(40.0f, p.random(0, Main.TWO_PI)).toCPoint2();
 	    bd.position.set(box2d.coordPixelsToWorld(new Vec2(cpos.x, 
 	    												  cpos.y)));
 
@@ -100,7 +109,7 @@ public class Creature extends ProcessingObject {
 	}
 	
 	// TODO: DRY this out!
-	public void update(ArrayList<Creature> creatures) {
+	public void update(ArrayList<CreatureBase> creatures) {
 		// flock, but keep within the zone.
 		float zoneWidth = Main.outerRingInnerRadius / 3.0f;
 		float force = 1.0f;
@@ -178,7 +187,7 @@ public class Creature extends ProcessingObject {
 		this.target = null;
 	}
 	
-	private void flock(ArrayList<Creature> creatures) {
+	private void flock(ArrayList<CreatureBase> creatures) {
 		Vec2 sep = separate(creatures);
 		Vec2 ali = align(creatures);
 		Vec2 coh = cohesion(creatures);
@@ -218,7 +227,7 @@ public class Creature extends ProcessingObject {
 	
 	// Separation - method checks for nearby boids and steers away
 	@SuppressWarnings("static-access")
-	private Vec2 separate(ArrayList<Creature> creatures) {
+	private Vec2 separate(ArrayList<CreatureBase> creatures) {
 		float desiredSeparation = box2d.scalarPixelsToWorld(DESIRED_SEPARATION);
 
 		Vec2 steer = new Vec2(0,0);
@@ -226,7 +235,7 @@ public class Creature extends ProcessingObject {
 		
 		// For every boid in the system, check if it's too close
 		Vec2 locA = body.getWorldCenter();
-		for (Creature other : creatures) {
+		for (CreatureBase other : creatures) {
 			Vec2 locB = other.body.getWorldCenter();
 			
 			float d = p.dist(locA.x, locA.y, locB.x, locB.y);
@@ -262,12 +271,12 @@ public class Creature extends ProcessingObject {
 
 	// Alignment - for every nearby boid in the system, calculate the average velocity
 	@SuppressWarnings("static-access")
-	Vec2 align (ArrayList<Creature> creatures) {
+	Vec2 align (ArrayList<CreatureBase> creatures) {
 		float neighborDist = box2d.scalarPixelsToWorld(NEIGHBOR_DISTANCE);
 		Vec2 steer = new Vec2(0,0);
 		int count = 0;
 		Vec2 locA = body.getWorldCenter();
-		for (Creature other : creatures) {
+		for (CreatureBase other : creatures) {
 			Vec2 locB = other.body.getWorldCenter();
 			
 			float d = p.dist(locA.x,locA.y,locB.x,locB.y);
@@ -299,12 +308,12 @@ public class Creature extends ProcessingObject {
 	// Cohesion - for the average location (i.e. center) of all nearby 
 	// creatures, calculate steering vector towards that location
 	@SuppressWarnings("static-access")
-	Vec2 cohesion (ArrayList<Creature> creatures) {
+	Vec2 cohesion (ArrayList<CreatureBase> creatures) {
 		float neighborDist = box2d.scalarPixelsToWorld(NEIGHBOR_DISTANCE);
 		Vec2 sum = new Vec2(0,0);   // Start with empty vector to accumulate all locations
 		int count = 0;
 		Vec2 locA = body.getWorldCenter();
-		for (Creature other : creatures) {
+		for (CreatureBase other : creatures) {
 			Vec2 locB = other.body.getWorldCenter();
 
 			float d = p.dist(locA.x,locA.y,locB.x,locB.y);

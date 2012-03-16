@@ -6,14 +6,15 @@ import java.util.Comparator;
 
 public class CreaturesModel extends ProcessingObject {
 	
-	private ArrayList<Creature> creatures;
+	private ArrayList<CreatureBase> creatures;
 	
 	public CreaturesModel() {
-		creatures = new ArrayList<Creature>();
+		creatures = new ArrayList<CreatureBase>();
 	}
 	
 	public void addCreature() {
-		creatures.add(new Creature());
+		//creatures.add(new Creature());
+		creatures.add(new Jellyfish());
 	}
 	
 	public void update() {

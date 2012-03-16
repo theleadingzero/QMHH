@@ -15,6 +15,7 @@ public class Main extends PApplet {
 	private static final long serialVersionUID = 1L;
 	public static Main p;
 	public static PBox2D box2d;
+	public static int frameCount = 0;
 	
 	/* 
 	 * The static visual stuff..
@@ -43,6 +44,7 @@ public class Main extends PApplet {
 		size(Settings.getInteger(Settings.PR_WIDTH),
 			 Settings.getInteger(Settings.PR_HEIGHT),
 			 OPENGL);
+		p.hint(DISABLE_DEPTH_TEST);
 		
 		box2d = new PBox2D(this);
 		box2d.createWorld();
@@ -72,6 +74,7 @@ public class Main extends PApplet {
 		Models.update();
 	    Models.draw();
 	    
+	    frameCount++;
 	}
 	
 	/*
@@ -112,6 +115,11 @@ public class Main extends PApplet {
 	}
 	
 	public void mousePressed() {
-		Models.getSporesModel().startRipple();
+		if(p.random(0.0f, 1.0f) < 0.5f)
+			Models.getOrbModel().increaseRadius();
+		else
+			Models.getOrbModel().decreaseRadius();
+		Models.getSporesModel().startRipple(Models.getOrbModel().getRadius());
+		
 	}
 }

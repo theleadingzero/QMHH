@@ -109,6 +109,7 @@ public class HandsModel extends ProcessingObject {
 			float angle1 = section * angleStep;
 			float angle2 = (section+1) * angleStep;
 			
+			// N.B. use this to test a specific position:
 			//PPoint2 handPpos = new PPoint2((Main.outerRingInnerRadius * 0.25f + Main.outerRingOuterRadius * 0.75f),
 			//							   (angle1 * 0.25f + angle2 * 0.75f));
 			PPoint2 handPpos = new CPoint2(averageHandPositions.get(section)).toPPoint2();
@@ -117,6 +118,9 @@ public class HandsModel extends ProcessingObject {
 			float lineAngleStep;
 			float lineAngleStepTemp;
 			int line;
+			
+			p.stroke(0);
+			p.strokeWeight(3);
 			
 			PPoint2 ppos = new PPoint2(200,Main.PI/2.0f);
 			p.ellipse(ppos.toCPoint2().x, ppos.toCPoint2().y, 10, 10);
