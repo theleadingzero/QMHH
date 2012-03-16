@@ -48,12 +48,23 @@ public class HandsModel extends ProcessingObject {
 		// TODO: If the hand isn't there, just ignore the call.
 		// TODO: Don't remove immediately, but mark the hand for removal.
 		Hand hand = hands.get(id);
-		if(hand != null) hand.destroy();
-		hands.remove(id);
+		if(hand != null) hand.markForRemoval();
 	}
 	
 	public boolean containsHandAlreadyP(Long id) {
 		return hands.get(id) != null;
+	}
+	
+	public void update() {
+		Iterator<Entry<Long, Hand>> entries = hands.entrySet().iterator();
+		while(entries.hasNext()) {
+			Entry<Long, Hand> entry = entries.next();
+			Hand hand = entry.getValue();
+			if(hand.isMarkedForRemoval()) {
+				hand.destroy();
+				entries.remove();
+			}
+		}
 	}
 	
 	public void draw() {

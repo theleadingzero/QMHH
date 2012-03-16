@@ -21,6 +21,7 @@ public class Hand extends ProcessingObject {
 	
 	private boolean rebuildBeamP;
 	private Beam beam;
+	private boolean markedForRemovalP = false;
 	
 	public Hand(float x, float y) {
 		updatePosition(x, y);
@@ -44,17 +45,26 @@ public class Hand extends ProcessingObject {
 		rebuildBeamP = false;
 	}
 	
+
+	public void markForRemoval() {
+		markedForRemovalP = true;
+	}
+	
+	public boolean isMarkedForRemoval() {
+		return markedForRemovalP;
+	}
 	
 	public void draw() {
-		if(rebuildBeamP) rebuildBeam();
-		
-		p.noStroke();
-		p.fill(p.color(0, 155, 0));
-		p.ellipse(x, y, radius, radius);
-		//p.stroke(p.color(200, 200, 0));
-		//p.line(x, y, Main.centerX, Main.centerY);
-		
-		beam.draw();
+		if(!markedForRemovalP) {
+			p.noStroke();
+			p.fill(p.color(0, 155, 0));
+			p.ellipse(x, y, radius, radius);
+			//p.stroke(p.color(200, 200, 0));
+			//p.line(x, y, Main.centerX, Main.centerY);
+			
+			if(rebuildBeamP) rebuildBeam();
+			beam.draw();
+		}
 	}
 	
 	public void destroy() {
@@ -75,10 +85,13 @@ public class Hand extends ProcessingObject {
 			// update size of the body
 			Fixture f = body.getFixtureList();
 			while(f != null) {
-				body.destroyFixture(f);
+				//body.destroyFixture(f);
+				PolygonShape sd = (PolygonShape)f.m_shape;
+				Vec2[] vs = getShapeVertices();
+				sd.set(vs, 4);
 				f = f.getNext();
 			}
-			body.createFixture(createFixture());
+			//body.createFixture(createFixture());
 		}
 		
 		private void makeBody() {
@@ -86,10 +99,12 @@ public class Hand extends ProcessingObject {
 			FixtureDef fd = createFixture();
 
 			BodyDef bd = new BodyDef();
-			bd.type = BodyType.DYNAMIC;
+			bd.type = BodyType.STATIC;
 			// set position to be in between the center and the hand position
-			bd.position.set(box2d.coordPixelsToWorld(new Vec2((hand.x + Main.centerX)*0.5f, (hand.y + Main.centerY)*0.5f)));
-			bd.angle = new CPoint2(hand.x, hand.y).toPPoint2().t;
+			//bd.position.set(box2d.coordPixelsToWorld(new Vec2((hand.x + Main.centerX)*0.5f, (hand.y + Main.centerY)*0.5f)));
+			// or set the position of the static body to the middle
+			bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX, Main.centerY)));
+			//bd.angle = new CPoint2(hand.x, hand.y).toPPoint2().t;
 
 			body = box2d.createBody(bd);
 			body.createFixture(fd);
@@ -98,24 +113,29 @@ public class Hand extends ProcessingObject {
 		
 		private FixtureDef createFixture() {
 			PolygonShape sd = new PolygonShape();
-			PPoint2 handPos = new CPoint2(x, y).toPPoint2();
-			// TODO: calculate the actual angleOffset from the hand size
-			float angleOffset = Main.TWO_PI / 92.0f;
-			PPoint2 v1 = new PPoint2(handPos.r, handPos.r - angleOffset);
-			PPoint2 v2 = new PPoint2(handPos.r, handPos.r + angleOffset);
-			// offset from the middle is perpendicular to the beam
-			PPoint2 v3 = new PPoint2(10.0f, handPos.r + Main.PI/2.0f);
-			PPoint2 v4 = new PPoint2(10.0f, handPos.r - Main.PI/2.0f);
-			Vec2 vs[] = new Vec2[4];
-			vs[0] = box2d.coordPixelsToWorld(v1.toVec2());
-			vs[1] = box2d.coordPixelsToWorld(v2.toVec2());
-			vs[2] = box2d.coordPixelsToWorld(v3.toVec2());
-			vs[3] = box2d.coordPixelsToWorld(v4.toVec2());
+			Vec2[] vs = getShapeVertices();
 			sd.set(vs, 4);
 			FixtureDef fd = new FixtureDef();
 			fd.shape = sd;
 			fd.isSensor = true;
 			return fd;
+		}
+		
+		private Vec2[] getShapeVertices() {
+			PPoint2 handPos = new CPoint2(x, y).toPPoint2();
+			// TODO: calculate the actual angleOffset from the hand size
+			float angleOffset = Main.TWO_PI / 92.0f;
+			PPoint2 v1 = new PPoint2(handPos.r, handPos.t - angleOffset);
+			PPoint2 v2 = new PPoint2(handPos.r, handPos.t + angleOffset);
+			// offset from the middle is perpendicular to the beam
+			PPoint2 v3 = new PPoint2(5.0f, handPos.t + Main.PI/2.0f);
+			PPoint2 v4 = new PPoint2(5.0f, handPos.t - Main.PI/2.0f);
+			Vec2 vs[] = new Vec2[4];
+			vs[0] = box2d.coordPixelsToWorld(v1.toVec2());
+			vs[1] = box2d.coordPixelsToWorld(v2.toVec2());
+			vs[2] = box2d.coordPixelsToWorld(v3.toVec2());
+			vs[3] = box2d.coordPixelsToWorld(v4.toVec2());
+			return vs;
 		}
 
 		public void destroy() {
@@ -133,7 +153,6 @@ public class Hand extends ProcessingObject {
 					Vec2 pos = shape.getVertex(i);
 					Vec2 v2 = box2d.coordWorldToPixels(Transform.mul(transform, pos));
 					p.vertex(v2.x, v2.y);
-					p.println(v2.x + " " + v2.y);
 				}
 			}
 			p.endShape(Main.CLOSE);

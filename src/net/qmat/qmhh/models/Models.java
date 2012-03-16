@@ -89,6 +89,7 @@ public class Models {
     
     public static void update() {
     	Models models = Models.getInstance();
+    	models.handsModel.update();
     	models.sporesModel.update();
     	models.creaturesModel.update();
     	models.playheadModel.update();
