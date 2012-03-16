@@ -62,7 +62,7 @@ public class Main extends PApplet {
 		/*
 		 * Creatures some creatures for testing
 		 */
-		for(int i=0; i<20; i++) {
+		for(int i=0; i<3; i++) {
 			Models.getCreaturesModel().addCreature();
 		}
 	}

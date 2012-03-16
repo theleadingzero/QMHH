@@ -14,6 +14,10 @@ public class CreatureBase extends ProcessingObject {
 	
 	protected int stage = 0;
 	protected int maxStage = 2;
+	
+	protected int subStage = 0;
+	protected int maxSubStage = 2;
+	
 	protected float w = 10.0f;
 	protected float h = 10.0f;
 	private float maxForce = 3.0f;
@@ -22,7 +26,7 @@ public class CreatureBase extends ProcessingObject {
 	protected Body body;
 	private int followDebugColor = 0;
 	// these timestamps/durations are in seconds
-	private float lastGrowthTimestamp = 0;
+	private Long lastGrowthTimestamp = 0L;
 	private float minimalGrowthInterval; 
 	
 	private static float DESIRED_SEPARATION = 60.0f;
@@ -39,7 +43,7 @@ public class CreatureBase extends ProcessingObject {
 	}
 	
 	private void init(CPoint2 cpos, float angle) {
-		stage = (int)p.random(0, 2.999f);
+		stage = 0;
 		minimalGrowthInterval = Settings.getFloat(Settings.PR_MINIMAL_GROWTH_INTERVAL);
 		makeBody(cpos, angle);
 	}
@@ -343,11 +347,21 @@ public class CreatureBase extends ProcessingObject {
 	}
 	
 	public void grow() {
-		float newTimestamp = System.nanoTime() / 1000000000.0f;
-		if(stage < 2 && newTimestamp - lastGrowthTimestamp > minimalGrowthInterval) {
-			stage += 1;
+		Long newTimestamp = System.nanoTime();
+		if(stage < maxStage && newTimestamp - lastGrowthTimestamp > (double)minimalGrowthInterval * 1000000000L) {
 			lastGrowthTimestamp = newTimestamp;
+			if(subStage < maxSubStage) {
+				subStage += 1;
+				w *= 1.2f;
+				h *= 1.2f;
+			} else {
+				subStage = 0;
+				stage += 1;
+				w *= 1.7f;
+				h *= 1.7f;
+			}
 		}
+		
 	}
 	
 }

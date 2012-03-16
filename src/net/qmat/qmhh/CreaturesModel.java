@@ -18,7 +18,7 @@ public class CreaturesModel extends ProcessingObject {
 	}
 	
 	public void update() {
-		for(Creature creature : creatures) {
+		for(CreatureBase creature : creatures) {
 			creature.update(creatures);
 		}
 	}
@@ -27,15 +27,15 @@ public class CreaturesModel extends ProcessingObject {
 		p.rectMode(Main.CENTER);
 		p.noFill();
 		p.stroke(200);
-		for(Creature creature : creatures) {
+		for(CreatureBase creature : creatures) {
 			creature.draw();
 		}
 	}
 	
-	public ArrayList<Creature> getTargeters(final float angle) {
-		ArrayList<Creature> orderedCreatures = new ArrayList<Creature>(creatures);
-		Collections.sort(orderedCreatures, new Comparator<Creature>() {
-			public int compare(Creature c1, Creature c2) {
+	public ArrayList<CreatureBase> getTargeters(final float angle) {
+		ArrayList<CreatureBase> orderedCreatures = new ArrayList<CreatureBase>(creatures);
+		Collections.sort(orderedCreatures, new Comparator<CreatureBase>() {
+			public int compare(CreatureBase c1, CreatureBase c2) {
 				PPoint2 c1p = c1.getPPosition();
 				PPoint2 c2p = c2.getPPosition();
 				// if one of the creatures has a target and the other doesn't, no need to check angles

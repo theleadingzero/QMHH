@@ -12,12 +12,12 @@ public class HandsController {
 	
 	// cache for speed
 	private float ringInnerRadius, ringOuterRadius;
-	private HashMap<Long, ArrayList<Creature>> handCreatures;
+	private HashMap<Long, ArrayList<CreatureBase>> handCreatures;
 	
 	public HandsController() {
 		ringInnerRadius = Settings.getInteger(Settings.PR_RING_INNER_RADIUS) / 1.0f;
 		ringOuterRadius = Settings.getInteger(Settings.PR_RING_OUTER_RADIUS) / 1.0f;
-		handCreatures = new HashMap<Long, ArrayList<Creature>>();
+		handCreatures = new HashMap<Long, ArrayList<CreatureBase>>();
 	}
 	
 	// N.B. takes relative positions [0.0 ... 1.0]
@@ -36,7 +36,7 @@ public class HandsController {
 		Controllers.getSequencerController().addHand(id, ppos);
 		// Let's get some bad ass creatures to eat that energy
 		float angle = ppos.t;
-		ArrayList<Creature> creatures = Models.getCreaturesModel().getTargeters(angle);
+		ArrayList<CreatureBase> creatures = Models.getCreaturesModel().getTargeters(angle);
 		for(int i=0; i<creatures.size() && i<2; i++) {
 			// TODO: remove this later:
 			if(!creatures.get(i).hasTargetP()) {
@@ -78,10 +78,10 @@ public class HandsController {
 		return (ppoint.r > ringInnerRadius && ppoint.r < ringOuterRadius);
 	}
 	
-	private void addCreatureToHand(Long handID, Creature creature) {
-		ArrayList<Creature> al = handCreatures.get(handID);
+	private void addCreatureToHand(Long handID, CreatureBase creature) {
+		ArrayList<CreatureBase> al = handCreatures.get(handID);
 		if(al == null) {
-			al = new ArrayList<Creature>();
+			al = new ArrayList<CreatureBase>();
 			handCreatures.put(handID, al);
 		}
 		if(!al.contains(creature)) {
@@ -91,13 +91,13 @@ public class HandsController {
 	}
 	
 	private void removeCreaturesFromHand(Long handID) {
-		ArrayList<Creature> al = handCreatures.get(handID);
+		ArrayList<CreatureBase> al = handCreatures.get(handID);
 		if(al != null) {
-			for(Creature creature : al) {
+			for(CreatureBase creature : al) {
 				creature.removeTarget();
 			}
 		}
-		handCreatures.put(handID, new ArrayList<Creature>());
+		handCreatures.put(handID, new ArrayList<CreatureBase>());
 	}
 	
 

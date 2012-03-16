@@ -25,7 +25,7 @@ public class ContactController implements ContactListener {
 		Object objB = contact.getFixtureB().getBody().getUserData();
 		if(objA == null || objB == null)
 			return;
-		if(contactPair(contact, manifold, objA, objB, Creature.class, Spore.class, CreatureSporeContact.class)) return;
+		if(contactPair(contact, manifold, objA, objB, CreatureBase.class, Spore.class, CreatureBaseSporeContact.class)) return;
 		if(contactPair(contact, manifold, objA, objB, Background.class, Spore.class, BackgroundSporeContact.class)) return;
 	}
 	
@@ -41,7 +41,7 @@ public class ContactController implements ContactListener {
 							 Class<?> clB, 
 							 Class<? extends ContactLogic> clCL) {
 		try {
-			if(objA.getClass().equals(clA) && objB.getClass().equals(clB)) {
+			if(clA.isAssignableFrom(objA.getClass()) && clB.isAssignableFrom(objB.getClass())) {
 				ContactLogic cl = clCL.newInstance();
 				cl.contact(contact, manifold, objA, objB);
 				return true;
