@@ -1,8 +1,9 @@
 package net.qmat.qmhh.contacts;
 
-import net.qmat.qmhh.CreatureBase;
-import net.qmat.qmhh.Models;
-import net.qmat.qmhh.Spore;
+import net.qmat.qmhh.models.Models;
+import net.qmat.qmhh.models.Spore;
+import net.qmat.qmhh.models.creatures.CreatureBase;
+
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.contacts.Contact;
 
