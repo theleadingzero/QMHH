@@ -40,6 +40,7 @@ public class Spore extends ProcessingObject {
 	    Vec2 direction = new Vec2(p.random(-0.5f, 0.5f),
 				  				  p.random(-0.5f, 0.5f));
 	    direction.normalize();
+	    direction.mulLocal(3.0f);
 	    
 	    bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX + direction.x * startRadius, 
 	    												  Main.centerY - direction.y * startRadius)));
@@ -70,6 +71,10 @@ public class Spore extends ProcessingObject {
 		p.translate(pos.x, pos.y);
 		p.point(0, 0);
 		p.popMatrix();
+	}
+	
+	public float getAbsoluteVelocity() {
+		return body.getLinearVelocity().length();
 	}
 
 }

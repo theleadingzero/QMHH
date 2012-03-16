@@ -168,11 +168,8 @@ public class Tree extends ProcessingObject {
 		
 		public void draw() {
 			
-			p.pushMatrix();
 			Vec2 bodyPos = box2d.getBodyPixelCoord(body);
 			p.fill(0, 0, 255);
-			//p.translate(bodyPos.x, bodyPos.y);
-			//p.rotate(-body.getAngle());
 			p.beginShape();
 			for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {
 				PolygonShape shape = (PolygonShape) f.getShape();
@@ -184,7 +181,6 @@ public class Tree extends ProcessingObject {
 				}
 			}
 			p.endShape();
-			p.popMatrix();
 			
 			for(Branch branch : branches) {
 				branch.draw();

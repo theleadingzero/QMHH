@@ -62,7 +62,7 @@ public class Main extends PApplet {
 		/*
 		 * Creatures some creatures for testing
 		 */
-		for(int i=0; i<3; i++) {
+		for(int i=0; i<10; i++) {
 			Models.getCreaturesModel().addCreature();
 		}
 	}
@@ -115,11 +115,13 @@ public class Main extends PApplet {
 	}
 	
 	public void mousePressed() {
+		/*
 		if(p.random(0.0f, 1.0f) < 0.5f)
 			Models.getOrbModel().increaseRadius();
 		else
 			Models.getOrbModel().decreaseRadius();
-		Models.getSporesModel().startRipple(Models.getOrbModel().getRadius());
+			*/
+		Models.getSporesModel().startRipple(Models.getOrbModel().getRadius()/2.0f);
 		
 	}
 }

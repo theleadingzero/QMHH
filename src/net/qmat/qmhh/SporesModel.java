@@ -30,7 +30,8 @@ public class SporesModel extends ProcessingObject {
 		while(it.hasNext()) {
 			Spore spore = it.next();
 			PPoint2 ppos = spore.getPPosition();
-			if(ppos.r > Main.outerRingOuterRadius) {
+			if(ppos.r > Main.outerRingOuterRadius ||
+			   spore.getAbsoluteVelocity() < 1.0f) {
 				spore.destroy();
 				it.remove();
 			}

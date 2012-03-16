@@ -18,6 +18,9 @@ public class Jellyfish extends CreatureBase {
 	}
 
 	public void draw() {
+
+		//drawDebugShape();
+		
 		Vec2 velocity = body.getLinearVelocity(); 
 		velocitySum += velocity.length() * 0.05f + 0.05f;
 		
@@ -35,6 +38,7 @@ public class Jellyfish extends CreatureBase {
 		// align the umbrella in the center
 		Vec2 v = box2d.getBodyPixelCoord(body);
 		p.translate(v.x, v.y);
+		p.ellipse(0, 0, 6, 6);
 		// rotate the umbrella 90 degrees, so it stands normally
 		//p.rotateX(body.getAngle());
 		p.rotateZ(Main.atan2(velocity.x, velocity.y));
@@ -50,6 +54,7 @@ public class Jellyfish extends CreatureBase {
 
 		p.popMatrix();
 		rot += p.random(0.0f, 0.006f);
+		
 	}
 
 	void umbrellaSegment(float x1, float y1, float x2, float y2, float h) {
