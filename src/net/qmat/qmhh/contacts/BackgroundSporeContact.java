@@ -9,7 +9,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 
 public class BackgroundSporeContact extends ContactLogic {
 	
-	public void contact(Contact contact, Manifold manifold, Object objA, Object objB) {
+	public void preSolveContact(Contact contact, Manifold manifold, Object objA, Object objB) {
 		//Background background = (Background)objA;
 		contact.setEnabled(false);
 		//Spore spore = (Spore)objB;

@@ -71,7 +71,7 @@ public class Hand extends ProcessingObject {
 		if(beam != null) beam.destroy();
 	}
 	
-	private class Beam extends ProcessingObject {
+	public class Beam extends ProcessingObject {
 		
 		Body body;
 		Hand hand;

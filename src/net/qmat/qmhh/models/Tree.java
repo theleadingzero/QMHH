@@ -62,6 +62,7 @@ public class Tree extends ProcessingObject {
 	}
 	
 	public void draw() {
+		p.stroke(0, 100, 0);
 		p.fill(0, 255, 0);
 		root.draw();
 	}
@@ -172,20 +173,17 @@ public class Tree extends ProcessingObject {
 		}
 		
 		public void draw() {
-			
-			Vec2 bodyPos = box2d.getBodyPixelCoord(body);
-			p.fill(0, 0, 255);
+			Transform transform = body.getTransform();
 			p.beginShape();
+			Vec2 pos;
 			for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {
 				PolygonShape shape = (PolygonShape) f.getShape();
-				Transform transform = body.getTransform();
 				for(int i=0; i<shape.getVertexCount(); i++) {
-					Vec2 pos = shape.getVertex(i);
-					Vec2 v2 = box2d.coordWorldToPixels(transform.mul(transform, pos));
-					p.vertex(v2.x, v2.y);
+					pos = box2d.coordWorldToPixels(Transform.mul(transform, shape.getVertex(i)));
+					p.vertex(pos.x, pos.y);
 				}
 			}
-			p.endShape();
+			p.endShape(Main.CLOSE);
 			
 			for(Branch branch : branches) {
 				branch.draw();

@@ -19,7 +19,7 @@ import org.jbox2d.collision.shapes.*;
 
 public class CreatureBase extends ProcessingObject {
 
-	protected int stage = 0;
+	public int stage = 0;
 	protected int maxStage = 2;
 
 	protected int subStage = 0;
@@ -354,13 +354,13 @@ public class CreatureBase extends ProcessingObject {
 			lastGrowthTimestamp = newTimestamp;
 			if(subStage < maxSubStage) {
 				subStage += 1;
-				w *= 1.2f;
-				h *= 1.2f;
+				w *= 1.15f;
+				h *= 1.15f;
 			} else {
 				subStage = 0;
 				stage += 1;
-				w *= 1.7f;
-				h *= 1.7f;
+				w *= 1.3f;
+				h *= 1.3f;
 			}
 			rebuildShapeP = true;
 		}

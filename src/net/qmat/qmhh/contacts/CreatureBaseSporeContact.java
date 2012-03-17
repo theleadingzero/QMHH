@@ -9,7 +9,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 
 public class CreatureBaseSporeContact extends ContactLogic {
 	
-	public void contact(Contact contact, Manifold manifold, Object objA, Object objB) {
+	public void preSolveContact(Contact contact, Manifold manifold, Object objA, Object objB) {
 		CreatureBase creature = (CreatureBase)objA;
 		creature.grow();
 		Spore spore = (Spore)objB;

@@ -13,6 +13,11 @@ import net.qmat.qmhh.models.Background;
 import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.utils.Settings;
 import pbox2d.PBox2D;
+import javax.media.opengl.*;
+import javax.media.opengl.glu.*;
+import com.sun.opengl.util.*;
+import processing.opengl.*;
+import java.nio.*;
 import processing.core.*;
 
 public class Main extends PApplet {
@@ -21,6 +26,7 @@ public class Main extends PApplet {
 	public static Main p;
 	public static PBox2D box2d;
 	public static int frameCount = 0;
+	public static PGraphicsOpenGL pgl;
 	
 	/* 
 	 * The static visual stuff..
@@ -58,7 +64,8 @@ public class Main extends PApplet {
 		
 		bg = new Background();
 	    
-	    /* N.B. The controllers should be loaded at the end of setup(), otherwise
+	    /* 
+	     * N.B. The controllers should be loaded at the end of setup(), otherwise
 	     * the tuio events might trigger actions before everything is set up properly.
 	     */
 		Models.init();
@@ -73,12 +80,13 @@ public class Main extends PApplet {
 	}
 
 	public void draw() {
-		box2d.step();
+		this.pgl = (PGraphicsOpenGL) g;
+		
 		bg.draw();
-	    
 		Models.update();
 	    Models.draw();
 	    
+	    box2d.step();
 	    frameCount++;
 	}
 	

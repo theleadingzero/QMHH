@@ -6,13 +6,14 @@ import org.jbox2d.common.Vec2;
 
 public class Jellyfish extends CreatureBase {
 
-	private int numSegments = 7;
+	private int numSegments = 4;
+	private int maxSegments = 12;
 	private float Ra = 150.0f;  // aperture / radius
 	private float Ha = 100.0f;  // height
 	private float angleSpace = Main.TWO_PI / numSegments;
 	private float offsetX, offsetY;
 	private float rot = 0.0f;
-	private float[][] points = new float[numSegments][2];
+	private float[][] points = new float[maxSegments][2];
 	private float velocitySum = 0.0f;
 
 	Jellyfish() {
@@ -45,7 +46,7 @@ public class Jellyfish extends CreatureBase {
 		//p.rotateX(body.getAngle());
 		p.rotateZ(Main.atan2(velocity.x, velocity.y));
 		// perform rotation just to appreciate the geometry
-		//p.rotateX(Main.PI * 0.5f + rot);
+		p.rotateX(Main.PI * 0.5f + rot);
 
 		// draw the umbrella
 		for (int i = 0; i < numSegments - 1; i++) {
@@ -57,6 +58,14 @@ public class Jellyfish extends CreatureBase {
 		p.popMatrix();
 		rot += p.random(0.0f, 0.006f);
 		
+	}
+	
+	public void grow() {
+		super.grow();
+		if(numSegments<maxSegments) {
+			numSegments++;
+			angleSpace = Main.TWO_PI / numSegments;
+		}
 	}
 
 	void umbrellaSegment(float x1, float y1, float x2, float y2, float h) {
