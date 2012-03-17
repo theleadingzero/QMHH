@@ -1,6 +1,11 @@
 package net.qmat.qmhh.models;
 
 import java.util.ArrayList;
+import javax.media.opengl.*;
+import javax.media.opengl.glu.*;
+import com.sun.opengl.util.*;
+import processing.opengl.*;
+import java.nio.*;
 
 import net.qmat.qmhh.Main;
 
@@ -11,16 +16,18 @@ public class OrbPSystem extends ProcessingObject {
 	private float inx, iny;
 	private float r;
 	private float th;
-	PVector ps_loc; 
-	ArrayList<OrbParticle> particles;
+	private PVector ps_loc; 
+	private ArrayList<OrbParticle> particles;
+	private FloatBuffer vbuffer;
 
-	public OrbPSystem(PVector ps_loc, int num, float th, float r)
+	public OrbPSystem(PVector ps_loc, int num, float th, float r, FloatBuffer vbuffer)
 	{
 		inx = Main.centerX;
 		iny = Main.centerY;
 		this.r = r;
 		this.ps_loc = ps_loc;
 		this.th = th;
+		this.vbuffer = vbuffer;
 		particles = new ArrayList<OrbParticle>();
 		for (int i = 0; i < num; i++) {
 			particles.add(new OrbParticle(
@@ -39,8 +46,11 @@ public class OrbPSystem extends ProcessingObject {
 		ps_loc.y += p.random(-20.0f, 20.0f);
 
 		for(OrbParticle particle : particles) {     
-			particle.draw();
+			particle.update();
 			particle.move(new PVector(ps_loc.x,ps_loc.y,0));
+			
+			vbuffer.put(particle.loc.x);
+		    vbuffer.put(particle.loc.y);
 		}
 	}
 	

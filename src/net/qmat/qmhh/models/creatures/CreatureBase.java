@@ -399,4 +399,7 @@ public class CreatureBase extends ProcessingObject {
 		rebuildShapeP = false;
 	}
 
+	public float getRadius() {
+		return w * 0.5f;
+	}
 }

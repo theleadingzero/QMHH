@@ -26,7 +26,6 @@ public class Main extends PApplet {
 	public static Main p;
 	public static PBox2D box2d;
 	public static int frameCount = 0;
-	public static PGraphicsOpenGL pgl;
 	
 	/* 
 	 * The static visual stuff..
@@ -80,7 +79,6 @@ public class Main extends PApplet {
 	}
 
 	public void draw() {
-		this.pgl = (PGraphicsOpenGL) g;
 		
 		bg.draw();
 		Models.update();

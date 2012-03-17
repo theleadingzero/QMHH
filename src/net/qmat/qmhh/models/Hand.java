@@ -1,5 +1,9 @@
 package net.qmat.qmhh.models;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
@@ -10,6 +14,7 @@ import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.models.creatures.CreatureBase;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 
@@ -23,10 +28,24 @@ public class Hand extends ProcessingObject {
 	private Beam beam;
 	private boolean markedForRemovalP = false;
 	
+	private ArrayList<CreatureBase> beamCreatures;
+	
 	public Hand(float x, float y) {
+		beamCreatures = new ArrayList<CreatureBase>();
 		updatePosition(x, y);
 		rebuildBeamP = true;
-		
+	}
+	
+	public void addCreature(CreatureBase creature) {
+		if(!beamCreatures.contains(creature)) {
+			beamCreatures.add(creature);
+		}
+	}
+	
+	public void removeCreature(CreatureBase creature) {
+		if(beamCreatures.contains(creature)) {
+			beamCreatures.remove(creature);
+		}
 	}
 	
 	public void updatePosition(float x, float y) {
@@ -73,8 +92,8 @@ public class Hand extends ProcessingObject {
 	
 	public class Beam extends ProcessingObject {
 		
-		Body body;
-		Hand hand;
+		private Body body;
+		public Hand hand;
 		
 		Beam(Hand hand) {
 			this.hand = hand;
@@ -125,11 +144,12 @@ public class Hand extends ProcessingObject {
 			PPoint2 handPos = new CPoint2(x, y).toPPoint2();
 			// TODO: calculate the actual angleOffset from the hand size
 			float angleOffset = Main.TWO_PI / 92.0f;
+			float stopRadius = getGreatestRadius();
 			PPoint2 v1 = new PPoint2(handPos.r, handPos.t - angleOffset);
 			PPoint2 v2 = new PPoint2(handPos.r, handPos.t + angleOffset);
 			// offset from the middle is perpendicular to the beam
-			PPoint2 v3 = new PPoint2(5.0f, handPos.t + Main.PI/2.0f);
-			PPoint2 v4 = new PPoint2(5.0f, handPos.t - Main.PI/2.0f);
+			PPoint2 v3 = new PPoint2(stopRadius, handPos.t + angleOffset);
+			PPoint2 v4 = new PPoint2(stopRadius, handPos.t - angleOffset);
 			Vec2 vs[] = new Vec2[4];
 			vs[0] = box2d.coordPixelsToWorld(v1.toVec2());
 			vs[1] = box2d.coordPixelsToWorld(v2.toVec2());
@@ -142,7 +162,17 @@ public class Hand extends ProcessingObject {
 			box2d.destroyBody(body);
 		}
 		
+		public float getGreatestRadius() {
+			float r = 10.0f;
+			for(CreatureBase c : hand.beamCreatures) {
+				float cr = c.getPPosition().r + c.getRadius();
+				if(cr > r) r = cr;
+			}
+			return r;
+		}
+		
 		public void draw() {
+			//System.out.println("creatures: " + hand.beamCreatures.size());
 			p.fill(237, 212, 69, 150);
 			p.stroke(234, 187, 31);
 			p.beginShape();

@@ -11,16 +11,18 @@ public class CreatureBaseBeamContact extends ContactLogic {
 	public void beginContact(Contact contact, Object objA, Object objB) {
 		CreatureBase creature = (CreatureBase)objA;
 		if(creature.stage >= 2) {
+			// TODO: this will cause trouble when the hand is suddenly removed asynchronously!
 			Beam beam = (Beam)objB;
-			System.out.println("detected stage 2 creature in beam");
+			beam.hand.addCreature(creature);
 		}
 	}
 	
 	public void endContact(Contact contact, Object objA, Object objB) {
 		CreatureBase creature = (CreatureBase)objA;
 		if(creature.stage >= 2) {
+			// TODO: this will cause trouble when the hand is suddenly removed asynchronously!
 			Beam beam = (Beam)objB;
-			System.out.println("stage 2 creature left beam");
+			beam.hand.removeCreature(creature);
 		}
 	}
 }

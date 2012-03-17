@@ -25,10 +25,10 @@ public class OrbParticle extends ProcessingObject {
 	}
 
 	public void draw() {
-		update();
-		p.strokeWeight(ms/30);
-		p.stroke(120, 120, 245, 200);
-		p.point(loc.x,loc.y);
+		//update();
+		//p.strokeWeight(ms/30);
+		//p.stroke(120, 120, 245, 200);
+		//p.point(loc.x,loc.y);
 	}
 
 	void move(PVector target) {

@@ -72,19 +72,15 @@ public class Models {
     	return instance.treesModel;
     }
     
-    /* 
-     * Draw!
-     */
-    
     public static void draw() {
     	// Call all the models' draw functions here.
     	Models models = Models.getInstance();
     	models.handsModel.draw();
     	models.treesModel.draw();
-    	models.orbModel.draw();
     	models.playheadModel.draw();
     	models.creaturesModel.draw();
     	models.sporesModel.draw();
+    	models.orbModel.draw();
     }
     
     public static void update() {

@@ -117,8 +117,9 @@ public class HandsModel extends ProcessingObject {
 		ArrayList<Vec2> averageHandPositions = getHandFocusPoints();
 
 		float angleStep = Main.TWO_PI / nrSections;
-		p.strokeWeight(0.5f);
-		p.stroke(10, 15, 100);
+
+		p.stroke(70, 30, 140, 60);
+		p.strokeWeight(3);
 		
 		for(int section=0; section<nrSections; section++) {
 			if(averageHandPositions.get(section) == null) 
@@ -136,12 +137,6 @@ public class HandsModel extends ProcessingObject {
 			float lineAngleStep;
 			float lineAngleStepTemp;
 			int line;
-			
-			p.stroke(0);
-			p.strokeWeight(3);
-			
-			PPoint2 ppos = new PPoint2(200,Main.PI/2.0f);
-			p.ellipse(ppos.toCPoint2().x, ppos.toCPoint2().y, 10, 10);
 			
 			// top, outer right in
 			lineAngleStep = (angleHand - angle1) / nrLines / 2.0f;
