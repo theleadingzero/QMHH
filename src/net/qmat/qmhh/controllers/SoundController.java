@@ -1,30 +1,83 @@
 package net.qmat.qmhh.controllers;
 
+import net.qmat.qmhh.models.Models;
+import net.qmat.qmhh.models.creatures.CreatureBase;
+import net.qmat.qmhh.utils.CreaturesInfo;
+
 public class SoundController {
 
-	public SoundController() {
-		
+	public SoundController() {}
+	
+	public void creatureHasGrown(CreatureBase creature) {
+		CreaturesInfo ci = new CreaturesInfo();
+		Controllers.getOscController().queueSoundEvent(
+				"/creatures/grown", 
+				creature.stage,
+				ci.nrCreatures,
+				ci.nrEvs[0],
+				ci.nrEvs[1],
+				ci.nrEvs[2]);
 	}
 	
-	public void creatureHasGrown() {}
+	public void creatureChangedStage(CreatureBase creature) {
+		CreaturesInfo ci = new CreaturesInfo();
+		Controllers.getOscController().queueSoundEvent(
+				"/creatures/stage", 
+				creature.stage,
+				ci.nrCreatures,
+				ci.nrEvs[0],
+				ci.nrEvs[1],
+				ci.nrEvs[2]);
+	}
 	
-	public void creatureChangedStage() {}
+	public void creatureWasBorn() {
+		CreaturesInfo ci = new CreaturesInfo();
+		Controllers.getOscController().queueSoundEvent(
+				"/creatures/new",
+				ci.nrCreatures,
+				ci.nrEvs[0],
+				ci.nrEvs[1],
+				ci.nrEvs[2]);
+	}
 	
-	public void creatureWasBorn() {}
+	public void plantHasGrown() {
+		Controllers.getOscController().queueSoundEvent("/plants/grown");
+	}
 	
-	public void plantHasGrown() {}
+	public void handWasAdded() {
+		int nrHands = Models.getHandsModel().nrHands();
+		Controllers.getOscController().queueSoundEvent("/hands/added", nrHands);
+	}
 	
-	public void handWasAdded() {}
+	public void handWasRemoved() {
+		int nrHands = Models.getHandsModel().nrHands();
+		Controllers.getOscController().queueSoundEvent("/hands/removed", nrHands);
+	}
 	
-	public void handWasRemoved() {}
+	public void beamStarted() {
+		sendBeamEvent("/beams/started");
+	}
 	
-	public void beamStarted() {}
+	public void beamStopped() {
+		sendBeamEvent("/beams/stopped");
+	}
 	
-	public void beamStopped() {}
+	public void beamBlocked() {
+		sendBeamEvent("/beams/blocked");
+	}
 	
-	public void beamBlocked() {}
+	public void beamUnblocked() {
+		sendBeamEvent("/beams/unblocked");
+	}
 	
-	public void beamUnblocked() {}
+	private void sendBeamEvent(String endPoint) {
+		int nrHands = Models.getHandsModel().nrHands();
+		int nrUnblockedHands = Models.getHandsModel().nrUnblockedHands();
+		Controllers.getOscController().queueSoundEvent(
+				endPoint, 
+				nrHands-nrUnblockedHands,
+				nrUnblockedHands);
+	}
 	
 	public void sporesEmitted() {
 		Controllers.getOscController().queueSoundEvent("/spores/emitted");

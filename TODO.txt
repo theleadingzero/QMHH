@@ -5,7 +5,7 @@
 * when you hold you hand down before any creature reaches stage 3, the hand is never targeted.
 * orb should grow when there are more hands
 * hands should take some time to charge
+* calls SoundController hardcoded into models, could do with a listener instead
 
 To make a working version:
 
-* OSC for sound effects

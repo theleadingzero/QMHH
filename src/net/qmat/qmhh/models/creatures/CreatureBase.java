@@ -7,6 +7,8 @@ package net.qmat.qmhh.models.creatures;
 import java.util.ArrayList;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.controllers.Controllers;
+import net.qmat.qmhh.controllers.SoundController;
 import net.qmat.qmhh.models.Hand;
 import net.qmat.qmhh.models.ProcessingObject;
 import net.qmat.qmhh.utils.CPoint2;
@@ -349,15 +351,18 @@ public class CreatureBase extends ProcessingObject {
 		Long newTimestamp = System.nanoTime();
 		if(stage < maxStage && newTimestamp - lastGrowthTimestamp > (double)minimalGrowthInterval * 1000000000L) {
 			lastGrowthTimestamp = newTimestamp;
+			SoundController sc = Controllers.getSoundController();
 			if(subStage < maxSubStage) {
 				subStage += 1;
 				w *= 1.15f;
 				h *= 1.15f;
+				sc.creatureHasGrown(this);
 			} else {
 				subStage = 0;
 				stage += 1;
 				w *= 1.3f;
 				h *= 1.3f;
+				sc.creatureChangedStage(this);
 			}
 			rebuildShapeP = true;
 		}

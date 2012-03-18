@@ -3,6 +3,7 @@ package net.qmat.qmhh.models;
 import java.util.ArrayList;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.controllers.Controllers;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 import net.qmat.qmhh.utils.Settings;
@@ -141,6 +142,7 @@ public class Tree extends ProcessingObject {
 		public void activate() {
 			activeP = true;
 			startGrowTimestamp = System.nanoTime();
+			Controllers.getSoundController().plantHasGrown();
 		}
 		
 		public boolean isActiveP() {

@@ -124,6 +124,10 @@ public class HandsModel extends ProcessingObject {
 		}
 	}
 	
+	public int nrHands() {
+		return hands.size();
+	}
+	
 	// TODO: optimize line drawing
 	private void drawHandBackdrops() {
 		
@@ -223,7 +227,5 @@ public class HandsModel extends ProcessingObject {
 		}
 		p.strokeWeight(1.0f);
 	}
-	
-	
 
 }

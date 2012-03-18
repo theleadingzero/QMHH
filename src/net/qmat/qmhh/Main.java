@@ -67,8 +67,9 @@ public class Main extends PApplet {
 	     * N.B. The controllers should be loaded at the end of setup(), otherwise
 	     * the tuio events might trigger actions before everything is set up properly.
 	     */
-		Models.init();
 		Controllers.init(); 
+		Models.init();
+		Controllers.initTuio(); 
 		
 		/*
 		 * Creatures some creatures for testing

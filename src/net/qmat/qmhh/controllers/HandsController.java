@@ -41,6 +41,8 @@ public class HandsController {
 		Models.getHandsModel().addHand(id, pixelX, pixelY);
 		PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
 		Controllers.getSequencerController().addHand(id, ppos);
+		Controllers.getSoundController().handWasAdded();
+		Controllers.getSoundController().beamStarted();
 		// Let's get some bad ass creatures to eat that energy
 		float angle = ppos.t;
 		ArrayList<CreatureBase> creatures = Models.getCreaturesModel().getTargeters(angle);
@@ -77,6 +79,8 @@ public class HandsController {
 			Models.getOrbModel().decreaseRadius();
 			Models.getHandsModel().removeHand(id);
 			Controllers.getSequencerController().removeHand(id);
+			Controllers.getSoundController().handWasRemoved();
+			Controllers.getSoundController().beamStopped();
 		}
 	}
 	

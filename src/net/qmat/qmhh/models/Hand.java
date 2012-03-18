@@ -14,6 +14,7 @@ import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.controllers.Controllers;
 import net.qmat.qmhh.models.creatures.CreatureBase;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
@@ -41,15 +42,17 @@ public class Hand extends ProcessingObject {
 	}
 	
 	public void addCreature(CreatureBase creature) {
-		if(!beamCreatures.contains(creature)) {
+		if(nrBeamCreatures() == 0)
+			Controllers.getSoundController().beamBlocked();
+		if(!beamCreatures.contains(creature))
 			beamCreatures.add(creature);
-		}
 	}
 	
 	public void removeCreature(CreatureBase creature) {
-		if(beamCreatures.contains(creature)) {
+		if(beamCreatures.contains(creature))
 			beamCreatures.remove(creature);
-		}
+		if(nrBeamCreatures() == 0)
+			Controllers.getSoundController().beamUnblocked();
 	}
 	
 	public void updatePosition(float x, float y) {

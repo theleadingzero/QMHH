@@ -5,12 +5,14 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.controllers.Controllers;
+import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.models.ProcessingObject;
 import net.qmat.qmhh.utils.PPoint2;
 
 public class CreaturesModel extends ProcessingObject {
 	
-	private ArrayList<CreatureBase> creatures;
+	public ArrayList<CreatureBase> creatures;
 	
 	public CreaturesModel() {
 		creatures = new ArrayList<CreatureBase>();
@@ -19,6 +21,7 @@ public class CreaturesModel extends ProcessingObject {
 	public void addCreature() {
 		//creatures.add(new Creature());
 		creatures.add(new Jellyfish());
+		Controllers.getSoundController().creatureWasBorn();
 	}
 	
 	public void update() {
@@ -67,5 +70,4 @@ public class CreaturesModel extends ProcessingObject {
 		return d;
 	}
 	
-
 }

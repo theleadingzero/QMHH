@@ -23,8 +23,6 @@ public class Controllers {
 		soundController = new SoundController();
 		oscController = new OscController();
 		oscController.start();
-		// N.B. Instantiate the TuioController last!
-		tuioController = new TuioController();
 	}
 	
 	public static void update() {
@@ -47,6 +45,11 @@ public class Controllers {
     	if(instance == null) {
     		instance = new Controllers();
     	}
+    }
+    
+    public static void initTuio() {
+    	// N.B. Instantiate the TuioController last!
+    	instance.tuioController = new TuioController();
     }
     
     /*
