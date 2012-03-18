@@ -2,8 +2,9 @@
 * look at how hands are targeted, rules need to be improved
 * orb should release spores, depending on the number of hands
 * draw hands
-* better targetting for creatures
+* better targeting for creatures
+* when you hold you hand down before any creature reaches stage 3, the hand is never targeted.
 
 To make a working version:
-* create more creatures when spores are emitted
+
 * 

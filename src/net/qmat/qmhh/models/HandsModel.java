@@ -112,6 +112,18 @@ public class HandsModel extends ProcessingObject {
 		return result;
 	}
 	
+	public int nrUnblockedHands() {
+		synchronized(hands) {
+			int nrHands = 0;
+			Iterator<Entry<Long, Hand>> entries = hands.entrySet().iterator();
+			while(entries.hasNext()) {
+				Hand hand = entries.next().getValue();
+				if(hand.nrBeamCreatures() <= 0) nrHands++;
+			}
+			return nrHands;
+		}
+	}
+	
 	// TODO: optimize line drawing
 	private void drawHandBackdrops() {
 		

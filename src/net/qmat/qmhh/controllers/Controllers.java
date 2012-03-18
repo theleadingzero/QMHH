@@ -12,12 +12,19 @@ public class Controllers {
 	private HandsController handsController;
 	private TuioController tuioController;
 	private SequencerController sequencerController;
+	private OrbController orbController;
 	
 	protected Controllers() {
 		handsController = new HandsController();
 		sequencerController = new SequencerController();
+		orbController = new OrbController();
 		// N.B. Instantiate the TuioController last!
 		tuioController = new TuioController();
+	}
+	
+	public static void update() {
+		Controllers controllers = getInstance();
+		controllers.orbController.update();
 	}
 	
     public static Controllers getInstance() {
@@ -51,6 +58,10 @@ public class Controllers {
 
 	public static SequencerController getSequencerController() {
 		return getInstance().sequencerController;
+	}
+	
+	public static OrbController getOrbController() {
+		return getInstance().orbController;
 	}
 
 }

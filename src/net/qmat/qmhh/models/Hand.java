@@ -36,6 +36,10 @@ public class Hand extends ProcessingObject {
 		rebuildBeamP = true;
 	}
 	
+	public int nrBeamCreatures() {
+		return beamCreatures.size();
+	}
+	
 	public void addCreature(CreatureBase creature) {
 		if(!beamCreatures.contains(creature)) {
 			beamCreatures.add(creature);
