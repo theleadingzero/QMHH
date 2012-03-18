@@ -25,8 +25,11 @@ public class Settings {
 	public static String PR_ORB_MIN_RADIUS = "PR_ORB_MIN_RADIUS";
 	
 	// osc settings for sound
-	public static String OSC_SEQUENCER_PORT = "OSC_SEQUENCER_PORT";
-	public static String OSC_SEQUENCER_IP = "OSC_SEQUENCER_IP";
+	public static String OSC_LOCAL_PORT = "OSC_LOCAL_PORT";
+	public static String OSC_SEQUENCER_REMOTE_IP = "OSC_SEQUENCER_REMOTE_IP";
+	public static String OSC_SEQUENCER_REMOTE_PORT = "OSC_SEQUENCER_REMOTE_PORT";
+	public static String OSC_SOUND_REMOTE_IP = "OSC_SOUND_REMOTE_IP";
+	public static String OSC_SOUND_REMOTE_PORT = "OSC_SOUND_REMOTE_PORT";
 	
 	// collision settings
 	public static String PR_SPORE_COLLISION_GROUP = "PR_SPORE_COLLISION_GROUP";

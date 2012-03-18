@@ -1,10 +1,11 @@
 * change separate x, y coordinates to CPoint2.
 * look at how hands are targeted, rules need to be improved
-* orb should release spores, depending on the number of hands
 * draw hands
 * better targeting for creatures
 * when you hold you hand down before any creature reaches stage 3, the hand is never targeted.
+* orb should grow when there are more hands
+* hands should take some time to charge
 
 To make a working version:
 
-* 
+* OSC for sound effects

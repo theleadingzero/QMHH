@@ -35,6 +35,7 @@ public class OrbController {
 		Models.getSporesModel().startRipple(Models.getOrbModel().getRadius());
 		Models.getCreaturesModel().addCreature();
 		lastEmitTimestamp = System.nanoTime();
+		Controllers.getSoundController().sporesEmitted();
 	}
 
 }

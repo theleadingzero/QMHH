@@ -62,21 +62,22 @@ public class HandsController {
 				Models.getHandsModel().updateHand(id, pixelX, pixelY);
 				PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
 				Controllers.getSequencerController().updateHand(id, ppos);
-			} else {
-				addHandHelper(id, pixelX, pixelY);
 			}
-		} else {
+		// remove if it is present, but not in bounds
+		} else if(Models.getHandsModel().containsHandAlreadyP(id)) {
 			removeHand(id);
 		}
 	}
 	
 	// N.B. takes relative positions [0.0 ... 1.0]
 	public void removeHand(Long id) {
-		// TODO: Think about what happens if a player's hand is removed.
-		removeCreaturesFromHand(id);
-		Models.getOrbModel().decreaseRadius();
-		Models.getHandsModel().removeHand(id);
-		Controllers.getSequencerController().removeHand(id);
+		if(Models.getHandsModel().containsHandAlreadyP(id)) {
+			// TODO: Think about what happens if a player's hand is removed.
+			removeCreaturesFromHand(id);
+			Models.getOrbModel().decreaseRadius();
+			Models.getHandsModel().removeHand(id);
+			Controllers.getSequencerController().removeHand(id);
+		}
 	}
 	
 	// N.B. takes actual pixel values, not relative ones (like the one from Tuio)
