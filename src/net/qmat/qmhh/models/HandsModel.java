@@ -112,6 +112,7 @@ public class HandsModel extends ProcessingObject {
 		return result;
 	}
 	
+	// TODO: optimize line drawing
 	private void drawHandBackdrops() {
 		
 		ArrayList<Vec2> averageHandPositions = getHandFocusPoints();

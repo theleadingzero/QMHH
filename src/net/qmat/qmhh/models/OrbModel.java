@@ -1,11 +1,8 @@
 package net.qmat.qmhh.models;
 
 import java.nio.FloatBuffer;
-
 import javax.media.opengl.GL;
-
 import com.sun.opengl.util.BufferUtil;
-
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.utils.Settings;
 import processing.core.PVector;
@@ -16,7 +13,7 @@ public class OrbModel extends ProcessingObject {
 	private float radius, r;
 	private float maxRadius, minRadius;
 
-	private int numSystems = 60;
+	private int numSystems = 120;
 	private int numParticles = 40;
 	private OrbPSystem[] ps;
 	private float theta, theta2 = 0.0f;
@@ -29,8 +26,8 @@ public class OrbModel extends ProcessingObject {
 		ps =  new OrbPSystem[numSystems];
 		maxRadius = Settings.getInteger(Settings.PR_ORB_MAX_RADIUS);
 		minRadius = Settings.getInteger(Settings.PR_ORB_MIN_RADIUS);
-		this.radius = 20.0f;
-		this.r = 20.0f;
+		this.radius = 10.0f;
+		this.r = 10.0f;
 
 		float inx = p.width/2.0f;
 		float iny = p.height/2.0f;

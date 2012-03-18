@@ -38,8 +38,8 @@ public class CreatureBase extends ProcessingObject {
 
 	private boolean rebuildShapeP = false;
 
-	private static float DESIRED_SEPARATION = 60.0f;
-	private static float NEIGHBOR_DISTANCE  = 20.0f;
+	private static float DESIRED_SEPARATION = 80.0f;
+	private static float NEIGHBOR_DISTANCE  = 40.0f;
 
 
 
@@ -121,25 +121,23 @@ public class CreatureBase extends ProcessingObject {
 		float force = 1.0f;
 		Vec2 loc = body.getWorldCenter();
 		PPoint2 ppos = new CPoint2(box2d.getBodyPixelCoord(body)).toPPoint2();
+		// add some randomness to the center
+		Vec2 vCenter = new Vec2(Main.centerX + p.random(-100, 100), Main.centerY + p.random(-100, 100));
 		// if in stage 1 
 		if(stage == 1) {
 			// too far outwards?
 			if(ppos.r > zoneWidth * 2.0f) {
 				followDebugColor = p.color(155, 0 ,0);
 				body.setLinearVelocity(body.getLinearVelocity().mulLocal(0.98f));
-				Vec2 towards = seek(box2d.coordPixelsToWorld(
-						new Vec2(Main.centerX, Main.centerY)),
-						force);
+				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				body.applyForce(towards, loc);
-				// too far inwards?
+			// too far inwards?
 			} else if(ppos.r < zoneWidth) {
 				followDebugColor = p.color(0, 155 ,0);
-				Vec2 towards = seek(box2d.coordPixelsToWorld(
-						new Vec2(Main.centerX, Main.centerY)),
-						force);
+				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				towards.negateLocal();
 				body.applyForce(towards, loc);
-				// in the zone? booyah!
+			// in the zone? booyah!
 			} else {
 				followDebugColor = p.color(0);
 				flock(creatures);
@@ -150,9 +148,7 @@ public class CreatureBase extends ProcessingObject {
 				followDebugColor = p.color(55, 0 ,0);
 				// slow down
 				body.setLinearVelocity(body.getLinearVelocity().mulLocal(0.98f));
-				Vec2 towards = seek(box2d.coordPixelsToWorld(
-						new Vec2(Main.centerX, Main.centerY)),
-						force);
+				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				body.applyForce(towards, loc);
 				// in the zone
 			} else {
@@ -166,9 +162,7 @@ public class CreatureBase extends ProcessingObject {
 				target();
 			} else if(ppos.r < zoneWidth * 2.0f) {
 				followDebugColor = p.color(0, 255 ,0);
-				Vec2 towards = seek(box2d.coordPixelsToWorld(
-						new Vec2(Main.centerX, Main.centerY)),
-						force);
+				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				towards.negateLocal();
 				body.applyForce(towards, loc);
 				// in the zone

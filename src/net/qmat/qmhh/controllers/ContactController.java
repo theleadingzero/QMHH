@@ -4,6 +4,7 @@ import net.qmat.qmhh.contacts.*;
 import net.qmat.qmhh.models.Background;
 import net.qmat.qmhh.models.Hand.Beam;
 import net.qmat.qmhh.models.Spore;
+import net.qmat.qmhh.models.Tree.Branch;
 import net.qmat.qmhh.models.creatures.CreatureBase;
 
 import org.jbox2d.callbacks.ContactImpulse;
@@ -44,6 +45,8 @@ public class ContactController implements ContactListener {
 			return;
 		if(preSolvePair(contact, manifold, objA, objB, CreatureBase.class, Spore.class, CreatureBaseSporeContact.class)) return;
 		if(preSolvePair(contact, manifold, objA, objB, Background.class, Spore.class, BackgroundSporeContact.class)) return;
+		if(preSolvePair(contact, manifold, objA, objB, Spore.class, Branch.class, SporeTreeBranchContact.class)) return;
+		if(preSolvePair(contact, manifold, objA, objB, CreatureBase.class, Branch.class, CreatureBaseTreeBranchContact.class)) return;
 	}
 
 	/*
@@ -59,11 +62,15 @@ public class ContactController implements ContactListener {
 			Class<? extends ContactLogic> clCL) {
 		try {
 			ContactLogic cl = clCL.newInstance();
-			if(compare(objA, objB, clA, clB))
+			if(compare(objA, objB, clA, clB)) {
 				cl.preSolveContact(contact, manifold, objA, objB);
-			else if(compare(objA, objB, clB, clA))
+				return true;
+			}
+			else if(compare(objA, objB, clB, clA)) {
 				cl.preSolveContact(contact, manifold, objB, objA);
-			return true;
+				return true;
+			}
+			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,11 +85,15 @@ public class ContactController implements ContactListener {
 			Class<? extends ContactLogic> clCL) {
 		try {
 			ContactLogic cl = clCL.newInstance();
-			if(compare(objA, objB, clA, clB))
+			if(compare(objA, objB, clA, clB)) {
 				cl.beginContact(contact, objA, objB);
-			else if(compare(objA, objB, clB, clA))
+				return true;
+			}
+			else if(compare(objA, objB, clB, clA)) {
 				cl.beginContact(contact, objB, objA);
-			return true;
+				return true;
+			}
+			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,11 +108,15 @@ public class ContactController implements ContactListener {
 								   Class<? extends ContactLogic> clCL) {
 		try {
 			ContactLogic cl = clCL.newInstance();
-			if(compare(objA, objB, clA, clB))
+			if(compare(objA, objB, clA, clB)) {
 				cl.endContact(contact, objA, objB);
-			else if(compare(objA, objB, clB, clA))
+				return true;
+			}
+			else if(compare(objA, objB, clB, clA)) {
 				cl.endContact(contact, objB, objA);
-			return true;
+				return true;
+			}
+			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -43,6 +43,7 @@ public class Background extends ProcessingObject {
 		p.ellipse(0, 0, innerDiameter, innerDiameter);
 		p.popMatrix();
 		
+		// TODO: optimize lines
 		float angleStep = Main.TWO_PI / 16.0f;
 		for(int i=0; i<NR_SECTIONS; i++) {
 			CPoint2 cpos1 = new PPoint2(innerRadius, i*angleStep).toCPoint2();

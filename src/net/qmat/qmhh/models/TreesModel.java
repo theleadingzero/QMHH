@@ -13,7 +13,7 @@ import org.jbox2d.dynamics.FixtureDef;
 
 public class TreesModel extends ProcessingObject {
 	
-	private static int NUMBER_OF_TREES = 7;
+	private static int NUMBER_OF_TREES = 1;
 	
 	private ArrayList<Tree> trees;
 	private Body body;

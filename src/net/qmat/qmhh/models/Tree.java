@@ -21,6 +21,7 @@ public class Tree extends ProcessingObject {
 	
 	private static int BRANCH_LEVELS = 5;
 	private static float BRANCH_START_LENGTH = 100.0f;
+	private static Long BRANCH_GROW_TIME = 4L * 1000000000L; // 4 seconds in nanoseconds
 	
 	private float internalAngle;
 	private Branch root;
@@ -47,6 +48,7 @@ public class Tree extends ProcessingObject {
 						  cpos.x, //Main.centerX, 
 						  cpos.y, //Main.centerY, 
 						  startAngle);
+		root.activate();
 
 		RevoluteJointDef rjd = new RevoluteJointDef();
         rjd.bodyA = centerBody;
@@ -62,12 +64,19 @@ public class Tree extends ProcessingObject {
 	}
 	
 	public void draw() {
-		p.stroke(0, 100, 0);
-		p.fill(0, 255, 0);
+		p.stroke(0, 255, 0);
+		p.noFill();
+		p.ellipse(Main.centerX, Main.centerY, 20.0f, 20.0f);
 		root.draw();
 	}
 	
-	private class Branch {
+	private float normalizeAngle(float angle) {
+		float na = angle;
+		while(na < 0.0f) na += Main.TWO_PI;
+		return na % Main.TWO_PI;
+	}
+	
+	public class Branch {
 		
 		private float length;
 		private ArrayList<Branch> branches = new ArrayList<Branch>();
@@ -77,6 +86,10 @@ public class Tree extends ProcessingObject {
 		private float startX, startY;
 		private float endX, endY;
 		
+		private Long startGrowTimestamp;
+		private boolean activeP;
+		private boolean stoppedGrowing;
+		private Long startSproutTimestamp;
 		
 		public Branch(Branch parent, 
 					  float length, 
@@ -86,6 +99,10 @@ public class Tree extends ProcessingObject {
 					  float angle) {
 			this.parent = parent;
 			this.length = p.random(0.5f * length, 1.2f * length);
+			
+			activeP = false;
+			stoppedGrowing = false;
+			startSproutTimestamp = 0L;
 			
 			endX = x + this.length * Main.cos(angle);
 			endY = y + this.length * Main.sin(angle);
@@ -119,6 +136,49 @@ public class Tree extends ProcessingObject {
 			PPoint2 ppos2 = new CPoint2(startX, startY).toPPoint2();
 			return ppos1.r < Main.outerRingInnerRadius - 10.f &&
 				   ppos2.r < Main.outerRingInnerRadius - 10.f;
+		}
+		
+		public void activate() {
+			activeP = true;
+			startGrowTimestamp = System.nanoTime();
+		}
+		
+		public boolean isActiveP() {
+			return activeP;
+		}
+		
+		public boolean branchesCompleteP() {
+			if(branches.size() == 0)
+				return true;
+			// if any of the subbranches is not active, return false
+			for(Branch branch : branches) {
+				if(!branch.activeP) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		public boolean isStillGrowingP() {
+			return System.nanoTime() - startGrowTimestamp < BRANCH_GROW_TIME;
+		}
+		
+		public void sprout() {
+			// pick one of the sub branches and activate it
+			Long now = System.nanoTime();
+			if((now - startSproutTimestamp) > BRANCH_GROW_TIME) {
+				startSproutTimestamp = now;
+				synchronized(branches) {
+					int offsetI = (int)p.random(branches.size());
+					for(int i=0; i<branches.size(); i++) {
+						Branch branch = branches.get((i+offsetI) % branches.size());
+						if(!branch.isActiveP()) {
+							branch.activate();
+							return;
+						}
+					}
+				}
+			}
 		}
 		
 		private void makeBody(float x, 
@@ -173,29 +233,32 @@ public class Tree extends ProcessingObject {
 		}
 		
 		public void draw() {
-			Transform transform = body.getTransform();
-			p.beginShape();
-			Vec2 pos;
-			for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {
-				PolygonShape shape = (PolygonShape) f.getShape();
-				for(int i=0; i<shape.getVertexCount(); i++) {
-					pos = box2d.coordWorldToPixels(Transform.mul(transform, shape.getVertex(i)));
-					p.vertex(pos.x, pos.y);
+			if(activeP) {
+				float alpha = 255.0f;
+				if(!stoppedGrowing) {
+					alpha = 255.0f * (float)((double)(System.nanoTime() - startGrowTimestamp) / (double)BRANCH_GROW_TIME);
+					if(alpha >= 255.0f)
+						stoppedGrowing = true;
 				}
-			}
-			p.endShape(Main.CLOSE);
-			
-			for(Branch branch : branches) {
-				branch.draw();
+				p.stroke(0, 100, 0, alpha);
+				p.fill(0, 255, 0, alpha);
+				Transform transform = body.getTransform();
+				p.beginShape();
+				Vec2 pos;
+				for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {
+					PolygonShape shape = (PolygonShape) f.getShape();
+					for(int i=0; i<shape.getVertexCount(); i++) {
+						pos = box2d.coordWorldToPixels(Transform.mul(transform, shape.getVertex(i)));
+						p.vertex(pos.x, pos.y);
+					}
+				}
+				p.endShape(Main.CLOSE);
+				
+				for(Branch branch : branches) {
+					branch.draw();
+				}
 			}
 		}
 	}
-	
-	private float normalizeAngle(float angle) {
-		float na = angle;
-		while(na < 0.0f) na += Main.TWO_PI;
-		return na % Main.TWO_PI;
-	}
-
-	
+		
 }
