@@ -39,7 +39,10 @@ public class Settings {
 	public static String PR_MINIMAL_GROWTH_INTERVAL = "PR_MINIMAL_GROWTH_INTERVAL";
 	
 	// sequencer settings
-	public static String PR_SEQUENCER_SECTIONS = "PR_SEQUENCER_SECTIONS"; 
+	public static String PR_SEQUENCER_SECTIONS = "PR_SEQUENCER_SECTIONS";
+	
+	// creature settings
+	public static String PR_CREATURE_CLASS = "PR_CREATURE_CLASS";
 	
 	private static Settings instance = null;
 	String propertyFile = "/data/preferences.properties";

@@ -6,22 +6,35 @@ import java.util.Comparator;
 
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.controllers.Controllers;
-import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.models.ProcessingObject;
 import net.qmat.qmhh.utils.PPoint2;
+import net.qmat.qmhh.utils.Settings;
 
 public class CreaturesModel extends ProcessingObject {
 	
 	public ArrayList<CreatureBase> creatures;
+	private Class<? extends CreatureBase> creatureClass;
 	
+	@SuppressWarnings("unchecked")
 	public CreaturesModel() {
 		creatures = new ArrayList<CreatureBase>();
+		String clName = "net.qmat.qmhh.models.creatures."+Settings.getString(Settings.PR_CREATURE_CLASS);
+		try {
+			creatureClass = (Class<? extends CreatureBase>) Class.forName(clName);
+		} catch (ClassNotFoundException e) {
+			System.err.println("Can't find the creature class defined in the preferences file.");
+			e.printStackTrace();
+		}
 	}
 	
 	public void addCreature() {
-		//creatures.add(new Creature());
-		creatures.add(new Jellyfish());
-		Controllers.getSoundController().creatureWasBorn();
+		try {
+			creatures.add(creatureClass.newInstance());
+			Controllers.getSoundController().creatureWasBorn();
+		} catch (Exception e) {
+			System.err.println("Something went wrong with loading the creature class.");
+			e.printStackTrace();
+		}
 	}
 	
 	public void update() {

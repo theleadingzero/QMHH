@@ -1,12 +1,9 @@
 package net.qmat.qmhh.controllers;
 
-import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.utils.Settings;
 import netP5.NetAddress;
-
 import oscP5.OscMessage;
 import oscP5.OscP5;
 
@@ -45,7 +42,6 @@ public class OscController extends Thread {
 	
 	private void sendEvent(QueueMessage qm) {
 		OscMessage m = new OscMessage(qm.endPoint);
-		// N.B. only supports ints for now
 		for(Object obj : qm.objects) {
 			if(obj instanceof Integer)
 				m.add((Integer)obj);
