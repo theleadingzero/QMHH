@@ -125,6 +125,7 @@ docbook-xml					install
 dosfstools					install
 dpkg						install
 dpkg-dev					install
+dselect						install
 duplicity					install
 dvd+rw-tools					install
 e2fslibs					install
