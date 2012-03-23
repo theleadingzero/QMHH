@@ -20,8 +20,8 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 
 public class Tree extends ProcessingObject {
 	
-	private static int BRANCH_LEVELS = 5;
-	private static float BRANCH_START_LENGTH = 100.0f;
+	private static int BRANCH_LEVELS = 6;
+	private static float BRANCH_START_LENGTH = 70.0f;
 	private static Long BRANCH_GROW_TIME = 6L * 1000000000L; // 4 seconds in nanoseconds
 	
 	private float internalAngle;
@@ -92,6 +92,10 @@ public class Tree extends ProcessingObject {
 		private boolean stoppedGrowing;
 		private Long startSproutTimestamp;
 		
+		private float leafAngle;
+		private float leafSize;
+		private int leafColor;
+		
 		public Branch(Branch parent, 
 					  float length, 
 					  int levels, 
@@ -99,7 +103,7 @@ public class Tree extends ProcessingObject {
 					  float y, 
 					  float angle) {
 			this.parent = parent;
-			this.length = p.random(0.5f * length, 1.2f * length);
+			this.length = p.random(0.8f * length, 1.2f * length);
 			
 			activeP = false;
 			stoppedGrowing = false;
@@ -110,25 +114,32 @@ public class Tree extends ProcessingObject {
 			startX = x;
 			startY = y;
 			
+			
 			makeBody(x, y, endX, endY, angle);
+			
+			leafColor = p.color(0, p.random(150, 250), 0, 50);
+			leafSize = 3.f + Main.sqrt(Main.pow(endX-startX, 2)+Main.pow(endY-startY, 2)) / 50.0f;
+			leafAngle = 0.0f; //p.random(Main.TWO_PI);
 
-			if(levels > 0) {
-				Branch b1 = new Branch(this, 
-										0.6f * length, 
-										levels-1,
-										endX,
-										endY,
-										angle - internalAngle);
-				if(b1.withinEcosystemP())
-					branches.add(b1);
-				Branch b2 = new Branch(this, 
-						0.6f * length, 
-						levels-1,
-						endX,
-						endY,
-						angle + internalAngle);
-				if(b1.withinEcosystemP())
-					branches.add(b2);
+			if(this.withinEcosystemP()) {
+				if(levels > 0) {
+					Branch b1 = new Branch(this, 
+											0.8f * length, 
+											levels-1,
+											endX,
+											endY,
+											angle - internalAngle);
+					if(b1.withinEcosystemP())
+						branches.add(b1);
+					Branch b2 = new Branch(this, 
+							0.8f * length, 
+							levels-1,
+							endX,
+							endY,
+							angle + internalAngle);
+					if(b1.withinEcosystemP())
+						branches.add(b2);
+				}
 			}
 		}
 		
@@ -234,6 +245,19 @@ public class Tree extends ProcessingObject {
 		    }
 		}
 		
+		private CPoint2 getLeafPosition() {
+			Transform transform = body.getTransform();
+			for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {
+				PolygonShape shape = (PolygonShape) f.getShape();
+				Vec2 vpos = box2d.coordWorldToPixels(Transform.mul(transform, shape.getVertex(1)));
+				return new CPoint2(vpos);
+				//PPoint2 ppos2 = new CPoint2(vpos).toPPoint2();
+				//ppos2.r = 0.95f * ppos2.r;
+				//return ppos2.toCPoint2();
+			}
+			return new CPoint2(0, 0);
+		}
+		
 		public void draw() {
 			if(activeP) {
 				float alpha = 255.0f;
@@ -259,6 +283,24 @@ public class Tree extends ProcessingObject {
 				for(Branch branch : branches) {
 					branch.draw();
 				}
+				
+				// draw leafs after the other branches
+				p.pushMatrix();
+				CPoint2 leafPos = getLeafPosition();
+				p.translate(leafPos.x, leafPos.y);
+				//p.rotate(leafAngle);
+				p.rotate(-body.getAngle() + -0.25f * Main.PI);// + Main.PI);
+				p.noStroke();
+				p.fill(p.red(leafColor), p.green(leafColor), p.blue(leafColor), alpha * 0.25f);
+				p.ellipseMode(Main.CORNER);
+				float s = 0.0f;
+				for(int i=7; i>2; i--) {
+					s = leafSize*i;
+					p.ellipse(0, 0, s, s);
+				}
+				p.ellipse(0, 0, s, s);
+				p.popMatrix();
+				p.strokeWeight(1.0f);
 			}
 		}
 	}

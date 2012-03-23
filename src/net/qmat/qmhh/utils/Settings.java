@@ -44,6 +44,9 @@ public class Settings {
 	// creature settings
 	public static String PR_CREATURE_CLASS = "PR_CREATURE_CLASS";
 	
+	// background settings
+	public static String PR_BACKDROP_FILE = "PR_BACKDROP_FILE";
+	
 	private static Settings instance = null;
 	String propertyFile = "/data/preferences.properties";
 	Properties properties = new Properties();
