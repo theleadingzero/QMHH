@@ -134,7 +134,7 @@ public class Main extends PApplet {
 		else
 			Models.getOrbModel().decreaseRadius();
 			*/
-		//Models.getSporesModel().startRipple(Models.getOrbModel().getRadius()/2.0f);
+		Models.getSporesModel().startRipple(Models.getOrbModel().getRadius()/2.0f);
 		
 	}
 }

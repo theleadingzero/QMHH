@@ -1,0 +1,8 @@
+install ubuntu 11.10
+
+install git
+clone qmhh repository into ~/src/
+install packages by doing:
+    sudo dpkg --set-selections < ubuntu-package-list.txt
+    sudo deselect 
+and then select install
