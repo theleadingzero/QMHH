@@ -13,6 +13,7 @@ public class Moth extends CreatureBase {
 	float flyMin = -w / 9; //how wings can move
 	float flyMax = w / 13; //how wings can move
 	float flyPos = 1; //temp position for wings animation
+	//float angleSpace = Main.TWO_PI / 12;
 
 	int scale_state = 0; //is it scaling?
 	int scale; //for scaling up and down when flying
@@ -35,18 +36,23 @@ public class Moth extends CreatureBase {
 		 * the creature's position and angle.
 		 */
 		Vec2 position = box2d.getBodyPixelCoord(body);
-		float angle = body.getAngle();
+
+		//float rotationalAngle = body.getAngle();
+		// calculate the angle from the linear velocity
+		Vec2 velocity = body.getLinearVelocity();
+		float angle = Main.atan2(velocity.x, velocity.y);
+
 		
 		
 
 		// the amount of body segments to draw
 		int tempCount = 1;  
 		if(stage == 0) 
-			tempCount = 2;
+			tempCount = 1;
 		if(stage == 1)
-			tempCount = 3;
+			tempCount = 2;
 		if(stage == 2)
-			tempCount = 5;
+			tempCount = 3;
 
 		p.stroke(255, 255, 255, alpha);
 		
@@ -102,9 +108,10 @@ public class Moth extends CreatureBase {
 	
 	
 	private void drawBodyPart(int i, float a) {
-		p.fill(255,255,255,29); 
-		float eW = h/4 * i/2;
-		float eH = h/3.5f * i/3;
+		//p.fill(255,255,255,29); 
+		p.noFill();
+		float eW = h/4 * i/5;
+		float eH = h/3.5f * i/7;
 		float[] offsets = {0, 3, 4, 5, 9};
 		float a2 = a;
 		//p.stroke(255, 255, 255, a2);
