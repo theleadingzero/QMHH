@@ -1,3 +1,7 @@
+/*
+ * N.B. only change the draw function in the Branch class
+ */
+
 package net.qmat.qmhh.models;
 
 import java.util.ArrayList;
@@ -251,16 +255,15 @@ public class Tree extends ProcessingObject {
 				PolygonShape shape = (PolygonShape) f.getShape();
 				Vec2 vpos = box2d.coordWorldToPixels(Transform.mul(transform, shape.getVertex(1)));
 				return new CPoint2(vpos);
-				//PPoint2 ppos2 = new CPoint2(vpos).toPPoint2();
-				//ppos2.r = 0.95f * ppos2.r;
-				//return ppos2.toCPoint2();
 			}
 			return new CPoint2(0, 0);
 		}
 		
 		public void draw() {
+			// only draw the branch if it is marked as active
 			if(activeP) {
 				float alpha = 255.0f;
+				// if the branch hasn't stopped growing, the alpha is less than 255.0
 				if(!stoppedGrowing) {
 					alpha = 255.0f * (float)((double)(System.nanoTime() - startGrowTimestamp) / (double)BRANCH_GROW_TIME);
 					if(alpha >= 255.0f)
@@ -268,12 +271,17 @@ public class Tree extends ProcessingObject {
 				}
 				p.stroke(0, 100, 0, alpha);
 				p.fill(0, 255, 0, alpha);
-				Transform transform = body.getTransform();
+				
+				// Get the shape of the box2d body, and get its coordinates
 				p.beginShape();
+				// get the body transform so that we can convert the shape's coordinates to world coordinates 
+				Transform transform = body.getTransform();
 				Vec2 pos;
 				for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {
 					PolygonShape shape = (PolygonShape) f.getShape();
 					for(int i=0; i<shape.getVertexCount(); i++) {
+						// apply the transform to the shape coordinates, and 
+						// then convert box2d coordinates to processing coordinates
 						pos = box2d.coordWorldToPixels(Transform.mul(transform, shape.getVertex(i)));
 						p.vertex(pos.x, pos.y);
 					}
