@@ -146,9 +146,9 @@ public class Branch extends ProcessingObject {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = sd;
 		// Parameters that affect physics
-		fd.density = 0.1f;
+		fd.density = 0.01f;
 		fd.friction = 0.2f;
-		fd.restitution = 0.03f;
+		fd.restitution = 0.3f;
 		fd.filter.groupIndex = tree.branchGroup;
 
 		// Define the body and make it from the shape

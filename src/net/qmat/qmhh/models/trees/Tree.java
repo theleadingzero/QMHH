@@ -4,24 +4,14 @@
 
 package net.qmat.qmhh.models.trees;
 
-import java.util.ArrayList;
-
 import net.qmat.qmhh.Main;
-import net.qmat.qmhh.controllers.Controllers;
 import net.qmat.qmhh.models.ProcessingObject;
-import net.qmat.qmhh.models.creatures.CreatureBase;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 import net.qmat.qmhh.utils.Settings;
 
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.Fixture;
-import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 
 public class Tree extends ProcessingObject {
@@ -62,8 +52,8 @@ public class Tree extends ProcessingObject {
 						  null, 
 						  startLength, 
 						  levels, 
-						  cpos.x, //Main.centerX, 
-						  cpos.y, //Main.centerY, 
+						  cpos.x,  
+						  cpos.y,  
 						  startAngle);
 		root.activate();
 
@@ -74,8 +64,8 @@ public class Tree extends ProcessingObject {
         Vec2 anchor = box2d.coordPixelsToWorld(new Vec2(Main.centerX, Main.centerY));
         rjd.localAnchorA = centerBody.getLocalPoint(anchor);
         rjd.localAnchorB = root.body.getLocalPoint(anchor);
-        rjd.lowerAngle = -startAngle - 0.9f * internalAngle;
-        rjd.upperAngle = -startAngle + 0.9f * internalAngle;
+        rjd.lowerAngle = -startAngle - 1.9f * internalAngle;
+        rjd.upperAngle = -startAngle + 1.9f * internalAngle;
         rjd.enableLimit = true;
         box2d.createJoint(rjd);
 	}
