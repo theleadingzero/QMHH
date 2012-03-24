@@ -34,12 +34,37 @@ public class Hand extends ProcessingObject {
 	private Long startTime;
 	private Double maxHandSize = 30.0;
 	private ArrayList<CreatureBase> beamCreatures;
+	private float indexOffset;
+	private float cycle = 2000.0f;
 	
+	private static GLTexture srcTex, bloomMask;
+	private static GLTexture tex0, tex2, tex4, tex8, tex16;
+	private static GLTextureFilter extractBloom, blur, blend4;
+	private static GLGraphicsOffScreen glg1;
+
 	public Hand(float x, float y) {
 		startTime = System.nanoTime();
 		beamCreatures = new ArrayList<CreatureBase>();
 		updatePosition(x, y);
 		rebuildBeamP = true;
+		indexOffset = p.random(1.0f);
+	}
+	
+	private void initGL() {
+		glg1 = new GLGraphicsOffScreen(p, 125, 125);
+	    extractBloom = new GLTextureFilter(p, "ExtractBloom.xml");
+	    blur = new GLTextureFilter(p, "Blur.xml");
+	    blend4 = new GLTextureFilter(p, "Blend4.xml");  
+	    int w = glg1.width;
+	    int h = glg1.height;
+	    
+	    // Initializing bloom mask and blur textures.
+	    bloomMask = new GLTexture(p, w, h, GLTexture.FLOAT);
+	    tex0 = new GLTexture(p, w, h, GLTexture.FLOAT);
+	    tex2 = new GLTexture(p, w / 2, h / 2, GLTexture.FLOAT);
+	    tex4 = new GLTexture(p, w / 4, h / 4, GLTexture.FLOAT);
+	    tex8 = new GLTexture(p, w / 8, h / 8, GLTexture.FLOAT);
+	    tex16 = new GLTexture(p, w / 16, h / 16, GLTexture.FLOAT);
 	}
 
 	public int nrBeamCreatures() {
@@ -87,6 +112,7 @@ public class Hand extends ProcessingObject {
 
 	public void draw() {
 		if(!markedForRemovalP) {
+			if(bloomMask == null) initGL();
 			// are we still charging?
 			Long now = System.nanoTime();
 			Double chargeIndex = (now - startTime) / HandsModel.chargeTimeNano;
@@ -103,29 +129,50 @@ public class Hand extends ProcessingObject {
 			if(rebuildBeamP) rebuildBeam();
 			if(beam != null) beam.draw();
 
+			// draw hand		
+			glg1.beginDraw();
+			glg1.background(0);
+			glg1.fill(200);
+			glg1.stroke(255);
+			glg1.pushMatrix();
+			glg1.translate(glg1.width/2.0f,glg1.height/2.0f);
+			glg1.beginShape();
+			
 			int steps = 51;
 			int now2 = p.millis();
-			float cycle = 2000.0f;
-			float index = (now2 % cycle) / cycle;
-
-			// draw hand		
-			p.fill(255);
-			p.stroke(255);
-			p.pushMatrix();
-			p.translate(x, y);
-			p.beginShape();
+			float index = (now2 % cycle) / cycle + indexOffset;
 			
 			for(int i=0; i<steps+1; i++) {
 				float angle = (Main.TWO_PI) / steps * i;
 				float length = 34.0f;
 				if(i % 2 == 0)
-					length += 1.0 + Main.sin((index+i*0.09f) * Main.TWO_PI) * 12.0f;
+					length += 1.0 + Main.sin((index+i*0.09f) * Main.TWO_PI) * 20.0f;
 				float o = Main.sin(angle) * length;
 				float a = Main.cos(angle) * length;
 				//curveVertex(o, a);
-				p.vertex(o, a);
+				glg1.vertex(o, a);
 			}
-			p.endShape();
+			glg1.endShape(Main.CLOSE);
+			glg1.popMatrix();
+			glg1.endDraw();
+			
+			// Extracting the bright regions from input texture.
+			srcTex = glg1.getTexture();
+		    extractBloom.setParameterValue("bright_threshold", 0.05f);
+		    extractBloom.apply(srcTex, tex0);
+		  
+		    // Downsampling with blur.
+		    tex0.filter(blur, tex2);
+		    tex2.filter(blur, tex4);    
+		    tex4.filter(blur, tex8);    
+		    tex8.filter(blur, tex16);     
+		    
+		    // Blending downsampled textures.
+		    blend4.apply(new GLTexture[]{tex2, tex4, tex8, tex16}, new GLTexture[]{bloomMask});
+			
+			p.pushMatrix();
+			p.translate(x, y);
+			p.image(bloomMask, 0, 0, srcTex.width, srcTex.height);
 			p.popMatrix();
 		}
 	}
