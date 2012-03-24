@@ -112,20 +112,21 @@ public class Branch extends ProcessingObject {
 	public boolean isStillGrowingP() {
 		return System.nanoTime() - startGrowTimestamp < tree.BRANCH_GROW_TIME;
 	}
+	
+	public boolean isStillSproutingP() {
+		return (System.nanoTime() - startSproutTimestamp) < tree.BRANCH_GROW_TIME;
+	}
 
 	public void sprout() {
 		// pick one of the sub branches and activate it
-		Long now = System.nanoTime();
-		if((now - startSproutTimestamp) > tree.BRANCH_GROW_TIME) {
-			startSproutTimestamp = now;
-			synchronized(branches) {
-				int offsetI = (int)p.random(branches.size());
-				for(int i=0; i<branches.size(); i++) {
-					Branch branch = branches.get((i+offsetI) % branches.size());
-					if(!branch.isActiveP()) {
-						branch.activate();
-						return;
-					}
+		startSproutTimestamp = System.nanoTime();
+		synchronized(branches) {
+			int offsetI = (int)p.random(branches.size());
+			for(int i=0; i<branches.size(); i++) {
+				Branch branch = branches.get((i+offsetI) % branches.size());
+				if(!branch.isActiveP()) {
+					branch.activate();
+					return;
 				}
 			}
 		}

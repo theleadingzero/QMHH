@@ -45,7 +45,7 @@ public class ContactController implements ContactListener {
 			return;
 		if(preSolvePair(contact, manifold, objA, objB, CreatureBase.class, Spore.class, CreatureBaseSporeContact.class)) return;
 		if(preSolvePair(contact, manifold, objA, objB, Background.class, Spore.class, BackgroundSporeContact.class)) return;
-		if(preSolvePair(contact, manifold, objA, objB, Spore.class, Branch.class, SporeTreeBranchContact.class)) return;
+		if(preSolvePair(contact, manifold, objA, objB, Spore.class, Branch.class, SporeBranchContact.class)) return;
 		if(preSolvePair(contact, manifold, objA, objB, CreatureBase.class, Branch.class, CreatureBaseTreeBranchContact.class)) return;
 	}
 

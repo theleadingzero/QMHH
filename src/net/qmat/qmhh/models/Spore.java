@@ -18,7 +18,7 @@ public class Spore extends ProcessingObject {
 	float w, h;
 	float angle;
 	Body body;
-	
+	private boolean markedForRemovalP = false;
 	
 	public Spore(float startRadius) {
 		w = 2.0f;
@@ -57,6 +57,14 @@ public class Spore extends ProcessingObject {
 	    body.setUserData(this);
 	}
 	
+	public void markForRemoval() {
+		markedForRemovalP = true;
+	}
+	
+	public boolean isMarkedForRemoval() {
+		return markedForRemovalP;
+	}
+	
 	public void destroy() {
 		box2d.destroyBody(body);
 	}
@@ -80,6 +88,11 @@ public class Spore extends ProcessingObject {
 	
 	public float getAbsoluteVelocity() {
 		return body.getLinearVelocity().length();
+	}
+	
+	public String toString() {
+		PPoint2 p = this.getPPosition();
+		return "[polar: " + p.r + "," + p.t + "]"; 
 	}
 
 }

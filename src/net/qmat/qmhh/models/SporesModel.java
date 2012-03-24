@@ -30,10 +30,7 @@ public class SporesModel extends ProcessingObject {
 	}
 	
 	public void removeSpore(Spore spore) {
-		synchronized(spores) {
-			spore.destroy();
-			spores.remove(spore);
-		}
+		spore.markForRemoval();
 	}
 	
 	public void update() {
@@ -43,7 +40,7 @@ public class SporesModel extends ProcessingObject {
 			while(it.hasNext()) {
 				Spore spore = it.next();
 				PPoint2 ppos = spore.getPPosition();
-				if(ppos.r > Main.outerRingOuterRadius || spore.getAbsoluteVelocity() < 1.0f) {
+				if(ppos.r > Main.outerRingOuterRadius || spore.getAbsoluteVelocity() < 1.0f || spore.isMarkedForRemoval()) {
 					spore.destroy();
 					it.remove();
 				}
