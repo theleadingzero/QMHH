@@ -34,6 +34,8 @@ public class Hand extends ProcessingObject {
 	private Long startTime;
 	private Double maxHandSize = 30.0;
 	private ArrayList<CreatureBase> beamCreatures;
+	private float indexOffset;
+	private float cycle = 2000.0f;
 	
 	private static GLTexture srcTex, bloomMask;
 	private static GLTexture tex0, tex2, tex4, tex8, tex16;
@@ -45,10 +47,11 @@ public class Hand extends ProcessingObject {
 		beamCreatures = new ArrayList<CreatureBase>();
 		updatePosition(x, y);
 		rebuildBeamP = true;
+		indexOffset = p.random(1.0f);
 	}
 	
 	private void initGL() {
-		glg1 = new GLGraphicsOffScreen(p, 75, 75);
+		glg1 = new GLGraphicsOffScreen(p, 125, 125);
 	    extractBloom = new GLTextureFilter(p, "ExtractBloom.xml");
 	    blur = new GLTextureFilter(p, "Blur.xml");
 	    blend4 = new GLTextureFilter(p, "Blend4.xml");  
@@ -132,30 +135,30 @@ public class Hand extends ProcessingObject {
 			glg1.fill(200);
 			glg1.stroke(255);
 			glg1.pushMatrix();
+			glg1.translate(glg1.width/2.0f,glg1.height/2.0f);
 			glg1.beginShape();
 			
 			int steps = 51;
 			int now2 = p.millis();
-			float cycle = 2000.0f;
-			float index = (now2 % cycle) / cycle;
+			float index = (now2 % cycle) / cycle + indexOffset;
 			
 			for(int i=0; i<steps+1; i++) {
 				float angle = (Main.TWO_PI) / steps * i;
 				float length = 34.0f;
 				if(i % 2 == 0)
-					length += 1.0 + Main.sin((index+i*0.09f) * Main.TWO_PI) * 12.0f;
+					length += 1.0 + Main.sin((index+i*0.02f) * Main.TWO_PI) * 20.0f;
 				float o = Main.sin(angle) * length;
 				float a = Main.cos(angle) * length;
 				//curveVertex(o, a);
-				p.vertex(o, a);
+				glg1.vertex(o, a);
 			}
-			glg1.endShape();
+			glg1.endShape(Main.CLOSE);
 			glg1.popMatrix();
 			glg1.endDraw();
 			
 			// Extracting the bright regions from input texture.
 			srcTex = glg1.getTexture();
-		    extractBloom.setParameterValue("bright_threshold", 0.0f);
+		    extractBloom.setParameterValue("bright_threshold", 0.2f);
 		    extractBloom.apply(srcTex, tex0);
 		  
 		    // Downsampling with blur.

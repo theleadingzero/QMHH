@@ -76,6 +76,8 @@ public class Main extends PApplet {
 		for(int i=0; i<3; i++) {
 			Models.getCreaturesModel().addCreature();
 		}
+		
+		Models.getHandsModel().addHand(999L, 20.0f, 325.0f);
 	}
 
 	public void draw() {
