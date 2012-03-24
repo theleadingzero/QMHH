@@ -55,6 +55,7 @@ public class OrbModel extends ProcessingObject {
 	public void draw() {
 		p.noStroke();
 		p.fill(120, 120, 245, 30);
+		p.ellipseMode(Main.CENTER);
 		p.ellipse(Main.centerX, Main.centerY, radius*3, radius*3);
 		p.ellipse(Main.centerX, Main.centerY, radius*2, radius*2);
 		p.ellipse(Main.centerX, Main.centerY, radius, radius);

@@ -56,13 +56,6 @@ public class Background extends ProcessingObject {
 		p.background(0);
 		p.pushMatrix();
 		p.translate(centerX, centerY);
-		/*
-		p.ellipseMode(p.CENTER);
-		p.noStroke();
-		p.fill(90, 40, 190);
-		p.ellipse(0, 0, outerDiameter, outerDiameter);
-		p.fill(0);
-		*/
 		
 		// draw backdrop
 		p.imageMode(Main.CENTER);
