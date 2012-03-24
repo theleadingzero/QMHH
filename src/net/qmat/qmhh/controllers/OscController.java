@@ -82,7 +82,7 @@ public class OscController extends Thread {
 	}
 	
 	void oscEvent(OscMessage theOscMessage) {
-		
+		/*
 		if(theOscMessage.checkAddrPattern("/seq/setAngle")==true) {
 			if(theOscMessage.checkTypetag("f")) {
 				float angle = theOscMessage.get(0).floatValue();
@@ -102,6 +102,7 @@ public class OscController extends Thread {
 				Models.getPlayheadModel().stop();
 			}  
 		}
+		*/
 		
 	}
 }
