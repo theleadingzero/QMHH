@@ -6,6 +6,7 @@
 package net.qmat.qmhh.models;
 
 import net.qmat.qmhh.models.creatures.CreaturesModel;
+import net.qmat.qmhh.models.trees.TreesModel;
 
 public class Models {
 

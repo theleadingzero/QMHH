@@ -4,8 +4,8 @@ import net.qmat.qmhh.contacts.*;
 import net.qmat.qmhh.models.Background;
 import net.qmat.qmhh.models.Hand.Beam;
 import net.qmat.qmhh.models.Spore;
-import net.qmat.qmhh.models.Tree.Branch;
 import net.qmat.qmhh.models.creatures.CreatureBase;
+import net.qmat.qmhh.models.trees.Branch;
 
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;

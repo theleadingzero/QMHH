@@ -84,7 +84,7 @@ public class Main extends PApplet {
 		
 		bg.draw();
 		Models.update();
-	    //Models.draw();
+	    Models.draw();
 	    
 	    box2d.step();
 	    frameCount++;
