@@ -13,14 +13,10 @@ import net.qmat.qmhh.models.Background;
 import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.utils.Settings;
 import pbox2d.PBox2D;
-import javax.media.opengl.*;
-import javax.media.opengl.glu.*;
-import com.sun.opengl.util.*;
-import processing.opengl.*;
+import codeanticode.glgraphics.GLConstants;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.nio.*;
 import processing.core.*;
 
 public class Main extends PApplet {
@@ -56,7 +52,7 @@ public class Main extends PApplet {
 		/* Set up processing stuff, size() should always be the first call in setup() */
 		size(Settings.getInteger(Settings.PR_WIDTH),
 				Settings.getInteger(Settings.PR_HEIGHT),
-				OPENGL);
+				GLConstants.GLGRAPHICS);
 		p.hint(DISABLE_DEPTH_TEST);
 
 		box2d = new PBox2D(this);

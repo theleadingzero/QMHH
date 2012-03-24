@@ -28,21 +28,21 @@ public class HandsModel extends ProcessingObject {
 		nrSections = Settings.getInteger(Settings.PR_SEQUENCER_SECTIONS);;
 	}
 	
-	public void addHand(Long id, float x, float y, Vector<CPoint2> path) {
+	public void addHand(Long id, float x, float y) {
 		Hand hand = hands.get(id);
 		if(hand != null) {
-			hand.updatePosition(x, y, path);
+			hand.updatePosition(x, y);
 		} else {
-			hands.put(id, new Hand(x, y, path));
+			hands.put(id, new Hand(x, y));
 		}
 	}
 	
-	public void updateHand(Long id, float x, float y, Vector<CPoint2> path) {
+	public void updateHand(Long id, float x, float y) {
 		Hand hand = hands.get(id);
 		if(hand == null) {
-			addHand(id, x, y, path);
+			addHand(id, x, y);
 		} else {
-			hands.get(id).updatePosition(x, y, path);
+			hands.get(id).updatePosition(x, y);
 		}
 	}
 	

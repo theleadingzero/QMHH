@@ -36,7 +36,7 @@ public class TuioController implements TuioListener {
 	public void addTuioCursor(TuioCursor tc) {
 		//.put(tc.getSessionID(), tc);
 		TuioPoint p = tc.getPosition();
-		Controllers.getHandsController().addHand(tc.getSessionID(), p.getX(), p.getY(), tc.getPath());
+		Controllers.getHandsController().addHand(tc.getSessionID(), p.getX(), p.getY());
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class TuioController implements TuioListener {
 	public void updateTuioCursor(TuioCursor tc) {
 		//printTuioCursor(arg0);
 		TuioPoint p = tc.getPosition();
-		Controllers.getHandsController().updateHand(tc.getSessionID(), p.getX(), p.getY(), tc.getPath());
+		Controllers.getHandsController().updateHand(tc.getSessionID(), p.getX(), p.getY());
 	}
 
 	@Override

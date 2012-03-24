@@ -66,17 +66,17 @@ public class HandsController {
 	}
 	
 	// N.B. takes relative positions [0.0 ... 1.0]
-	public void addHand(Long id, float x, float y, Vector<TuioPoint> path) {
+	public void addHand(Long id, float x, float y) {
 		float pixelX = Main.relativeToPixelsX(mapX(x));
 		float pixelY = Main.relativeToPixelsY(mapY(y));
 		if(handInBoundsP(pixelX, pixelY)) {
-			addHandHelper(id, pixelX, pixelY, path);
+			addHandHelper(id, pixelX, pixelY);
 		}
 	}
 	
-	private void addHandHelper(Long id, float pixelX, float pixelY, Vector<TuioPoint> path) {
+	private void addHandHelper(Long id, float pixelX, float pixelY) {
 		Models.getOrbModel().increaseRadius();
-		Models.getHandsModel().addHand(id, pixelX, pixelY, mapPoints(path));
+		Models.getHandsModel().addHand(id, pixelX, pixelY);
 		PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
 		//Controllers.getSequencerController().addHand(id, ppos);
 		Controllers.getSoundController().handWasAdded();
@@ -93,13 +93,13 @@ public class HandsController {
 	}
 
 	// N.B. takes relative positions [0.0 ... 1.0]
-	public void updateHand(Long id, float x, float y, Vector<TuioPoint> path)
+	public void updateHand(Long id, float x, float y)
 	{
 		float pixelX = Main.relativeToPixelsX(mapX(x));
 		float pixelY = Main.relativeToPixelsY(mapY(y));
 		if(handInBoundsP(pixelX, pixelY)) {
 			if(Models.getHandsModel().containsHandAlreadyP(id)) {
-				Models.getHandsModel().updateHand(id, pixelX, pixelY, mapPoints(path));
+				Models.getHandsModel().updateHand(id, pixelX, pixelY);
 				PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
 				//Controllers.getSequencerController().updateHand(id, ppos);
 			}
