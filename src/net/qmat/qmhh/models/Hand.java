@@ -36,14 +36,11 @@ public class Hand extends ProcessingObject {
 	private Double maxHandSize = 30.0;
 	
 	private ArrayList<CreatureBase> beamCreatures;
-	
-	private Vector<CPoint2> path;
-	
-	public Hand(float x, float y, Vector<CPoint2> path) {
-		this.path = path;
+		
+	public Hand(float x, float y) {
 		startTime = System.nanoTime();
 		beamCreatures = new ArrayList<CreatureBase>();
-		updatePosition(x, y, path);
+		updatePosition(x, y);
 		rebuildBeamP = true;
 	}
 	
@@ -65,8 +62,7 @@ public class Hand extends ProcessingObject {
 			Controllers.getSoundController().beamUnblocked();
 	}
 	
-	public void updatePosition(float x, float y, Vector<CPoint2> path) {
-		this.path = path;
+	public void updatePosition(float x, float y) {
 		this.x = x;
 		this.y = y;
 		rebuildBeamP = true;
@@ -108,11 +104,9 @@ public class Hand extends ProcessingObject {
 			// draw hand
 			p.fill(255);
 			p.noStroke();
-			p.beginShape();
-			for(CPoint2 cpos : path) {
-				p.curveVertex(cpos.x, cpos.y);
-			}
-			p.endShape(Main.CLOSE);
+			//p.beginShape();
+			
+			//p.endShape(Main.CLOSE);
 			
 			// rebuild and draw the beam
 			if(rebuildBeamP) rebuildBeam();
