@@ -20,77 +20,79 @@ import net.qmat.qmhh.models.creatures.CreatureBase;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 
+import processing.opengl.*;
+import codeanticode.glgraphics.*;
+
 public class Hand extends ProcessingObject {
-	
+
 	private float x = 0.0f;
 	private float y = 0.0f;
-	private float radius = 10.0f;
-	
 	private boolean rebuildBeamP;
 	private Beam beam;
 	private boolean markedForRemovalP = false;
-	
 	private boolean chargingP = true;
 	private Long startTime;
-	
 	private Double maxHandSize = 30.0;
-	
 	private ArrayList<CreatureBase> beamCreatures;
 	
-	private Vector<CPoint2> path;
-	
+	GLTexture srcTex, bloomMask;
+	GLTexture tex0, tex2, tex4, tex8, tex16;
+	GLTextureFilter extractBloom, blur, blend4;
+	GLGraphicsOffScreen glg1;
+
 	public Hand(float x, float y, Vector<CPoint2> path) {
 		this.path = path;
 		startTime = System.nanoTime();
 		beamCreatures = new ArrayList<CreatureBase>();
 		updatePosition(x, y, path);
 		rebuildBeamP = true;
+		glg1 = new GLGraphicsOffScreen(p, 75, 75);
 	}
-	
+
 	public int nrBeamCreatures() {
 		return beamCreatures.size();
 	}
-	
+
 	public void addCreature(CreatureBase creature) {
 		if(nrBeamCreatures() == 0)
 			Controllers.getSoundController().beamBlocked();
 		if(!beamCreatures.contains(creature))
 			beamCreatures.add(creature);
 	}
-	
+
 	public void removeCreature(CreatureBase creature) {
 		if(beamCreatures.contains(creature))
 			beamCreatures.remove(creature);
 		if(nrBeamCreatures() == 0)
 			Controllers.getSoundController().beamUnblocked();
 	}
-	
+
 	public void updatePosition(float x, float y, Vector<CPoint2> path) {
 		this.path = path;
 		this.x = x;
 		this.y = y;
 		rebuildBeamP = true;
 	}
-	
+
 	public CPoint2 getCPosition() {
 		return new CPoint2(x, y);
 	}
-	
+
 	private void rebuildBeam() {
 		if(beam != null) beam.rebuildShape();
 		else beam = new Beam(this);
 		rebuildBeamP = false;
 	}
-	
+
 
 	public void markForRemoval() {
 		markedForRemovalP = true;
 	}
-	
+
 	public boolean isMarkedForRemoval() {
 		return markedForRemovalP;
 	}
-	
+
 	public void draw() {
 		if(!markedForRemovalP) {
 			// are we still charging?
@@ -105,35 +107,53 @@ public class Hand extends ProcessingObject {
 				rebuildBeamP = true;
 			}
 			
-			// draw hand
-			p.fill(255);
-			p.noStroke();
-			p.beginShape();
-			for(CPoint2 cpos : path) {
-				p.curveVertex(cpos.x, cpos.y);
-			}
-			p.endShape(Main.CLOSE);
-			
 			// rebuild and draw the beam
 			if(rebuildBeamP) rebuildBeam();
 			if(beam != null) beam.draw();
+
+			// draw hand
+			p.fill(200);
+			p.stroke(255);
+			p.pushMatrix();
+			int steps = 51;
+			p.translate(x, y);
+			int now2 = p.millis();
+			float cycle = 2000.0f;
+			float index = (now2 % cycle) / cycle;
+			
+			p.beginShape();
+			
+			for(int i=0; i<steps+1; i++) {
+				
+				float angle = (Main.TWO_PI) / steps * i;
+				float length = 34.0f;
+				if(i % 2 == 0)
+					length += 1.0 + Main.sin((index+i*0.09f) * Main.TWO_PI) * 12.0f;
+				float o = Main.sin(angle) * length;
+				float a = Main.cos(angle) * length;
+				//curveVertex(o, a);
+				p.vertex(o, a);
+			}
+			p.endShape(Main.CLOSE);
+			p.popMatrix();
+
 		}
 	}
-	
+
 	public void destroy() {
 		if(beam != null) beam.destroy();
 	}
-	
+
 	public class Beam extends ProcessingObject {
-		
+
 		private Body body;
 		public Hand hand;
-		
+
 		Beam(Hand hand) {
 			this.hand = hand;
 			makeBody();
 		}
-		
+
 		private void rebuildShape() {
 			// update size of the body
 			Fixture f = body.getFixtureList();
@@ -146,7 +166,7 @@ public class Hand extends ProcessingObject {
 			}
 			//body.createFixture(createFixture());
 		}
-		
+
 		private void makeBody() {
 
 			FixtureDef fd = createFixture();
@@ -163,7 +183,7 @@ public class Hand extends ProcessingObject {
 			body.createFixture(fd);
 			body.setUserData(this);
 		}
-		
+
 		private FixtureDef createFixture() {
 			PolygonShape sd = new PolygonShape();
 			Vec2[] vs = getShapeVertices();
@@ -173,7 +193,7 @@ public class Hand extends ProcessingObject {
 			fd.isSensor = true;
 			return fd;
 		}
-		
+
 		private Vec2[] getShapeVertices() {
 			PPoint2 handPos = new CPoint2(x, y).toPPoint2();
 			// TODO: calculate the actual angleOffset from the hand size
@@ -195,7 +215,7 @@ public class Hand extends ProcessingObject {
 		public void destroy() {
 			box2d.destroyBody(body);
 		}
-		
+
 		public float getGreatestRadius() {
 			float r = 10.0f;
 			for(CreatureBase c : hand.beamCreatures) {
@@ -204,7 +224,7 @@ public class Hand extends ProcessingObject {
 			}
 			return r;
 		}
-		
+
 		public void draw() {
 			//System.out.println("creatures: " + hand.beamCreatures.size());
 			p.fill(237, 212, 69, 150);
@@ -221,7 +241,7 @@ public class Hand extends ProcessingObject {
 			}
 			p.endShape(Main.CLOSE);
 		}
-		
+
 	}
-	
+
 }
