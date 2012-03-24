@@ -15,14 +15,12 @@ import org.jbox2d.dynamics.FixtureDef;
 
 public class Spore extends ProcessingObject {
 	
-	float w, h;
+	public static float w = 2.0f, h = 2.0f;
 	float angle;
 	Body body;
 	
 	
 	public Spore(float startRadius) {
-		w = 2.0f;
-		h = 2.0f;
 		
 		angle = p.random(0, Main.TWO_PI);
 		

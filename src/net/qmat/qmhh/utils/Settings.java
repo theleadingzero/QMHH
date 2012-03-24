@@ -44,6 +44,9 @@ public class Settings {
 	// creature settings
 	public static String PR_CREATURE_CLASS = "PR_CREATURE_CLASS";
 	
+	// hand settings
+	public static String PR_HAND_CHARGE_TIME = "PR_HAND_CHARGE_TIME";
+	
 	private static Settings instance = null;
 	String propertyFile = "/data/preferences.properties";
 	Properties properties = new Properties();

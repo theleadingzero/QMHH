@@ -17,6 +17,11 @@ import net.qmat.qmhh.utils.Settings;
 
 public class HandsController {
 	
+	private float minX = 1.0f;
+	private float minY = 1.0f;
+	private float maxX = 0.0f;
+	private float maxY = 0.0f;
+	
 	// cache for speed
 	private float ringInnerRadius, ringOuterRadius;
 	private HashMap<Long, ArrayList<CreatureBase>> handCreatures;
@@ -27,10 +32,26 @@ public class HandsController {
 		handCreatures = new HashMap<Long, ArrayList<CreatureBase>>();
 	}
 	
+	private float mapX(float x) {
+		if(x > maxX)
+			maxX = x;
+		if(x < minX)
+			minX = x;
+		return Main.map(x, minX, maxX, 0.0f, 1.0f);
+	}
+	
+	private float mapY(float y) {
+		if(y > maxY)
+			maxY = y;
+		if(y < minY)
+			minY = y;
+		return Main.map(y, minY, maxY, 0.0f, 1.0f);
+	}
+	
 	// N.B. takes relative positions [0.0 ... 1.0]
 	public void addHand(Long id, float x, float y) {
-		float pixelX = Main.relativeToPixelsX(x);
-		float pixelY = Main.relativeToPixelsY(y);
+		float pixelX = Main.relativeToPixelsX(mapX(x));
+		float pixelY = Main.relativeToPixelsY(mapY(y));
 		if(handInBoundsP(pixelX, pixelY)) {
 			addHandHelper(id, pixelX, pixelY);
 		}
@@ -57,8 +78,8 @@ public class HandsController {
 	// N.B. takes relative positions [0.0 ... 1.0]
 	public void updateHand(Long id, float x, float y)
 	{
-		float pixelX = Main.relativeToPixelsX(x);
-		float pixelY = Main.relativeToPixelsY(y);
+		float pixelX = Main.relativeToPixelsX(mapX(x));
+		float pixelY = Main.relativeToPixelsY(mapY(y));
 		if(handInBoundsP(pixelX, pixelY)) {
 			if(Models.getHandsModel().containsHandAlreadyP(id)) {
 				Models.getHandsModel().updateHand(id, pixelX, pixelY);
@@ -87,7 +108,8 @@ public class HandsController {
 	// N.B. takes actual pixel values, not relative ones (like the one from Tuio)
 	private boolean handInBoundsP(float x, float y) {
 		PPoint2 ppoint = new CPoint2(x, y).toPPoint2();
-		return (ppoint.r > ringInnerRadius && ppoint.r < ringOuterRadius);
+		//return (ppoint.r > ringInnerRadius && ppoint.r < ringOuterRadius);
+		return (ppoint.r > ringInnerRadius);
 	}
 	
 	private void addCreatureToHand(Long handID, CreatureBase creature) {

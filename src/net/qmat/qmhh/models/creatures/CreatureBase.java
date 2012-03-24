@@ -25,7 +25,7 @@ public class CreatureBase extends ProcessingObject {
 	protected int maxStage = 2;
 
 	protected int subStage = 0;
-	protected int maxSubStage = 2;
+	protected int maxSubStage = 10;
 
 	protected float w = 10.0f;
 	protected float h = 10.0f;
@@ -354,8 +354,8 @@ public class CreatureBase extends ProcessingObject {
 			SoundController sc = Controllers.getSoundController();
 			if(subStage < maxSubStage) {
 				subStage += 1;
-				w *= 1.15f;
-				h *= 1.15f;
+				w *= 1.03f;
+				h *= 1.03f;
 				sc.creatureHasGrown(this);
 			} else {
 				subStage = 0;

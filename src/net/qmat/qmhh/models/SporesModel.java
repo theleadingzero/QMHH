@@ -24,7 +24,7 @@ public class SporesModel extends ProcessingObject {
 	
 	public void startRipple(float startRadius) {
 		synchronized(spores) {
-			for(int i=0; i<40; i++)
+			for(int i=0; i<10; i++)
 				spores.add(new Spore(startRadius));
 		}
 	}
@@ -71,7 +71,7 @@ public class SporesModel extends ProcessingObject {
 			    gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
 			    gl.glVertexPointer(2, GL.GL_FLOAT, 0, vbuffer);
 		
-			    gl.glPointSize(2.0f);
+			    gl.glPointSize(Spore.w);
 			    gl.glColor4f(1.0f, 0.8f, 1.0f, 0.9f);
 			    gl.glDrawArrays(GL.GL_POINTS, 0, spores.size());
 			     

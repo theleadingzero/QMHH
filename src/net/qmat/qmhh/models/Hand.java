@@ -29,9 +29,15 @@ public class Hand extends ProcessingObject {
 	private Beam beam;
 	private boolean markedForRemovalP = false;
 	
+	private boolean chargingP = true;
+	private Long startTime;
+	
+	private Double maxHandSize = 30.0;
+	
 	private ArrayList<CreatureBase> beamCreatures;
 	
 	public Hand(float x, float y) {
+		startTime = System.nanoTime();
 		beamCreatures = new ArrayList<CreatureBase>();
 		updatePosition(x, y);
 		rebuildBeamP = true;
@@ -82,14 +88,26 @@ public class Hand extends ProcessingObject {
 	
 	public void draw() {
 		if(!markedForRemovalP) {
+			// are we still charging?
+			Long now = System.nanoTime();
+			Double chargeIndex = (now - startTime) / HandsModel.chargeTimeNano;
+			Double handSize;
+			if(chargeIndex < HandsModel.chargeTime * 1000000000L) {
+				chargingP = false;
+				rebuildBeamP = true;
+				handSize = chargeIndex * maxHandSize;
+			} else {
+				handSize = maxHandSize;
+			}
+			
+			// draw hand
 			p.noStroke();
 			p.fill(p.color(0, 155, 0));
-			p.ellipse(x, y, radius, radius);
-			//p.stroke(p.color(200, 200, 0));
-			//p.line(x, y, Main.centerX, Main.centerY);
+			p.ellipse(x, y, handSize.floatValue(), handSize.floatValue());
 			
+			// rebuild and draw the beam
 			if(rebuildBeamP) rebuildBeam();
-			beam.draw();
+			if(beam != null) beam.draw();
 		}
 	}
 	

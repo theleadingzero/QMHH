@@ -22,7 +22,7 @@ public class Tree extends ProcessingObject {
 	
 	private static int BRANCH_LEVELS = 5;
 	private static float BRANCH_START_LENGTH = 100.0f;
-	private static Long BRANCH_GROW_TIME = 6L * 1000000000L; // 4 seconds in nanoseconds
+	private static Long BRANCH_GROW_TIME = 16L * 1000000000L; // 4 seconds in nanoseconds
 	
 	private float internalAngle;
 	private Branch root;

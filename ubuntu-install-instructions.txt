@@ -6,3 +6,5 @@ install packages by doing:
     sudo dpkg --set-selections < ubuntu-package-list.txt
     sudo deselect 
 and then select install
+
+
