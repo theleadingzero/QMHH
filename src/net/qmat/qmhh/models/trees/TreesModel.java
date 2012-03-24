@@ -1,8 +1,9 @@
-package net.qmat.qmhh.models;
+package net.qmat.qmhh.models.trees;
 
 import java.util.ArrayList;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.models.ProcessingObject;
 
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;

@@ -9,6 +9,9 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
+import processing.core.PGraphics;
+import processing.core.PImage;
+
 public class Background extends ProcessingObject {
 	
 	private static int NR_SECTIONS = 16;
@@ -17,7 +20,9 @@ public class Background extends ProcessingObject {
 	private float innerDiameter, outerDiameter;
 	private float innerRadius, outerRadius;
 	private Body body;
-	Vec2[] vertices;
+	private Vec2[] vertices;
+	private PImage backdrop, backdropGradient;
+	private PGraphics backdropMask;
 	
 	public Background() {
 		centerX = Settings.getInteger(Settings.PR_CENTER_X);
@@ -27,7 +32,23 @@ public class Background extends ProcessingObject {
 		innerRadius = innerDiameter / 2.0f;
 		outerRadius = outerDiameter / 2.0f;
 		
+		backdrop = p.loadImage(Settings.getString(Settings.PR_BACKDROP_FILE));
+		backdropGradient = p.loadImage("backdrop_gradient.png");
+		createBackdropMask();
+		backdrop.mask(backdropMask);
+		
 		createRingBox2D();
+	}
+	
+	private void createBackdropMask() {
+		backdropMask = p.createGraphics(backdrop.width, backdrop.height, Main.P3D);
+		backdropMask.beginDraw();
+		backdropMask.ellipseMode(Main.CENTER);
+		backdropMask.background(0);
+		backdropMask.fill(255);
+		backdropMask.translate(backdropMask.width/2, backdropMask.height/2);
+		backdropMask.ellipse(0, 0, innerDiameter, innerDiameter);
+		backdropMask.endDraw();
 	}
 	
 	@SuppressWarnings("static-access")
@@ -35,27 +56,15 @@ public class Background extends ProcessingObject {
 		p.background(0);
 		p.pushMatrix();
 		p.translate(centerX, centerY);
-		p.ellipseMode(p.CENTER);
-		p.noStroke();
-		p.fill(90, 40, 190);
-		p.ellipse(0, 0, outerDiameter, outerDiameter);
-		p.fill(0);
-		p.ellipse(0, 0, innerDiameter, innerDiameter);
+		
+		// draw backdrop
+		p.imageMode(Main.CENTER);
+		p.image(backdrop, 0, 0); //, innerRadius*2, innerRadius*2);
+		// draw gradient over it
+		p.image(backdropGradient, 0, 0, innerRadius*2, innerRadius*2);
+		
 		p.popMatrix();
 		
-		// TODO: optimize lines
-		float angleStep = Main.TWO_PI / 16.0f;
-		for(int i=0; i<NR_SECTIONS; i++) {
-			CPoint2 cpos1 = new PPoint2(innerRadius, i*angleStep).toCPoint2();
-			CPoint2 cpos2 = new PPoint2(outerRadius, i*angleStep).toCPoint2();
-			CPoint2 cpos3 = new PPoint2(innerRadius, (i+1)*angleStep).toCPoint2();
-			CPoint2 cpos4 = new PPoint2(outerRadius, (i+1)*angleStep).toCPoint2();
-			
-			p.noFill();
-			p.stroke(0);
-			p.line(cpos1.x, cpos1.y, cpos2.x, cpos2.y);
-			p.line(cpos3.x, cpos3.y, cpos4.x, cpos4.y);
-		}
 		
 		/* Debug the ring boundary.
 		int steps = 60;

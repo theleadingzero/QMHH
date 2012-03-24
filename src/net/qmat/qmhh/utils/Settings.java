@@ -46,6 +46,12 @@ public class Settings {
 	
 	// hand settings
 	public static String PR_HAND_CHARGE_TIME = "PR_HAND_CHARGE_TIME";
+
+	// background settings
+	public static String PR_BACKDROP_FILE = "PR_BACKDROP_FILE";
+	
+	// what class draws the branches
+	public static String PR_BRANCH_DRAWER = "PR_BRANCH_DRAWER";
 	
 	private static Settings instance = null;
 	String propertyFile = "/data/preferences.properties";

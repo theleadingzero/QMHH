@@ -74,7 +74,7 @@ public class HandsModel extends ProcessingObject {
 	
 	public void draw() {
 		// draw the fancy patterns underneath the hands
-		drawHandBackdrops();
+		//drawHandBackdrops();
 		
 		// set up the look for the hands here for efficiency
 		p.ellipseMode(Main.CENTER);

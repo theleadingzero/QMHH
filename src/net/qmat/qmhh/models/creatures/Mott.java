@@ -40,8 +40,8 @@ public class Mott extends CreatureBase {
 		p.stroke(255, 255, 255, alpha);
 
 		p.pushMatrix();  
-		p.translate(x, y);
-		p.rotate(angle);
+		//p.translate(x, y);
+		//p.rotate(angle);
 		p.scale(scale / 100.0f);
 
 		drawWings(tempCount);

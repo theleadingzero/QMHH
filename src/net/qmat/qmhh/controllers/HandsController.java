@@ -61,7 +61,7 @@ public class HandsController {
 		Models.getOrbModel().increaseRadius();
 		Models.getHandsModel().addHand(id, pixelX, pixelY);
 		PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
-		Controllers.getSequencerController().addHand(id, ppos);
+		//Controllers.getSequencerController().addHand(id, ppos);
 		Controllers.getSoundController().handWasAdded();
 		Controllers.getSoundController().beamStarted();
 		// Let's get some bad ass creatures to eat that energy
@@ -84,7 +84,7 @@ public class HandsController {
 			if(Models.getHandsModel().containsHandAlreadyP(id)) {
 				Models.getHandsModel().updateHand(id, pixelX, pixelY);
 				PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
-				Controllers.getSequencerController().updateHand(id, ppos);
+				//Controllers.getSequencerController().updateHand(id, ppos);
 			}
 		// remove if it is present, but not in bounds
 		} else if(Models.getHandsModel().containsHandAlreadyP(id)) {
@@ -99,7 +99,7 @@ public class HandsController {
 			removeCreaturesFromHand(id);
 			Models.getOrbModel().decreaseRadius();
 			Models.getHandsModel().removeHand(id);
-			Controllers.getSequencerController().removeHand(id);
+			//Controllers.getSequencerController().removeHand(id);
 			Controllers.getSoundController().handWasRemoved();
 			Controllers.getSoundController().beamStopped();
 		}

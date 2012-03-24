@@ -13,8 +13,8 @@ public class OrbModel extends ProcessingObject {
 	private float radius, r;
 	private float maxRadius, minRadius;
 
-	private int numSystems = 120;
-	private int numParticles = 40;
+	private int numSystems = 60;
+	private int numParticles = 20;
 	private OrbPSystem[] ps;
 	private float theta, theta2 = 0.0f;
 	private float amplitude; 
@@ -55,6 +55,7 @@ public class OrbModel extends ProcessingObject {
 	public void draw() {
 		p.noStroke();
 		p.fill(120, 120, 245, 30);
+		p.ellipseMode(Main.CENTER);
 		p.ellipse(Main.centerX, Main.centerY, radius*3, radius*3);
 		p.ellipse(Main.centerX, Main.centerY, radius*2, radius*2);
 		p.ellipse(Main.centerX, Main.centerY, radius, radius);

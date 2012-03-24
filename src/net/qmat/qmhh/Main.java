@@ -28,8 +28,8 @@ public class Main extends PApplet {
 	private static final long serialVersionUID = 1L;
 	public static Main p;
 	public static PBox2D box2d;
-	public static int frameCount = 0;
-
+	public int frameCount = 0;
+	
 	/* 
 	 * The static visual stuff..
 	 */
@@ -161,7 +161,6 @@ public class Main extends PApplet {
 		else
 			Models.getOrbModel().decreaseRadius();
 		 */
-		//Models.getSporesModel().startRipple(Models.getOrbModel().getRadius()/2.0f);
-
+		Models.getSporesModel().startRipple(Models.getOrbModel().getRadius()/2.0f);
 	}
 }
