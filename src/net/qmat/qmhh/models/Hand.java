@@ -52,7 +52,7 @@ public class Hand extends ProcessingObject {
 	}
 	
 	private void initGL() {
-		glg1 = new GLGraphicsOffScreen(p, 125, 125);
+		glg1 = new GLGraphicsOffScreen(p, 175, 175);
 	    extractBloom = new GLTextureFilter(p, "ExtractBloom.xml");
 	    blur = new GLTextureFilter(p, "Blur.xml");
 	    blend4 = new GLTextureFilter(p, "Blend4.xml");  
@@ -145,7 +145,7 @@ public class Hand extends ProcessingObject {
 			
 			for(int i=0; i<steps+1; i++) {
 				float angle = (Main.TWO_PI) / steps * i;
-				float length = 34.0f;
+				float length = 60.0f;
 				if(i % 2 == 0)
 					length += 1.0 + Main.sin((index+i*0.09f) * Main.TWO_PI) * 20.0f;
 				float o = Main.sin(angle) * length;
@@ -159,7 +159,7 @@ public class Hand extends ProcessingObject {
 			
 			// Extracting the bright regions from input texture.
 			srcTex = glg1.getTexture();
-		    extractBloom.setParameterValue("bright_threshold", 0.05f);
+		    extractBloom.setParameterValue("bright_threshold", 0.01f);
 		    extractBloom.apply(srcTex, tex0);
 		  
 		    // Downsampling with blur.
