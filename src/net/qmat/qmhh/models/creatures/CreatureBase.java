@@ -29,6 +29,11 @@ public class CreatureBase extends ProcessingObject {
 
 	protected float w = 10.0f;
 	protected float h = 10.0f;
+	private float tmpW, tmpH;
+	private float goalW = 10.0f;
+	private float goalH = 10.0f;
+	private float mulW = 1.0f;
+	private float mulH = 1.0f;
 	private float maxForce = 3.0f;
 	private float maxSpeed = 10.0f;
 	private Hand target = null;
@@ -36,9 +41,8 @@ public class CreatureBase extends ProcessingObject {
 	private int followDebugColor = 0;
 	// these timestamps/durations are in seconds
 	private Long lastGrowthTimestamp = 0L;
-	private float minimalGrowthInterval; 
-
-	private boolean rebuildShapeP = false;
+	private Float minimalGrowthInterval; 
+	private Double growthFeedbackTime = 1.0;
 
 	private static float DESIRED_SEPARATION = 80.0f;
 	private static float NEIGHBOR_DISTANCE  = 40.0f;
@@ -113,10 +117,8 @@ public class CreatureBase extends ProcessingObject {
 
 	// TODO: DRY this out!
 	public void update(ArrayList<CreatureBase> creatures) {
-		// recreate the shapes if we have to
-		if(rebuildShapeP) {
-			rebuildShape();
-		}
+		// adjust the size of the creature
+		rebuildShape();
 		
 		// flock, but keep within the zone.
 		float zoneWidth = Main.outerRingInnerRadius / 3.0f;
@@ -349,22 +351,22 @@ public class CreatureBase extends ProcessingObject {
 
 	public void grow() {
 		Long newTimestamp = System.nanoTime();
-		if(stage < maxStage && newTimestamp - lastGrowthTimestamp > (double)minimalGrowthInterval * 1000000000L) {
+		Long interval = newTimestamp - lastGrowthTimestamp;
+		if(stage < maxStage && interval > (double)minimalGrowthInterval * 1000000000L) {
 			lastGrowthTimestamp = newTimestamp;
 			SoundController sc = Controllers.getSoundController();
 			if(subStage < maxSubStage) {
 				subStage += 1;
-				w *= 1.15f;
-				h *= 1.15f;
+				goalW = w * 1.15f;
+				goalH = h * 1.15f;
 				sc.creatureHasGrown(this);
 			} else {
 				subStage = 0;
 				stage += 1;
-				w *= 1.3f;
-				h *= 1.3f;
+				goalW = w * 1.3f;
+				goalH = h * 1.3f;
 				sc.creatureChangedStage(this);
 			}
-			rebuildShapeP = true;
 		}
 	}
 
@@ -391,14 +393,24 @@ public class CreatureBase extends ProcessingObject {
 	}
 
 	private void rebuildShape() {
-		// update size of the body
+		// update size of the body, grow to the new size slowly
+		Long newTimestamp = System.nanoTime();
+		Double growthIndex = (newTimestamp - lastGrowthTimestamp) / (growthFeedbackTime*1000000000.0);
+		// only update mulW and mulH when we are growing
+		if(growthIndex < 1.0) {
+			mulH = mulW = 1.0f + 0.5f * Main.sin(growthIndex.floatValue() * Main.TWO_PI);
+		} else {
+			mulH = mulW = 1.0f;
+		}
+		tmpW += (goalW - tmpW) * 0.1f;
+		tmpH += (goalH - tmpH) * 0.1f;
+		w = tmpW * mulW;
+		h = tmpH * mulH;
 		Fixture f = body.getFixtureList();
 		while(f != null) {
-			body.destroyFixture(f);
+			f.m_shape.m_radius = box2d.scalarPixelsToWorld(w/2.0f);
 			f = f.getNext();
 		}
-		body.createFixture(createFixture());
-		rebuildShapeP = false;
 	}
 
 	public float getRadius() {

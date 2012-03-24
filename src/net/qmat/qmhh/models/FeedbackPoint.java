@@ -4,7 +4,7 @@ import net.qmat.qmhh.utils.CPoint2;
 
 public class FeedbackPoint extends ProcessingObject {
 
-	int framesLoop = 50;
+	int framesLoop = 30;
 	int loops = 2;
 	float maxDiameter = 30;
 	private CPoint2 position;
