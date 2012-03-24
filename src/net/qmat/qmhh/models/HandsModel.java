@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Vector;
 import processing.core.PApplet;
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.utils.CPoint2;
@@ -27,21 +28,21 @@ public class HandsModel extends ProcessingObject {
 		nrSections = Settings.getInteger(Settings.PR_SEQUENCER_SECTIONS);;
 	}
 	
-	public void addHand(Long id, float x, float y) {
+	public void addHand(Long id, float x, float y, Vector<CPoint2> path) {
 		Hand hand = hands.get(id);
 		if(hand != null) {
-			hand.updatePosition(x, y);
+			hand.updatePosition(x, y, path);
 		} else {
-			hands.put(id, new Hand(x, y));
+			hands.put(id, new Hand(x, y, path));
 		}
 	}
 	
-	public void updateHand(Long id, float x, float y) {
+	public void updateHand(Long id, float x, float y, Vector<CPoint2> path) {
 		Hand hand = hands.get(id);
 		if(hand == null) {
-			addHand(id, x, y);
+			addHand(id, x, y, path);
 		} else {
-			hands.get(id).updatePosition(x, y);
+			hands.get(id).updatePosition(x, y, path);
 		}
 	}
 	

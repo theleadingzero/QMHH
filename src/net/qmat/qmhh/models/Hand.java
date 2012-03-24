@@ -3,6 +3,7 @@ package net.qmat.qmhh.models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Vector;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Transform;
@@ -36,10 +37,13 @@ public class Hand extends ProcessingObject {
 	
 	private ArrayList<CreatureBase> beamCreatures;
 	
-	public Hand(float x, float y) {
+	private Vector<CPoint2> path;
+	
+	public Hand(float x, float y, Vector<CPoint2> path) {
+		this.path = path;
 		startTime = System.nanoTime();
 		beamCreatures = new ArrayList<CreatureBase>();
-		updatePosition(x, y);
+		updatePosition(x, y, path);
 		rebuildBeamP = true;
 	}
 	
@@ -61,7 +65,8 @@ public class Hand extends ProcessingObject {
 			Controllers.getSoundController().beamUnblocked();
 	}
 	
-	public void updatePosition(float x, float y) {
+	public void updatePosition(float x, float y, Vector<CPoint2> path) {
+		this.path = path;
 		this.x = x;
 		this.y = y;
 		rebuildBeamP = true;
@@ -92,18 +97,22 @@ public class Hand extends ProcessingObject {
 			Long now = System.nanoTime();
 			Double chargeIndex = (now - startTime) / HandsModel.chargeTimeNano;
 			Double handSize;
-			if(chargeIndex < HandsModel.chargeTime * 1000000000L) {
+			if(chargeIndex < 1.0) {
+				chargingP = true;
+				rebuildBeamP = false;
+			} else {
 				chargingP = false;
 				rebuildBeamP = true;
-				handSize = chargeIndex * maxHandSize;
-			} else {
-				handSize = maxHandSize;
 			}
 			
 			// draw hand
+			p.fill(255);
 			p.noStroke();
-			p.fill(p.color(0, 155, 0));
-			p.ellipse(x, y, handSize.floatValue(), handSize.floatValue());
+			p.beginShape();
+			for(CPoint2 cpos : path) {
+				p.curveVertex(cpos.x, cpos.y);
+			}
+			p.endShape(Main.CLOSE);
 			
 			// rebuild and draw the beam
 			if(rebuildBeamP) rebuildBeam();

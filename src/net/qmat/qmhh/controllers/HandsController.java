@@ -7,6 +7,9 @@ package net.qmat.qmhh.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
+
+import TUIO.TuioPoint;
 
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.models.Models;
@@ -48,18 +51,32 @@ public class HandsController {
 		return Main.map(y, minY, maxY, 0.0f, 1.0f);
 	}
 	
+	private CPoint2 mapPoint(TuioPoint p) {
+		return new CPoint2(
+				Main.relativeToPixelsX(Main.map(p.getX(), minX, maxX, 0.0f, 1.0f)), 
+				Main.relativeToPixelsY(Main.map(p.getY(), minY, maxY, 0.0f, 1.0f)));
+	}
+	
+	private Vector<CPoint2> mapPoints(Vector<TuioPoint> path) {
+		Vector<CPoint2> v = new Vector<CPoint2>();
+		for(TuioPoint p : path) {
+			v.add(mapPoint(p));
+		}
+		return v;
+	}
+	
 	// N.B. takes relative positions [0.0 ... 1.0]
-	public void addHand(Long id, float x, float y) {
+	public void addHand(Long id, float x, float y, Vector<TuioPoint> path) {
 		float pixelX = Main.relativeToPixelsX(mapX(x));
 		float pixelY = Main.relativeToPixelsY(mapY(y));
 		if(handInBoundsP(pixelX, pixelY)) {
-			addHandHelper(id, pixelX, pixelY);
+			addHandHelper(id, pixelX, pixelY, path);
 		}
 	}
 	
-	private void addHandHelper(Long id, float pixelX, float pixelY) {
+	private void addHandHelper(Long id, float pixelX, float pixelY, Vector<TuioPoint> path) {
 		Models.getOrbModel().increaseRadius();
-		Models.getHandsModel().addHand(id, pixelX, pixelY);
+		Models.getHandsModel().addHand(id, pixelX, pixelY, mapPoints(path));
 		PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
 		//Controllers.getSequencerController().addHand(id, ppos);
 		Controllers.getSoundController().handWasAdded();
@@ -76,13 +93,13 @@ public class HandsController {
 	}
 
 	// N.B. takes relative positions [0.0 ... 1.0]
-	public void updateHand(Long id, float x, float y)
+	public void updateHand(Long id, float x, float y, Vector<TuioPoint> path)
 	{
 		float pixelX = Main.relativeToPixelsX(mapX(x));
 		float pixelY = Main.relativeToPixelsY(mapY(y));
 		if(handInBoundsP(pixelX, pixelY)) {
 			if(Models.getHandsModel().containsHandAlreadyP(id)) {
-				Models.getHandsModel().updateHand(id, pixelX, pixelY);
+				Models.getHandsModel().updateHand(id, pixelX, pixelY, mapPoints(path));
 				PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
 				//Controllers.getSequencerController().updateHand(id, ppos);
 			}
