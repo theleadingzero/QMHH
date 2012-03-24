@@ -19,6 +19,7 @@ public class SporeBranchContact extends ContactLogic {
 			   && !branch.isStillGrowingP()
 			   && !branch.isStillSproutingP()) {
 				branch.sprout();
+				Models.getFeedbackPointsModel().addFeedbackPoint(spore.getCPosition());
 			} 
 			spore.markForRemoval();
 		} else {
