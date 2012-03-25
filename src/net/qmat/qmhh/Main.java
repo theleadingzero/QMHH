@@ -77,9 +77,9 @@ public class Main extends PApplet {
 			Models.getCreaturesModel().addCreature();
 		}
 		
-		/* Add a hand for testing
-		 * Models.getHandsModel().addHand(999L, 20.0f, 325.0f);
-		 */
+		// Add a hand for testing
+		Models.getHandsModel().addHand(999L, 20.0f, 325.0f);
+		 
 	}
 
 	public void draw() {

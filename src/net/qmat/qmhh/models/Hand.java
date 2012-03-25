@@ -77,6 +77,7 @@ public class Hand extends ProcessingObject {
 			Controllers.getSoundController().beamBlocked();
 		if(!beamCreatures.contains(creature))
 			beamCreatures.add(creature);
+		System.out.println(nrBeamCreatures());
 	}
 
 	public void removeCreature(CreatureBase creature) {
@@ -84,6 +85,7 @@ public class Hand extends ProcessingObject {
 			beamCreatures.remove(creature);
 		if(nrBeamCreatures() == 0)
 			Controllers.getSoundController().beamUnblocked();
+		System.out.println(nrBeamCreatures());
 	}
 
 	public void updatePosition(float x, float y) {
@@ -196,27 +198,21 @@ public class Hand extends ProcessingObject {
 			// update size of the body
 			Fixture f = body.getFixtureList();
 			while(f != null) {
-				//body.destroyFixture(f);
 				PolygonShape sd = (PolygonShape)f.m_shape;
 				Vec2[] vs = getShapeVertices();
 				sd.set(vs, 4);
 				f = f.getNext();
 			}
-			//body.createFixture(createFixture());
 		}
 
 		private void makeBody() {
-
 			FixtureDef fd = createFixture();
-
 			BodyDef bd = new BodyDef();
 			bd.type = BodyType.STATIC;
 			// set position to be in between the center and the hand position
 			//bd.position.set(box2d.coordPixelsToWorld(new Vec2((hand.x + Main.centerX)*0.5f, (hand.y + Main.centerY)*0.5f)));
 			// or set the position of the static body to the middle
 			bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX, Main.centerY)));
-			//bd.angle = new CPoint2(hand.x, hand.y).toPPoint2().t;
-
 			body = box2d.createBody(bd);
 			body.createFixture(fd);
 			body.setUserData(this);
