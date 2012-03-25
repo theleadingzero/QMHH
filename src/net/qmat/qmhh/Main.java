@@ -78,7 +78,14 @@ public class Main extends PApplet {
 		}
 		
 		// Add a hand for testing
-		Models.getHandsModel().addHand(999L, 20.0f, 325.0f);
+		Models.getHandsModel().addHand(1L, 30f, 740f); //740f, 325.0f);
+		Models.getHandsModel().addHand(2L, 730f, 40f); //740f, 325.0f);
+		Models.getHandsModel().addHand(3L, 730f, 730f); //740f, 325.0f);
+		Models.getHandsModel().addHand(4L, 30f, 30f); //740f, 325.0f);
+		Models.getHandsModel().addHand(5L, 320f, 30f); //740f, 325.0f);
+		Models.getHandsModel().addHand(6L, 320f, 730f); //740f, 325.0f);
+		Models.getHandsModel().addHand(7L, 730f, 326f); //740f, 325.0f);
+		Models.getHandsModel().addHand(7L, 30f, 326f); //740f, 325.0f);
 		 
 	}
 

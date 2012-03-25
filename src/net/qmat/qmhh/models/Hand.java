@@ -38,6 +38,8 @@ public class Hand extends ProcessingObject {
 	private float indexOffset;
 	private float cycle = 2000.0f;
 	
+	private static Long beamGrowTime = 1L * 1000000000L;
+	
 	private static GLTexture srcTex, bloomMask;
 	private static GLTexture tex0, tex2, tex4, tex8, tex16;
 	private static GLTextureFilter extractBloom, blur, blend4;
@@ -70,6 +72,10 @@ public class Hand extends ProcessingObject {
 
 	public int nrBeamCreatures() {
 		return beamCreatures.size();
+	}
+	
+	public boolean hasReachedCenterP() {
+		return beam != null && beam.reachedCenterP;
 	}
 
 	public void addCreature(CreatureBase creature) {
@@ -135,8 +141,10 @@ public class Hand extends ProcessingObject {
 			// draw hand		
 			glg1.beginDraw();
 			glg1.background(0);
-			glg1.fill(200);
-			glg1.stroke(255);
+			//glg1.fill(200);
+			//glg1.stroke(255);
+			glg1.fill(237, 212, 69, 150);
+			glg1.stroke(234, 187, 31);
 			glg1.pushMatrix();
 			glg1.translate(glg1.width/2.0f,glg1.height/2.0f);
 			glg1.beginShape();
@@ -188,8 +196,14 @@ public class Hand extends ProcessingObject {
 
 		private Body body;
 		public Hand hand;
+		private boolean reachedCenterP = false;
+		private Long beamStartTimestamp;
+		private PPoint2[] corners; 
+		// in milliseconds
+		private float rippleCycle = 2000f;
 
 		Beam(Hand hand) {
+			beamStartTimestamp = System.nanoTime();
 			this.hand = hand;
 			makeBody();
 		}
@@ -232,17 +246,27 @@ public class Hand extends ProcessingObject {
 			PPoint2 handPos = new CPoint2(x, y).toPPoint2();
 			// TODO: calculate the actual angleOffset from the hand size
 			float angleOffset = Main.TWO_PI / 92.0f;
-			float stopRadius = getGreatestRadius();
-			PPoint2 v1 = new PPoint2(handPos.r, handPos.t - angleOffset);
-			PPoint2 v2 = new PPoint2(handPos.r, handPos.t + angleOffset);
-			// offset from the middle is perpendicular to the beam
-			PPoint2 v3 = new PPoint2(stopRadius, handPos.t + angleOffset);
-			PPoint2 v4 = new PPoint2(stopRadius, handPos.t - angleOffset);
+			float stopRadius = 0.0f;
+			// have to decide the radius myself..
+			Long now = System.nanoTime();
+			Double beamGrowthIndex = (now - beamStartTimestamp) / beamGrowTime.doubleValue();
+			if(beamGrowthIndex >= 1.0) 
+				reachedCenterP = true;
+			if(reachedCenterP) {
+				stopRadius = getGreatestRadius();
+			} else {
+				stopRadius = (1.0f - beamGrowthIndex.floatValue()) * Main.outerRingInnerRadius; 
+			}
+			corners = new PPoint2[4];
+			corners[0] = new PPoint2(handPos.r, handPos.t - angleOffset);
+			corners[1] = new PPoint2(handPos.r, handPos.t + angleOffset);
+			corners[2] = new PPoint2(stopRadius, handPos.t + angleOffset);
+			corners[3] = new PPoint2(stopRadius, handPos.t - angleOffset);
 			Vec2 vs[] = new Vec2[4];
-			vs[0] = box2d.coordPixelsToWorld(v1.toVec2());
-			vs[1] = box2d.coordPixelsToWorld(v2.toVec2());
-			vs[2] = box2d.coordPixelsToWorld(v3.toVec2());
-			vs[3] = box2d.coordPixelsToWorld(v4.toVec2());
+			vs[0] = box2d.coordPixelsToWorld(corners[0].toVec2());
+			vs[1] = box2d.coordPixelsToWorld(corners[1].toVec2());
+			vs[2] = box2d.coordPixelsToWorld(corners[2].toVec2());
+			vs[3] = box2d.coordPixelsToWorld(corners[3].toVec2());
 			return vs;
 		}
 
@@ -258,11 +282,60 @@ public class Hand extends ProcessingObject {
 			}
 			return r;
 		}
+		
+		private void getBeamCoordinates(CPoint2 p1, CPoint2 p2, Vector<CPoint2> cs, float reverse) {
+			float stepSize = 20.0f;
+			float length = Main.sqrt((p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y));
+			int steps = (int)(length / stepSize);
+			float angle = Main.atan2(p2.y-p1.y, p2.x-p1.x);
+			float cycleIndex = (p.millis() % rippleCycle) / rippleCycle; 
+			for(int step=0; step<steps; step++) {
+				float ds = stepSize * step;
+				float dc = (1.0f + Main.sin((cycleIndex + reverse*step*0.3f) * Main.TWO_PI)) / 2.0f * 8.0f + 3.0f;
+				float dx = ds * Main.cos(angle) + dc * Main.cos(Main.PI/2+angle);
+				float dy = ds * Main.sin(angle) + dc * Main.sin(Main.PI/2+angle);
+				cs.add(new CPoint2(p1.x + dx, p1.y + dy));
+			}
+		}
 
 		public void draw() {
 			//System.out.println("creatures: " + hand.beamCreatures.size());
-			p.fill(237, 212, 69, 150);
-			p.stroke(234, 187, 31);
+			if(corners != null) {
+				
+				// side 1
+				Vector<CPoint2> cs1 = new Vector<CPoint2>();
+				CPoint2 p1 = corners[1].toCPoint2();
+				CPoint2 p2 = corners[2].toCPoint2();
+				getBeamCoordinates(p1, p2, cs1, -1.0f);
+				// side 2
+				Vector<CPoint2> cs2 = new Vector<CPoint2>();
+				p1 = corners[3].toCPoint2();
+				p2 = corners[0].toCPoint2();
+				getBeamCoordinates(p1, p2, cs2, 1.0f);
+				PPoint2 middle1 = cs1.lastElement().toPPoint2();
+				PPoint2 middle2 = cs2.firstElement().toPPoint2();
+				// add tip
+				float avgAngle = (middle2.t+middle2.t) / 2.0f;
+				float avgRadius;
+				if(middle2.r > 20f) {
+					avgRadius = (middle1.r+middle2.r) / 2.0f * 0.7f;
+				} else {
+					avgRadius = 0.0f;
+				}
+				cs1.add(new PPoint2(avgRadius, avgAngle).toCPoint2());
+				cs1.addAll(cs2);
+				
+				// draw beam
+				p.fill(237, 212, 69, 100);
+				//p.stroke(234, 187, 31);
+				p.noStroke();
+				p.beginShape();
+				for(CPoint2 cpos : cs1) {
+					p.curveVertex(cpos.x, cpos.y);
+				}
+				p.endShape(Main.CLOSE);
+			}
+			/*
 			p.beginShape();
 			for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {
 				PolygonShape shape = (PolygonShape) f.getShape();
@@ -274,6 +347,7 @@ public class Hand extends ProcessingObject {
 				}
 			}
 			p.endShape(Main.CLOSE);
+			*/
 		}
 
 	}

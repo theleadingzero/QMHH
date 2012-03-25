@@ -124,7 +124,8 @@ public class HandsModel extends ProcessingObject {
 			Iterator<Entry<Long, Hand>> entries = hands.entrySet().iterator();
 			while(entries.hasNext()) {
 				Hand hand = entries.next().getValue();
-				if(hand.nrBeamCreatures() <= 0) nrHands++;
+				if(hand.nrBeamCreatures() <= 0 && hand.hasReachedCenterP()) 
+					nrHands++;
 			}
 			return nrHands;
 		}
