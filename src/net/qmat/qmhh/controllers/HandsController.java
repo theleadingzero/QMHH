@@ -75,7 +75,7 @@ public class HandsController {
 	}
 	
 	private void addHandHelper(Long id, float pixelX, float pixelY) {
-		Models.getOrbModel().increaseRadius();
+		//Models.getOrbModel().increaseRadius();
 		Models.getHandsModel().addHand(id, pixelX, pixelY);
 		PPoint2 ppos = new CPoint2(pixelX, pixelY).toPPoint2();
 		//Controllers.getSequencerController().addHand(id, ppos);
@@ -114,7 +114,7 @@ public class HandsController {
 		if(Models.getHandsModel().containsHandAlreadyP(id)) {
 			// TODO: Think about what happens if a player's hand is removed.
 			removeCreaturesFromHand(id);
-			Models.getOrbModel().decreaseRadius();
+			//Models.getOrbModel().decreaseRadius();
 			Models.getHandsModel().removeHand(id);
 			//Controllers.getSequencerController().removeHand(id);
 			Controllers.getSoundController().handWasRemoved();

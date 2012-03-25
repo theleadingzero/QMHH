@@ -27,7 +27,9 @@ public class FeedbackPointsModel extends ProcessingObject {
 	}
 	
 	public void addFeedbackPoint(CPoint2 cpos) {
-		points.add(new FeedbackPoint(cpos));
+		// filter feedback points close to the center
+		if(cpos.toPPoint2().r > 30.0f)
+			points.add(new FeedbackPoint(cpos));
 	}
 	
 	public void draw() {

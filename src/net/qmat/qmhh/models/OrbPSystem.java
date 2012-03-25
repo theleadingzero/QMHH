@@ -34,7 +34,7 @@ public class OrbPSystem extends ProcessingObject {
 					new PVector(), 
 					new PVector(),
 					new PVector(ps_loc.x, ps_loc.y, 0), 
-					p.random(1.0f, 70.0f), i));
+					p.random(50.0f, 70.0f), i));
 		}
 	}
 
@@ -42,8 +42,8 @@ public class OrbPSystem extends ProcessingObject {
 		th += 0.0025f;
 		ps_loc.x = inx + r * Main.cos(th);
 		ps_loc.y = iny + r * Main.sin(th);
-		ps_loc.x += p.random(-20.0f, 20.0f);
-		ps_loc.y += p.random(-20.0f, 20.0f);
+		ps_loc.x += p.random(-5.0f, 5.0f);
+		ps_loc.y += p.random(-5.0f, 5.0f);
 
 		for(OrbParticle particle : particles) {     
 			particle.update();
