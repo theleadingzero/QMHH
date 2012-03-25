@@ -48,8 +48,8 @@ public class CreatureBase extends ProcessingObject {
 	private static float DESIRED_SEPARATION = 80.0f;
 	private static float NEIGHBOR_DISTANCE  = 40.0f;
 
-	private float subStageGrowthFactor = 1.15f;
-	private float stageGrowthFactor = 1.3f;
+	private float subStageGrowthFactor = 1.05f;
+	private float stageGrowthFactor = 1.2f;
 
 
 	public CreatureBase() {
@@ -84,6 +84,7 @@ public class CreatureBase extends ProcessingObject {
 				p.random(-0.5f, 0.5f)));
 		body.setAngularVelocity(0.0f);
 		body.setUserData(this);
+		body.setFixedRotation(true);
 	}
 
 	public void destroy() {
@@ -100,17 +101,16 @@ public class CreatureBase extends ProcessingObject {
 
 		// TODO: delete the next line when debugging targeting
 		p.fill(followDebugColor);
-
+		p.ellipseMode(Main.CENTER);
 		p.pushMatrix();
 		Vec2 loc = box2d.getBodyPixelCoord(body);
 		p.translate(loc.x, loc.y);
 		p.rotate(body.getAngle());
-		p.rect(0, 0, w, h);
+		p.ellipse(0, 0, w, h);
 		p.popMatrix();
 
 		if(target != null) {
 			p.pushMatrix();
-			p.ellipseMode(Main.CENTER);
 			CPoint2 targetPos = target.getCPosition();
 			p.translate(targetPos.x + p.random(0, 10), targetPos.y + p.random(0, 10));
 			p.fill(followDebugColor);
@@ -135,7 +135,7 @@ public class CreatureBase extends ProcessingObject {
 		// if in stage 1 
 		
 		// if the creature has a target, ignore the flocking behavior
-		if(target != null) {
+		if(target != null && stage > 0) {
 			target();
 		} else if(stage == 1) {
 			// too far outwards?

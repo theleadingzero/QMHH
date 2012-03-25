@@ -85,7 +85,6 @@ public class Hand extends ProcessingObject {
 			if(!beamCreatures.contains(creature))
 				beamCreatures.add(creature);
 		}
-		System.out.println(nrBeamCreatures());
 	}
 
 	public void removeCreature(CreatureBase creature) {
@@ -95,7 +94,6 @@ public class Hand extends ProcessingObject {
 		}
 		if(nrBeamCreatures() == 0)
 			Controllers.getSoundController().beamUnblocked();
-		System.out.println(nrBeamCreatures());
 	}
 
 	public void updatePosition(float x, float y) {
@@ -203,6 +201,7 @@ public class Hand extends ProcessingObject {
 		private boolean reachedCenterP = false;
 		private Long beamStartTimestamp;
 		private PPoint2[] corners; 
+		private Vec2[] vs;
 		// in milliseconds
 		private float rippleCycle = 2000f;
 
@@ -217,7 +216,7 @@ public class Hand extends ProcessingObject {
 			Fixture f = body.getFixtureList();
 			while(f != null) {
 				PolygonShape sd = (PolygonShape)f.m_shape;
-				Vec2[] vs = getShapeVertices();
+				setShapeVertices();
 				sd.set(vs, 4);
 				f = f.getNext();
 			}
@@ -238,7 +237,7 @@ public class Hand extends ProcessingObject {
 
 		private FixtureDef createFixture() {
 			PolygonShape sd = new PolygonShape();
-			Vec2[] vs = getShapeVertices();
+			setShapeVertices();
 			sd.set(vs, 4);
 			FixtureDef fd = new FixtureDef();
 			fd.shape = sd;
@@ -247,7 +246,7 @@ public class Hand extends ProcessingObject {
 			return fd;
 		}
 
-		private Vec2[] getShapeVertices() {
+		private Vec2[] setShapeVertices() {
 			PPoint2 handPos = new CPoint2(x, y).toPPoint2();
 			// TODO: calculate the actual angleOffset from the hand size
 			float angleOffset = Main.TWO_PI / 92.0f;
@@ -267,11 +266,11 @@ public class Hand extends ProcessingObject {
 			corners[1] = new PPoint2(handPos.r, handPos.t + angleOffset);
 			corners[2] = new PPoint2(stopRadius, handPos.t + angleOffset);
 			corners[3] = new PPoint2(stopRadius, handPos.t - angleOffset);
-			Vec2 vs[] = new Vec2[4];
+			vs = new Vec2[4];
 			vs[0] = box2d.coordPixelsToWorld(corners[0].toVec2());
 			vs[1] = box2d.coordPixelsToWorld(corners[1].toVec2());
-			vs[2] = box2d.coordPixelsToWorld(corners[2].toVec2());
-			vs[3] = box2d.coordPixelsToWorld(corners[3].toVec2());
+			vs[2] = box2d.coordPixelsToWorld(new PPoint2(5.0f, handPos.t + angleOffset).toVec2());
+			vs[3] = box2d.coordPixelsToWorld(new PPoint2(5.0f, handPos.t - angleOffset).toVec2());
 			return vs;
 		}
 
@@ -304,7 +303,6 @@ public class Hand extends ProcessingObject {
 		}
 
 		public void draw() {
-			//System.out.println("creatures: " + hand.beamCreatures.size());
 			if(corners != null) {
 				
 				// side 1
@@ -341,10 +339,11 @@ public class Hand extends ProcessingObject {
 						p.curveVertex(cpos.x, cpos.y);
 					}
 					p.endShape(Main.CLOSE);
+
 				}
 			}
 			
-			/*
+			/* draw sensor
 			p.beginShape();
 			for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {
 				PolygonShape shape = (PolygonShape) f.getShape();

@@ -58,7 +58,7 @@ public class Tree extends ProcessingObject {
 							  cpos.y,  
 							  startAngle);
 		} catch(Exception e) {
-			System.out.println("You've probably specified some weird parameters for the tree, couldn't create the root branch.");
+			System.err.println("You've probably specified some weird parameters for the tree, couldn't create the root branch.");
 		}
 		root.activate();
 

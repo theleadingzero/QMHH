@@ -78,11 +78,12 @@ public class Main extends PApplet {
 		*/
 		
 		// Add a hand for testing
-		/*
+		
 		Models.getHandsModel().addHand(1L, 30f, 740f); //740f, 325.0f);
 		Models.getHandsModel().addHand(2L, 730f, 40f); //740f, 325.0f);
 		Models.getHandsModel().addHand(3L, 730f, 730f); //740f, 325.0f);
 		Models.getHandsModel().addHand(4L, 30f, 30f); //740f, 325.0f);
+		/*
 		Models.getHandsModel().addHand(5L, 320f, 30f); //740f, 325.0f);
 		Models.getHandsModel().addHand(6L, 320f, 730f); //740f, 325.0f);
 		Models.getHandsModel().addHand(7L, 730f, 326f); //740f, 325.0f);
@@ -141,7 +142,6 @@ public class Main extends PApplet {
 			String location;
 			if(devices.length>1 ){ //we have a 2nd display/projector
 				primary_width = devices[0].getDisplayMode().getWidth();
-				System.out.println(primary_width);
 				location = "--location="+(primary_width+75)+",0";
 			} else {//leave on primary display
 				location = "--location=0,0";
