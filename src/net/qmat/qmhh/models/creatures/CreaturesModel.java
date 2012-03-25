@@ -21,19 +21,44 @@ public class CreaturesModel extends ProcessingObject {
 		String clName = "net.qmat.qmhh.models.creatures."+Settings.getString(Settings.PR_CREATURE_CLASS);
 		try {
 			creatureClass = (Class<? extends CreatureBase>) Class.forName(clName);
+			initCreatures();
 		} catch (ClassNotFoundException e) {
 			System.err.println("Can't find the creature class defined in the preferences file.");
 			e.printStackTrace();
 		}
 	}
 	
-	public void addCreature() {
+	private void initCreatures() {
+		CreatureBase cb;
+		// add a creature in stage 2, stage 1, and stage 0;
+		cb = instantiateCreature();
+		cb.setStage(2);
+		cb = instantiateCreature();
+		cb.setStage(2);
+		// stage 1
+		cb = instantiateCreature();
+		cb.setStage(1);
+		cb = instantiateCreature();
+		cb.setStage(1);
+		// stage 0
+		instantiateCreature();
+		instantiateCreature();
+	}
+	
+	public CreatureBase addCreature() {
+		Controllers.getSoundController().creatureWasBorn();
+		return instantiateCreature();
+	}
+	
+	public CreatureBase instantiateCreature() {
 		try {
-			creatures.add(creatureClass.newInstance());
-			Controllers.getSoundController().creatureWasBorn();
+			CreatureBase cb = creatureClass.newInstance();
+			creatures.add(cb);
+			return cb;
 		} catch (Exception e) {
-			System.err.println("Something went wrong with loading the creature class.");
+			System.err.println("Something went wrong with instantiating a creature.");
 			e.printStackTrace();
+			return null;
 		}
 	}
 	

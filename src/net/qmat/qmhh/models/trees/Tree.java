@@ -16,8 +16,9 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 
 public class Tree extends ProcessingObject {
 	
-	public static int BRANCH_LEVELS = 6;
-	public static float BRANCH_START_LENGTH = 70.0f;
+	public static int MAX_BRANCH_LEVELS = 8;
+	public static float BRANCH_START_LENGTH = 50.0f;
+	public static float BRANCH_NEXT_LENGTH_MP = 0.95f;
 	public static Long BRANCH_GROW_TIME = 6L * 1000000000L; // 4 seconds in nanoseconds
 	
 	public float internalAngle;
@@ -40,21 +41,25 @@ public class Tree extends ProcessingObject {
 			System.err.println("Something went wrong while loading the branch drawer class: " + clName);
 			e.printStackTrace();
 		}
-		buildTree(BRANCH_START_LENGTH, BRANCH_LEVELS, startAngle, centerBody);
+		buildTree(BRANCH_START_LENGTH, startAngle, centerBody);
 	}
 	
 	private void buildTree(float startLength, 
-						   int levels, 
 						   float startAngle, 
 						   Body centerBody) {
 		CPoint2 cpos = new PPoint2(10.0f, -startAngle).toCPoint2();
-		root = new Branch(this,
-						  null, 
-						  startLength, 
-						  levels, 
-						  cpos.x,  
-						  cpos.y,  
-						  startAngle);
+		try {
+			root = new Branch(this,
+							  null, 
+							  startLength,
+							  BRANCH_NEXT_LENGTH_MP,
+							  0, 
+							  cpos.x,  
+							  cpos.y,  
+							  startAngle);
+		} catch(Exception e) {
+			System.out.println("You've probably specified some weird parameters for the tree, couldn't create the root branch.");
+		}
 		root.activate();
 
 		RevoluteJointDef rjd = new RevoluteJointDef();
@@ -72,7 +77,7 @@ public class Tree extends ProcessingObject {
 	
 	public void draw() {
 		p.stroke(0, 255, 0);
-		p.noFill();
+		p.fill(0, 55, 0);
 		p.ellipseMode(Main.CENTER);
 		p.ellipse(Main.centerX, Main.centerY, 20.0f, 20.0f);
 		root.draw();

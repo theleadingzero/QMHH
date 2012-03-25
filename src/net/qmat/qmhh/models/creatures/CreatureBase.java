@@ -10,6 +10,7 @@ import net.qmat.qmhh.Main;
 import net.qmat.qmhh.controllers.Controllers;
 import net.qmat.qmhh.controllers.SoundController;
 import net.qmat.qmhh.models.Hand;
+import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.models.ProcessingObject;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
@@ -25,13 +26,13 @@ public class CreatureBase extends ProcessingObject {
 	protected int maxStage = 2;
 
 	protected int subStage = 0;
-	protected int maxSubStage = 10;
+	protected int maxSubStage = 5;
 
 	protected float w = 10.0f;
 	protected float h = 10.0f;
 	private float tmpW, tmpH;
-	private float goalW = 10.0f;
-	private float goalH = 10.0f;
+	private float goalW;
+	private float goalH;
 	private float mulW = 1.0f;
 	private float mulH = 1.0f;
 	private float maxForce = 3.0f;
@@ -47,6 +48,8 @@ public class CreatureBase extends ProcessingObject {
 	private static float DESIRED_SEPARATION = 80.0f;
 	private static float NEIGHBOR_DISTANCE  = 40.0f;
 
+	private float subStageGrowthFactor = 1.15f;
+	private float stageGrowthFactor = 1.3f;
 
 
 	public CreatureBase() {
@@ -62,6 +65,8 @@ public class CreatureBase extends ProcessingObject {
 	private void init(CPoint2 cpos, float angle) {
 		stage = 0;
 		minimalGrowthInterval = Settings.getFloat(Settings.PR_MINIMAL_GROWTH_INTERVAL);
+		goalW = w;
+		goalH = h;
 		makeBody(cpos, angle);
 	}
 
@@ -128,7 +133,11 @@ public class CreatureBase extends ProcessingObject {
 		// add some randomness to the center
 		Vec2 vCenter = new Vec2(Main.centerX + p.random(-100, 100), Main.centerY + p.random(-100, 100));
 		// if in stage 1 
-		if(stage == 1) {
+		
+		// if the creature has a target, ignore the flocking behavior
+		if(target != null) {
+			target();
+		} else if(stage == 1) {
 			// too far outwards?
 			if(ppos.r > zoneWidth * 2.0f) {
 				followDebugColor = p.color(155, 0 ,0);
@@ -155,16 +164,18 @@ public class CreatureBase extends ProcessingObject {
 				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				body.applyForce(towards, loc);
 				// in the zone
+			} else if(ppos.r < zoneWidth / 2.0f) {
+				followDebugColor = p.color(0, 155 ,0);
+				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
+				towards.negateLocal();
+				body.applyForce(towards, loc);
 			} else {
 				followDebugColor = p.color(0);
 				flock(creatures);
 			}
 			// in stage 2, so target, get back into the third zone, or flock
 		} else {
-			// if the creature has a target, ignore the flocking behavior
-			if(target != null) {
-				target();
-			} else if(ppos.r < zoneWidth * 2.0f) {
+			if(ppos.r < zoneWidth * 2.0f) {
 				followDebugColor = p.color(0, 255 ,0);
 				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				towards.negateLocal();
@@ -221,7 +232,8 @@ public class CreatureBase extends ProcessingObject {
 	private Vec2 seek(Vec2 t) {
 		return seek(t, maxForce);
 	}
-
+	
+	// TODO: find the right path, not through the plants!
 	private void target() {
 		if(target != null) {
 			PPoint2 targetPPos = target.getCPosition().toPPoint2();
@@ -354,20 +366,36 @@ public class CreatureBase extends ProcessingObject {
 		Long interval = newTimestamp - lastGrowthTimestamp;
 		if(stage < maxStage && interval > (double)minimalGrowthInterval * 1000000000L) {
 			lastGrowthTimestamp = newTimestamp;
-			SoundController sc = Controllers.getSoundController();
-			if(subStage < maxSubStage) {
-				subStage += 1;
-				goalW = w * 1.15f;
-				goalH = h * 1.15f;
+			growWithoutTimeCheck(true);
+		}
+	}
+	
+	public void growWithoutTimeCheck(boolean notifySound) {
+		SoundController sc = Controllers.getSoundController();
+		boolean ns = notifySound && sc != null && Models.getInstance() != null;
+		if(subStage < maxSubStage) {
+			subStage += 1;
+			goalW = goalW * subStageGrowthFactor;
+			goalH = goalH * subStageGrowthFactor;
+			if(ns) {
 				sc.creatureHasGrown(this);
-			} else {
-				subStage = 0;
-				stage += 1;
-				goalW = w * 1.3f;
-				goalH = h * 1.3f;
+			}
+		} else {
+			subStage = 0;
+			stage += 1;
+			goalW = goalW * stageGrowthFactor;
+			goalH = goalH * stageGrowthFactor;
+			if(ns) {
 				sc.creatureChangedStage(this);
 			}
 		}
+	}
+	
+	// N.B. this will only work when starting from stage and substage 0
+	public void setStage(int stage) {
+		for(int i=0; i<stage*maxSubStage - 1; i++)
+			growWithoutTimeCheck(false);
+		grow();
 	}
 
 	private FixtureDef createFixture() {
@@ -376,7 +404,7 @@ public class CreatureBase extends ProcessingObject {
 
 		FixtureDef fd = new FixtureDef();
 		fd.shape = sd;
-		fd.density = 0.5f / w;
+		fd.density = 0.09f;
 		fd.friction = 1.2f;
 		fd.restitution = 0.5f;
 		return fd;
@@ -398,7 +426,7 @@ public class CreatureBase extends ProcessingObject {
 		Double growthIndex = (newTimestamp - lastGrowthTimestamp) / (growthFeedbackTime*1000000000.0);
 		// only update mulW and mulH when we are growing
 		if(growthIndex < 1.0) {
-			mulH = mulW = 1.0f + 0.5f * Main.sin(growthIndex.floatValue() * Main.TWO_PI);
+			mulH = mulW = (1.0f + Main.sin(growthIndex.floatValue() * Main.TWO_PI) / 2.0f) * 2.0f;
 		} else {
 			mulH = mulW = 1.0f;
 		}

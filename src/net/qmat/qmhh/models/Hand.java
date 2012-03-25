@@ -312,29 +312,31 @@ public class Hand extends ProcessingObject {
 				p1 = corners[3].toCPoint2();
 				p2 = corners[0].toCPoint2();
 				getBeamCoordinates(p1, p2, cs2, 1.0f);
-				PPoint2 middle1 = cs1.lastElement().toPPoint2();
-				PPoint2 middle2 = cs2.firstElement().toPPoint2();
-				// add tip
-				float avgAngle = (middle2.t+middle2.t) / 2.0f;
-				float avgRadius;
-				if(middle2.r > 20f) {
-					avgRadius = (middle1.r+middle2.r) / 2.0f * 0.7f;
-				} else {
-					avgRadius = 0.0f;
+				if(cs1.size() > 1 && cs2.size() > 1) {
+					PPoint2 middle1 = cs1.lastElement().toPPoint2();
+					PPoint2 middle2 = cs2.firstElement().toPPoint2();
+					// add tip
+					float avgAngle = (middle2.t+middle2.t) / 2.0f;
+					float avgRadius;
+					if(middle2.r > 20f) {
+						avgRadius = (middle1.r+middle2.r) / 2.0f * 0.7f;
+					} else {
+						avgRadius = 0.0f;
+					}
+					cs1.add(new PPoint2(avgRadius, avgAngle).toCPoint2());
+					cs1.addAll(cs2);
+					
+					// draw beam
+					p.fill(237, 212, 69, 100);
+					p.noStroke();
+					p.beginShape();
+					for(CPoint2 cpos : cs1) {
+						p.curveVertex(cpos.x, cpos.y);
+					}
+					p.endShape(Main.CLOSE);
 				}
-				cs1.add(new PPoint2(avgRadius, avgAngle).toCPoint2());
-				cs1.addAll(cs2);
-				
-				// draw beam
-				p.fill(237, 212, 69, 100);
-				//p.stroke(234, 187, 31);
-				p.noStroke();
-				p.beginShape();
-				for(CPoint2 cpos : cs1) {
-					p.curveVertex(cpos.x, cpos.y);
-				}
-				p.endShape(Main.CLOSE);
 			}
+			
 			/*
 			p.beginShape();
 			for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {

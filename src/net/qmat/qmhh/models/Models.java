@@ -84,6 +84,7 @@ public class Models {
     	Models models = Models.getInstance();
     	models.handsModel.draw();
     	models.feedbackPointsModel.draw();
+    	
     	models.treesModel.draw();
     	//models.playheadModel.draw();
     	models.creaturesModel.draw();

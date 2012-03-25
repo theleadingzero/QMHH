@@ -27,9 +27,9 @@ public class FeedbackPoint extends ProcessingObject {
 			p.pushMatrix();
 			p.translate(position.x, position.y);
 
-			drawFeedback(1, 7, 100);
-			drawFeedback(3, 3, 150);
-			drawFeedback(2, 1, 255);
+			drawFeedback(1, 7, 30);
+			drawFeedback(3, 3, 75);
+			drawFeedback(2, 1, 155);
 
 			p.popMatrix();
 		}

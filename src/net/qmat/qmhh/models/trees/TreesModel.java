@@ -39,7 +39,7 @@ public class TreesModel extends ProcessingObject {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
 		//fixtureDef.filter.groupIndex = Settings.getInteger(Settings.PR_SPORE_COLLISION_GROUP);
-		fixtureDef.filter.maskBits = 0x0000;
+		//fixtureDef.filter.maskBits = 0x0000;
 		body = box2d.createBody(bd);
 		body.createFixture(fixtureDef); 
 	}

@@ -65,14 +65,12 @@ public class OrbModel extends ProcessingObject {
 		p.ellipse(Main.centerX, Main.centerY, 2*radius*3, 2*radius*3);
 		p.fill(120, 120, 245, 50);
 		p.ellipse(Main.centerX, Main.centerY, 2*radius*2, 2*radius*2);
-		p.fill(120, 120, 245, 250);
-		p.ellipse(Main.centerX, Main.centerY, 22, 22);
 		
-		p.stroke(232, 63, 63, 100);
-		p.noFill();
-		p.strokeWeight(4.0f);
-		p.arc(Main.centerX, Main.centerY, 2*radius*3+2, 2*radius*3+2, 0.0f, Main.TWO_PI * chargeIndex);
-		p.strokeWeight(1.0f);
+		p.noStroke();
+		p.fill(23, 31, 77);
+		p.ellipse(Main.centerX, Main.centerY, 25f, 25f);
+		p.fill(198, 20, 20);
+		p.arc(Main.centerX, Main.centerY, 25f, 25f, 0.0f, Main.TWO_PI * chargeIndex);
 		
 		waveR();
 		for(int i=0; i<numSystems; i++) {
@@ -87,7 +85,7 @@ public class OrbModel extends ProcessingObject {
 	    gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
 	    gl.glVertexPointer(2, GL.GL_FLOAT, 0, vbuffer);
 
-	    gl.glPointSize(8.0f);
+	    gl.glPointSize(4.0f);
 	    gl.glColor4f(0.39f, 0.5f, 1.0f, 0.05f);
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 
@@ -96,6 +94,15 @@ public class OrbModel extends ProcessingObject {
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 	     
 	    pgl.endGL();
+	    
+	    // draw feedback
+	    p.noStroke();
+		p.fill(23, 31, 77, 150);
+		p.ellipse(Main.centerX, Main.centerY, 25f, 25f);
+		//p.fill(198, 20, 20);
+		p.fill(255, 225, 11, 100);
+		p.stroke(255, 225, 11, 200);
+		p.arc(Main.centerX, Main.centerY, 25f, 25f, 0.0f, Main.TWO_PI * chargeIndex);
 	}
 
 	private void waveR()

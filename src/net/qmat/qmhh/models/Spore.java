@@ -32,7 +32,7 @@ public class Spore extends ProcessingObject {
 	    FixtureDef fd = new FixtureDef();
 	    fd.shape = sd;
 	    // Parameters that affect physics
-	    fd.density = 0.1f;
+	    fd.density = 0.8f;
 	    fd.friction = 0.3f;
 	    fd.restitution = 0.3f;
 	    fd.filter.groupIndex = Settings.getInteger(Settings.PR_SPORE_COLLISION_GROUP);

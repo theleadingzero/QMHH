@@ -17,8 +17,8 @@ public class DeepSeaBranchDrawer extends BranchDrawerBase {
 	
 	public void drawBranch(Branch branch) {
 		// only draw the branch if it is marked as active
-		float leafSize = 3.f + Main.sqrt(Main.pow(branch.endX-branch.startX, 2) + 
-										 Main.pow(branch.endY-branch.startY, 2)) / 50.0f;
+		float leafSize = 1.f + Main.sqrt(Main.pow(branch.endX-branch.startX, 2) + 
+										 Main.pow(branch.endY-branch.startY, 2)) / 160.0f;
 		if(branch.activeP) {
 			float alpha = 255.0f;
 			// if the branch hasn't stopped growing, the alpha is less than 255.0

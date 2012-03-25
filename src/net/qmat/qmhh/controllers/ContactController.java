@@ -18,6 +18,7 @@ public class ContactController implements ContactListener {
 	public void beginContact(Contact contact) {
 		Object objA = contact.getFixtureA().getBody().getUserData();
 		Object objB = contact.getFixtureB().getBody().getUserData();
+		System.out.println(objA + " " + objB);
 		if(objA == null || objB == null)
 			return;
 		if(beginContactPair(contact, objA, objB, CreatureBase.class, Beam.class, CreatureBaseBeamContact.class)) return;

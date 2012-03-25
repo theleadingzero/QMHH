@@ -37,10 +37,11 @@ public class Branch extends ProcessingObject {
 	public Branch(Tree tree,
 			Branch parent, 
 			float length, 
-			int levels, 
+			float lengthMp,
+			int level, 
 			float x, 
 			float y, 
-			float angle) {
+			float angle) throws Exception {
 		this.tree = tree;
 		this.parent = parent;
 		this.length = p.random(0.8f * length, 1.2f * length);
@@ -53,29 +54,42 @@ public class Branch extends ProcessingObject {
 		endY = y + this.length * Main.sin(angle);
 		startX = x;
 		startY = y;
+		
+		if(!this.withinEcosystemP()) {
+			throw new Exception("Branch is not within ecosystem. Abort! Abort!");
+		}
 
 		makeBody(x, y, endX, endY, angle);
 
-		if(this.withinEcosystemP()) {
-			if(levels > 0) {
+		
+		if(level < Tree.MAX_BRANCH_LEVELS) {
+			try {
 				Branch b1 = new Branch(tree,
 						this, 
-						0.8f * length, 
-						levels-1,
+						lengthMp * length,
+						lengthMp,
+						level+1,
 						endX,
 						endY,
 						angle - tree.internalAngle);
-				if(b1.withinEcosystemP())
-					branches.add(b1);
+				branches.add(b1);
+			} catch(Exception e) {
+				// ignore, not within ecosystem (probably)
+				// TODO: use own exception type
+			}
+			try {
 				Branch b2 = new Branch(tree, 
 						this, 
-						0.8f * length, 
-						levels-1,
+						lengthMp * length,
+						lengthMp,
+						level+1,
 						endX,
 						endY,
 						angle + tree.internalAngle);
-				if(b1.withinEcosystemP())
-					branches.add(b2);
+				branches.add(b2);
+			} catch(Exception e) {
+				// ignore, not within ecosystem (probably)
+				// TODO: use own exception type
 			}
 		}
 	}
@@ -84,7 +98,7 @@ public class Branch extends ProcessingObject {
 		PPoint2 ppos1 = new CPoint2(endX, endY).toPPoint2();
 		PPoint2 ppos2 = new CPoint2(startX, startY).toPPoint2();
 		return ppos1.r < Main.outerRingInnerRadius - 10.f &&
-				ppos2.r < Main.outerRingInnerRadius - 10.f;
+			   ppos2.r < Main.outerRingInnerRadius - 10.f;
 	}
 
 	public void activate() {

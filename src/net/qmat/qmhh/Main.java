@@ -72,10 +72,10 @@ public class Main extends PApplet {
 
 		/*
 		 * Creatures some creatures for testing
-		 */
 		for(int i=0; i<3; i++) {
 			Models.getCreaturesModel().addCreature();
 		}
+		*/
 		
 		// Add a hand for testing
 		/*
@@ -89,7 +89,7 @@ public class Main extends PApplet {
 		Models.getHandsModel().addHand(7L, 30f, 326f); //740f, 325.0f);
 		*/
 
-		 
+		smooth();
 	}
 
 	public void draw() {
