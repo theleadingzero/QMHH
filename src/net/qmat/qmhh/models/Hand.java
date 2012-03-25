@@ -81,14 +81,18 @@ public class Hand extends ProcessingObject {
 	public void addCreature(CreatureBase creature) {
 		if(nrBeamCreatures() == 0)
 			Controllers.getSoundController().beamBlocked();
-		if(!beamCreatures.contains(creature))
-			beamCreatures.add(creature);
+		synchronized(beamCreatures) {
+			if(!beamCreatures.contains(creature))
+				beamCreatures.add(creature);
+		}
 		System.out.println(nrBeamCreatures());
 	}
 
 	public void removeCreature(CreatureBase creature) {
-		if(beamCreatures.contains(creature))
-			beamCreatures.remove(creature);
+		synchronized(beamCreatures) {
+			if(beamCreatures.contains(creature))
+				beamCreatures.remove(creature);
+		}
 		if(nrBeamCreatures() == 0)
 			Controllers.getSoundController().beamUnblocked();
 		System.out.println(nrBeamCreatures());
@@ -222,7 +226,7 @@ public class Hand extends ProcessingObject {
 		private void makeBody() {
 			FixtureDef fd = createFixture();
 			BodyDef bd = new BodyDef();
-			bd.type = BodyType.STATIC;
+			bd.type = BodyType.DYNAMIC;
 			// set position to be in between the center and the hand position
 			//bd.position.set(box2d.coordPixelsToWorld(new Vec2((hand.x + Main.centerX)*0.5f, (hand.y + Main.centerY)*0.5f)));
 			// or set the position of the static body to the middle
@@ -238,6 +242,7 @@ public class Hand extends ProcessingObject {
 			sd.set(vs, 4);
 			FixtureDef fd = new FixtureDef();
 			fd.shape = sd;
+			fd.density = 0.0f;
 			fd.isSensor = true;
 			return fd;
 		}

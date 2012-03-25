@@ -239,7 +239,7 @@ public class CreatureBase extends ProcessingObject {
 			PPoint2 targetPPos = target.getCPosition().toPPoint2();
 			targetPPos.r = Main.outerRingInnerRadius - w/2.0f;
 			Vec2 targetVPos = targetPPos.toVec2();
-			body.applyForce(seek(box2d.coordPixelsToWorld(targetVPos).mulLocal(5.0f), maxForce * 5.0f), 
+			body.applyForce(seek(box2d.coordPixelsToWorld(targetVPos), maxForce * 35.0f), 
 					body.getWorldCenter());
 		}
 	}

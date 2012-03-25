@@ -12,6 +12,7 @@ public class CreatureBaseBeamContact extends ContactLogic {
 			// TODO: this will cause trouble when the hand is suddenly removed asynchronously!
 			Beam beam = (Beam)objB;
 			beam.hand.addCreature(creature);
+			System.out.println("contact");
 		}
 	}
 	
@@ -21,6 +22,7 @@ public class CreatureBaseBeamContact extends ContactLogic {
 			// TODO: this will cause trouble when the hand is suddenly removed asynchronously!
 			Beam beam = (Beam)objB;
 			beam.hand.removeCreature(creature);
+			System.out.println("x");
 		}
 	}
 }
