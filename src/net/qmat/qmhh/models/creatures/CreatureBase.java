@@ -173,7 +173,7 @@ public class CreatureBase extends ProcessingObject {
 				followDebugColor = p.color(0);
 				flock(creatures);
 			}
-			// in stage 2, so target, get back into the third zone, or flock
+			// in stage 2, get back into the third zone, or flock
 		} else {
 			if(ppos.r < zoneWidth * 2.0f) {
 				followDebugColor = p.color(0, 255 ,0);
@@ -237,9 +237,9 @@ public class CreatureBase extends ProcessingObject {
 	private void target() {
 		if(target != null) {
 			PPoint2 targetPPos = target.getCPosition().toPPoint2();
-			targetPPos.r = Main.outerRingInnerRadius - 20.0f;
+			targetPPos.r = Main.outerRingInnerRadius - w/2.0f;
 			Vec2 targetVPos = targetPPos.toVec2();
-			body.applyForce(seek(box2d.coordPixelsToWorld(targetVPos).mulLocal(5.0f), maxForce * 2.0f), 
+			body.applyForce(seek(box2d.coordPixelsToWorld(targetVPos).mulLocal(5.0f), maxForce * 5.0f), 
 					body.getWorldCenter());
 		}
 	}
