@@ -5,8 +5,6 @@ import java.nio.FloatBuffer;
 import javax.media.opengl.GL;
 
 import net.qmat.qmhh.Main;
-import net.qmat.qmhh.models.Spore;
-import net.qmat.qmhh.utils.CPoint2;
 
 import org.jbox2d.common.Vec2;
 
@@ -17,7 +15,7 @@ import com.sun.opengl.util.BufferUtil;
 public class Jellyfish extends CreatureBase {
 
 	private int numSegments = 4;
-	private int maxSegments = 12;
+	private int maxSegments = 19;
 	private float Ra = 150.0f;  // aperture / radius
 	private float Ha = 100.0f;  // height
 	private float angleSpace = Main.TWO_PI / numSegments;
@@ -88,8 +86,9 @@ public class Jellyfish extends CreatureBase {
 	
 	public void grow() {
 		super.grow();
-		if(numSegments<maxSegments) {
-			numSegments++;
+		int tmpSegments = stage * maxSubStage + subStage + 4;
+		if(tmpSegments<maxSegments) {
+			numSegments = tmpSegments; 
 			angleSpace = Main.TWO_PI / numSegments;
 		}
 	}

@@ -6,7 +6,6 @@ import net.qmat.qmhh.utils.PPoint2;
 import net.qmat.qmhh.utils.Settings;
 
 import org.jbox2d.collision.shapes.CircleShape;
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -15,14 +14,12 @@ import org.jbox2d.dynamics.FixtureDef;
 
 public class Spore extends ProcessingObject {
 	
-	float w, h;
+	public static float w = 2.0f, h = 2.0f;
 	float angle;
 	Body body;
-	
+	private boolean markedForRemovalP = false;
 	
 	public Spore(float startRadius) {
-		w = 2.0f;
-		h = 2.0f;
 		
 		angle = p.random(0, Main.TWO_PI);
 		
@@ -34,7 +31,7 @@ public class Spore extends ProcessingObject {
 	    FixtureDef fd = new FixtureDef();
 	    fd.shape = sd;
 	    // Parameters that affect physics
-	    fd.density = 0.1f;
+	    fd.density = 0.8f;
 	    fd.friction = 0.3f;
 	    fd.restitution = 0.3f;
 	    fd.filter.groupIndex = Settings.getInteger(Settings.PR_SPORE_COLLISION_GROUP);
@@ -55,6 +52,14 @@ public class Spore extends ProcessingObject {
 	    body.setLinearVelocity(direction);
 	    body.setAngularVelocity(0.0f);
 	    body.setUserData(this);
+	}
+	
+	public void markForRemoval() {
+		markedForRemovalP = true;
+	}
+	
+	public boolean isMarkedForRemoval() {
+		return markedForRemovalP;
 	}
 	
 	public void destroy() {
@@ -80,6 +85,11 @@ public class Spore extends ProcessingObject {
 	
 	public float getAbsoluteVelocity() {
 		return body.getLinearVelocity().length();
+	}
+	
+	public String toString() {
+		PPoint2 p = this.getPPosition();
+		return "[polar: " + p.r + "," + p.t + "]"; 
 	}
 
 }

@@ -1,6 +1,7 @@
 package net.qmat.qmhh.controllers;
 
 import java.util.concurrent.LinkedBlockingQueue;
+
 import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.utils.Settings;
 import netP5.NetAddress;
@@ -82,7 +83,7 @@ public class OscController extends Thread {
 	}
 	
 	void oscEvent(OscMessage theOscMessage) {
-		
+		/*
 		if(theOscMessage.checkAddrPattern("/seq/setAngle")==true) {
 			if(theOscMessage.checkTypetag("f")) {
 				float angle = theOscMessage.get(0).floatValue();
@@ -102,6 +103,7 @@ public class OscController extends Thread {
 				Models.getPlayheadModel().stop();
 			}  
 		}
+		*/
 		
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Vector;
 import processing.core.PApplet;
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.utils.CPoint2;
@@ -14,10 +15,15 @@ import org.jbox2d.common.Vec2;
 
 public class HandsModel extends ProcessingObject {
 	
+	public static Float chargeTime;
+	public static Double chargeTimeNano;
+	
 	private ConcurrentHashMap<Long, Hand> hands;
 	private int nrSections;
 	
 	public HandsModel() {
+		chargeTime = Settings.getFloat(Settings.PR_HAND_CHARGE_TIME);
+		chargeTimeNano = chargeTime.doubleValue() * 1000000000;
 		hands = new ConcurrentHashMap<Long, Hand>();
 		nrSections = Settings.getInteger(Settings.PR_SEQUENCER_SECTIONS);;
 	}
@@ -69,7 +75,7 @@ public class HandsModel extends ProcessingObject {
 	
 	public void draw() {
 		// draw the fancy patterns underneath the hands
-		drawHandBackdrops();
+		//drawHandBackdrops();
 		
 		// set up the look for the hands here for efficiency
 		p.ellipseMode(Main.CENTER);
@@ -118,7 +124,8 @@ public class HandsModel extends ProcessingObject {
 			Iterator<Entry<Long, Hand>> entries = hands.entrySet().iterator();
 			while(entries.hasNext()) {
 				Hand hand = entries.next().getValue();
-				if(hand.nrBeamCreatures() <= 0) nrHands++;
+				if(hand.nrBeamCreatures() <= 0 && hand.hasReachedCenterP()) 
+					nrHands++;
 			}
 			return nrHands;
 		}

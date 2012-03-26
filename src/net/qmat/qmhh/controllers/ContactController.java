@@ -1,11 +1,16 @@
 package net.qmat.qmhh.controllers;
 
-import net.qmat.qmhh.contacts.*;
+import net.qmat.qmhh.contacts.BackgroundSporeContact;
+import net.qmat.qmhh.contacts.ContactLogic;
+import net.qmat.qmhh.contacts.CreatureBaseBeamContact;
+import net.qmat.qmhh.contacts.CreatureBaseSporeContact;
+import net.qmat.qmhh.contacts.CreatureBaseTreeBranchContact;
+import net.qmat.qmhh.contacts.SporeBranchContact;
 import net.qmat.qmhh.models.Background;
 import net.qmat.qmhh.models.Hand.Beam;
 import net.qmat.qmhh.models.Spore;
-import net.qmat.qmhh.models.Tree.Branch;
 import net.qmat.qmhh.models.creatures.CreatureBase;
+import net.qmat.qmhh.models.trees.Branch;
 
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -45,7 +50,7 @@ public class ContactController implements ContactListener {
 			return;
 		if(preSolvePair(contact, manifold, objA, objB, CreatureBase.class, Spore.class, CreatureBaseSporeContact.class)) return;
 		if(preSolvePair(contact, manifold, objA, objB, Background.class, Spore.class, BackgroundSporeContact.class)) return;
-		if(preSolvePair(contact, manifold, objA, objB, Spore.class, Branch.class, SporeTreeBranchContact.class)) return;
+		if(preSolvePair(contact, manifold, objA, objB, Spore.class, Branch.class, SporeBranchContact.class)) return;
 		if(preSolvePair(contact, manifold, objA, objB, CreatureBase.class, Branch.class, CreatureBaseTreeBranchContact.class)) return;
 	}
 

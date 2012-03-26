@@ -15,7 +15,12 @@
 
 package net.qmat.qmhh.controllers;
 
-import TUIO.*;
+import TUIO.TuioClient;
+import TUIO.TuioCursor;
+import TUIO.TuioListener;
+import TUIO.TuioObject;
+import TUIO.TuioPoint;
+import TUIO.TuioTime;
 
 /* 
  * TODO: when CCV crashes or is restarted while the processing app is running 

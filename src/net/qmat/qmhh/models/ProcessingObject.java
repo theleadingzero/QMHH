@@ -6,6 +6,7 @@ public class ProcessingObject {
 	
 	protected Main p;
 	protected PBox2D box2d;
+	private boolean markedForRemovalP = false;
 	
 	/*
 	 * Give all ProcessingObjects a reference to the main applet and 
@@ -33,6 +34,17 @@ public class ProcessingObject {
 	 *  This does any clean up, should only be necessary when dealing with box2d.
 	 */
 	public void destroy() {}
+	
+
+	public void markForRemoval() {
+		markedForRemovalP = true;
+	}
+	
+	public boolean isMarkedForRemovalP() {
+		return markedForRemovalP;
+	}
+	
+	
 	
 	
 }

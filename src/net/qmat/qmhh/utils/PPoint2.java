@@ -7,6 +7,7 @@ package net.qmat.qmhh.utils;
 import net.qmat.qmhh.Main;
 
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 
 public class PPoint2 {
 	
@@ -24,5 +25,9 @@ public class PPoint2 {
 	
 	public Vec2 toVec2() {
 		return toCPoint2().toVec2();
+	}
+	
+	public static PPoint2 fromBody(Body body) {
+		return (new CPoint2(Main.box2d.getBodyPixelCoord(body)).toPPoint2());
 	}
 }

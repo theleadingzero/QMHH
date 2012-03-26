@@ -11,14 +11,14 @@ public class Controllers {
 	
 	private HandsController handsController;
 	private TuioController tuioController;
-	private SequencerController sequencerController;
+	//private SequencerController sequencerController;
 	private OrbController orbController;
 	private SoundController soundController;
 	private OscController oscController;
 	
 	protected Controllers() {
 		handsController = new HandsController();
-		sequencerController = new SequencerController();
+		//sequencerController = new SequencerController();
 		orbController = new OrbController();
 		soundController = new SoundController();
 		oscController = new OscController();
@@ -64,9 +64,9 @@ public class Controllers {
 		return getInstance().tuioController;
 	}
 
-	public static SequencerController getSequencerController() {
-		return getInstance().sequencerController;
-	}
+//	public static SequencerController getSequencerController() {
+//		return getInstance().sequencerController;
+//	}
 	
 	public static OrbController getOrbController() {
 		return getInstance().orbController;

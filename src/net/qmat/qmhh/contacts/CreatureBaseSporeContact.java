@@ -13,6 +13,7 @@ public class CreatureBaseSporeContact extends ContactLogic {
 		CreatureBase creature = (CreatureBase)objA;
 		creature.grow();
 		Spore spore = (Spore)objB;
-		Models.getSporesModel().removeSpore(spore);
+		Models.getFeedbackPointsModel().addFeedbackPoint(spore.getCPosition());
+		spore.markForRemoval();
 	}
 }

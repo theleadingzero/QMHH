@@ -1,17 +1,17 @@
 package net.qmat.qmhh.models;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.concurrent.locks.Lock;
+
+import javax.media.opengl.GL;
 
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
-import org.jbox2d.common.Vec2;
-import com.sun.opengl.util.BufferUtil;
-import java.nio.FloatBuffer;
-import javax.media.opengl.GL;
 import processing.opengl.PGraphicsOpenGL;
+
+import com.sun.opengl.util.BufferUtil;
 
 public class SporesModel extends ProcessingObject {
 	
@@ -24,16 +24,13 @@ public class SporesModel extends ProcessingObject {
 	
 	public void startRipple(float startRadius) {
 		synchronized(spores) {
-			for(int i=0; i<40; i++)
+			for(int i=0; i<25; i++)
 				spores.add(new Spore(startRadius));
 		}
 	}
 	
 	public void removeSpore(Spore spore) {
-		synchronized(spores) {
-			spore.destroy();
-			spores.remove(spore);
-		}
+		spore.markForRemoval();
 	}
 	
 	public void update() {
@@ -43,7 +40,7 @@ public class SporesModel extends ProcessingObject {
 			while(it.hasNext()) {
 				Spore spore = it.next();
 				PPoint2 ppos = spore.getPPosition();
-				if(ppos.r > Main.outerRingOuterRadius || spore.getAbsoluteVelocity() < 1.0f) {
+				if(ppos.r > Main.outerRingOuterRadius || spore.getAbsoluteVelocity() < 1.0f || spore.isMarkedForRemoval()) {
 					spore.destroy();
 					it.remove();
 				}
@@ -71,8 +68,8 @@ public class SporesModel extends ProcessingObject {
 			    gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
 			    gl.glVertexPointer(2, GL.GL_FLOAT, 0, vbuffer);
 		
-			    gl.glPointSize(2.0f);
-			    gl.glColor4f(1.0f, 0.8f, 1.0f, 0.9f);
+			    gl.glPointSize(Spore.w);
+			    gl.glColor4f(0.47f, 0.47f, 1.0f, 0.89f);
 			    gl.glDrawArrays(GL.GL_POINTS, 0, spores.size());
 			     
 			    pgl.endGL();

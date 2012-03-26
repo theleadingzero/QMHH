@@ -10,14 +10,19 @@ import net.qmat.qmhh.Main;
 import net.qmat.qmhh.controllers.Controllers;
 import net.qmat.qmhh.controllers.SoundController;
 import net.qmat.qmhh.models.Hand;
+import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.models.ProcessingObject;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 import net.qmat.qmhh.utils.Settings;
 
-import org.jbox2d.dynamics.*;
-import org.jbox2d.common.*;
-import org.jbox2d.collision.shapes.*;
+import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.FixtureDef;
 
 public class CreatureBase extends ProcessingObject {
 
@@ -25,10 +30,15 @@ public class CreatureBase extends ProcessingObject {
 	protected int maxStage = 2;
 
 	protected int subStage = 0;
-	protected int maxSubStage = 2;
+	protected int maxSubStage = 5;
 
 	protected float w = 10.0f;
 	protected float h = 10.0f;
+	private float tmpW, tmpH;
+	private float goalW;
+	private float goalH;
+	private float mulW = 1.0f;
+	private float mulH = 1.0f;
 	private float maxForce = 3.0f;
 	private float maxSpeed = 10.0f;
 	private Hand target = null;
@@ -36,13 +46,14 @@ public class CreatureBase extends ProcessingObject {
 	private int followDebugColor = 0;
 	// these timestamps/durations are in seconds
 	private Long lastGrowthTimestamp = 0L;
-	private float minimalGrowthInterval; 
-
-	private boolean rebuildShapeP = false;
+	private Float minimalGrowthInterval; 
+	private Double growthFeedbackTime = 1.0;
 
 	private static float DESIRED_SEPARATION = 80.0f;
 	private static float NEIGHBOR_DISTANCE  = 40.0f;
 
+	private float subStageGrowthFactor = 1.05f;
+	private float stageGrowthFactor = 1.2f;
 
 
 	public CreatureBase() {
@@ -58,6 +69,8 @@ public class CreatureBase extends ProcessingObject {
 	private void init(CPoint2 cpos, float angle) {
 		stage = 0;
 		minimalGrowthInterval = Settings.getFloat(Settings.PR_MINIMAL_GROWTH_INTERVAL);
+		goalW = w;
+		goalH = h;
 		makeBody(cpos, angle);
 	}
 
@@ -75,6 +88,7 @@ public class CreatureBase extends ProcessingObject {
 				p.random(-0.5f, 0.5f)));
 		body.setAngularVelocity(0.0f);
 		body.setUserData(this);
+		body.setFixedRotation(true);
 	}
 
 	public void destroy() {
@@ -91,17 +105,16 @@ public class CreatureBase extends ProcessingObject {
 
 		// TODO: delete the next line when debugging targeting
 		p.fill(followDebugColor);
-
+		p.ellipseMode(Main.CENTER);
 		p.pushMatrix();
 		Vec2 loc = box2d.getBodyPixelCoord(body);
 		p.translate(loc.x, loc.y);
 		p.rotate(body.getAngle());
-		p.rect(0, 0, w, h);
+		p.ellipse(0, 0, w, h);
 		p.popMatrix();
 
 		if(target != null) {
 			p.pushMatrix();
-			p.ellipseMode(Main.CENTER);
 			CPoint2 targetPos = target.getCPosition();
 			p.translate(targetPos.x + p.random(0, 10), targetPos.y + p.random(0, 10));
 			p.fill(followDebugColor);
@@ -113,10 +126,8 @@ public class CreatureBase extends ProcessingObject {
 
 	// TODO: DRY this out!
 	public void update(ArrayList<CreatureBase> creatures) {
-		// recreate the shapes if we have to
-		if(rebuildShapeP) {
-			rebuildShape();
-		}
+		// adjust the size of the creature
+		rebuildShape();
 		
 		// flock, but keep within the zone.
 		float zoneWidth = Main.outerRingInnerRadius / 3.0f;
@@ -126,7 +137,11 @@ public class CreatureBase extends ProcessingObject {
 		// add some randomness to the center
 		Vec2 vCenter = new Vec2(Main.centerX + p.random(-100, 100), Main.centerY + p.random(-100, 100));
 		// if in stage 1 
-		if(stage == 1) {
+		
+		// if the creature has a target, ignore the flocking behavior
+		if(target != null && stage > 0) {
+			target();
+		} else if(stage == 1) {
 			// too far outwards?
 			if(ppos.r > zoneWidth * 2.0f) {
 				followDebugColor = p.color(155, 0 ,0);
@@ -153,16 +168,18 @@ public class CreatureBase extends ProcessingObject {
 				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				body.applyForce(towards, loc);
 				// in the zone
+			} else if(ppos.r < zoneWidth / 2.0f) {
+				followDebugColor = p.color(0, 155 ,0);
+				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
+				towards.negateLocal();
+				body.applyForce(towards, loc);
 			} else {
 				followDebugColor = p.color(0);
 				flock(creatures);
 			}
-			// in stage 2, so target, get back into the third zone, or flock
+			// in stage 2, get back into the third zone, or flock
 		} else {
-			// if the creature has a target, ignore the flocking behavior
-			if(target != null) {
-				target();
-			} else if(ppos.r < zoneWidth * 2.0f) {
+			if(ppos.r < zoneWidth * 2.0f) {
 				followDebugColor = p.color(0, 255 ,0);
 				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				towards.negateLocal();
@@ -219,13 +236,14 @@ public class CreatureBase extends ProcessingObject {
 	private Vec2 seek(Vec2 t) {
 		return seek(t, maxForce);
 	}
-
+	
+	// TODO: find the right path, not through the plants!
 	private void target() {
 		if(target != null) {
 			PPoint2 targetPPos = target.getCPosition().toPPoint2();
-			targetPPos.r = Main.outerRingInnerRadius - 20.0f;
+			targetPPos.r = Main.outerRingInnerRadius - w/2.0f;
 			Vec2 targetVPos = targetPPos.toVec2();
-			body.applyForce(seek(box2d.coordPixelsToWorld(targetVPos).mulLocal(5.0f), maxForce * 2.0f), 
+			body.applyForce(seek(box2d.coordPixelsToWorld(targetVPos), maxForce * 35.0f), 
 					body.getWorldCenter());
 		}
 	}
@@ -349,23 +367,39 @@ public class CreatureBase extends ProcessingObject {
 
 	public void grow() {
 		Long newTimestamp = System.nanoTime();
-		if(stage < maxStage && newTimestamp - lastGrowthTimestamp > (double)minimalGrowthInterval * 1000000000L) {
+		Long interval = newTimestamp - lastGrowthTimestamp;
+		if(stage < maxStage && interval > (double)minimalGrowthInterval * 1000000000L) {
 			lastGrowthTimestamp = newTimestamp;
-			SoundController sc = Controllers.getSoundController();
-			if(subStage < maxSubStage) {
-				subStage += 1;
-				w *= 1.15f;
-				h *= 1.15f;
+			growWithoutTimeCheck(true);
+		}
+	}
+	
+	public void growWithoutTimeCheck(boolean notifySound) {
+		SoundController sc = Controllers.getSoundController();
+		boolean ns = notifySound && sc != null && Models.getInstance() != null;
+		if(subStage < maxSubStage) {
+			subStage += 1;
+			goalW = goalW * subStageGrowthFactor;
+			goalH = goalH * subStageGrowthFactor;
+			if(ns) {
 				sc.creatureHasGrown(this);
-			} else {
-				subStage = 0;
-				stage += 1;
-				w *= 1.3f;
-				h *= 1.3f;
+			}
+		} else {
+			subStage = 0;
+			stage += 1;
+			goalW = goalW * stageGrowthFactor;
+			goalH = goalH * stageGrowthFactor;
+			if(ns) {
 				sc.creatureChangedStage(this);
 			}
-			rebuildShapeP = true;
 		}
+	}
+	
+	// N.B. this will only work when starting from stage and substage 0
+	public void setStage(int stage) {
+		for(int i=0; i<stage*maxSubStage - 1; i++)
+			growWithoutTimeCheck(false);
+		grow();
 	}
 
 	private FixtureDef createFixture() {
@@ -374,7 +408,7 @@ public class CreatureBase extends ProcessingObject {
 
 		FixtureDef fd = new FixtureDef();
 		fd.shape = sd;
-		fd.density = 0.5f / w;
+		fd.density = 0.09f;
 		fd.friction = 1.2f;
 		fd.restitution = 0.5f;
 		return fd;
@@ -391,14 +425,24 @@ public class CreatureBase extends ProcessingObject {
 	}
 
 	private void rebuildShape() {
-		// update size of the body
+		// update size of the body, grow to the new size slowly
+		Long newTimestamp = System.nanoTime();
+		Double growthIndex = (newTimestamp - lastGrowthTimestamp) / (growthFeedbackTime*1000000000.0);
+		// only update mulW and mulH when we are growing
+		if(growthIndex < 1.0) {
+			mulH = mulW = (1.0f + Main.sin(growthIndex.floatValue() * Main.TWO_PI) / 2.0f) * 2.0f;
+		} else {
+			mulH = mulW = 1.0f;
+		}
+		tmpW += (goalW - tmpW) * 0.1f;
+		tmpH += (goalH - tmpH) * 0.1f;
+		w = tmpW * mulW;
+		h = tmpH * mulH;
 		Fixture f = body.getFixtureList();
 		while(f != null) {
-			body.destroyFixture(f);
+			f.m_shape.m_radius = box2d.scalarPixelsToWorld(w/2.0f);
 			f = f.getNext();
 		}
-		body.createFixture(createFixture());
-		rebuildShapeP = false;
 	}
 
 	public float getRadius() {
