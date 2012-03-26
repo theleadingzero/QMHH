@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>data/backdrop_3.jpg</name>
-			<type>1</type>
-			<location>/Users/nicole/myGit/QMHH/data/backdrop_3.jpg</location>
-		</link>
-	</linkedResources>
 </projectDescription>
