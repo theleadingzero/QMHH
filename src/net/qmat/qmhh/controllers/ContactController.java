@@ -1,6 +1,11 @@
 package net.qmat.qmhh.controllers;
 
-import net.qmat.qmhh.contacts.*;
+import net.qmat.qmhh.contacts.BackgroundSporeContact;
+import net.qmat.qmhh.contacts.ContactLogic;
+import net.qmat.qmhh.contacts.CreatureBaseBeamContact;
+import net.qmat.qmhh.contacts.CreatureBaseSporeContact;
+import net.qmat.qmhh.contacts.CreatureBaseTreeBranchContact;
+import net.qmat.qmhh.contacts.SporeBranchContact;
 import net.qmat.qmhh.models.Background;
 import net.qmat.qmhh.models.Hand.Beam;
 import net.qmat.qmhh.models.Spore;

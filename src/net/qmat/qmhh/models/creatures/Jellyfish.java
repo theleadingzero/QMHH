@@ -5,8 +5,6 @@ import java.nio.FloatBuffer;
 import javax.media.opengl.GL;
 
 import net.qmat.qmhh.Main;
-import net.qmat.qmhh.models.Spore;
-import net.qmat.qmhh.utils.CPoint2;
 
 import org.jbox2d.common.Vec2;
 

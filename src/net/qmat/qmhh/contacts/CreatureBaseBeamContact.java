@@ -1,7 +1,7 @@
 package net.qmat.qmhh.contacts;
 
-import net.qmat.qmhh.models.creatures.CreatureBase;
 import net.qmat.qmhh.models.Hand.Beam;
+import net.qmat.qmhh.models.creatures.CreatureBase;
 import org.jbox2d.dynamics.contacts.Contact;
 
 public class CreatureBaseBeamContact extends ContactLogic {

@@ -5,6 +5,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
 
+import net.qmat.qmhh.Main;
+import net.qmat.qmhh.controllers.Controllers;
+import net.qmat.qmhh.models.creatures.CreatureBase;
+import net.qmat.qmhh.utils.CPoint2;
+import net.qmat.qmhh.utils.PPoint2;
+
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;

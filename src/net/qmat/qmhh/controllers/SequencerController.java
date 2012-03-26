@@ -1,11 +1,9 @@
 package net.qmat.qmhh.controllers;
 
-import oscP5.*;
 import net.qmat.qmhh.Main;
-import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.utils.PPoint2;
 import net.qmat.qmhh.utils.Settings;
-import netP5.*;
+import oscP5.OscMessage;
 
 // TODO: add correct size to outgoing message => need to change tuiocontroller. 
 

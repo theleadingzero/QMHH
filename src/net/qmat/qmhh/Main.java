@@ -18,6 +18,7 @@ import codeanticode.glgraphics.GLConstants;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import processing.core.*;
+import processing.core.PApplet;
 
 public class Main extends PApplet {
 
