@@ -145,8 +145,10 @@ public class Hand extends ProcessingObject {
 			glg1.background(0);
 			//glg1.fill(200);
 			//glg1.stroke(255);
-			glg1.fill(237, 212, 69, 150);
-			glg1.stroke(234, 187, 31);
+			//glg1.fill(237, 212, 69, 150);
+			//glg1.stroke(234, 187, 31);
+			glg1.fill(255, 255, 255, 220);
+			glg1.stroke(255, 255, 255);
 			glg1.pushMatrix();
 			glg1.translate(glg1.width/2.0f,glg1.height/2.0f);
 			glg1.beginShape();
@@ -288,7 +290,7 @@ public class Hand extends ProcessingObject {
 		}
 		
 		private void getBeamCoordinates(CPoint2 p1, CPoint2 p2, Vector<CPoint2> cs, float reverse) {
-			float stepSize = 20.0f;
+			float stepSize = 15.0f;
 			float length = Main.sqrt((p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y));
 			int steps = (int)(length / stepSize);
 			float angle = Main.atan2(p2.y-p1.y, p2.x-p1.x);
@@ -332,11 +334,11 @@ public class Hand extends ProcessingObject {
 					cs1.addAll(cs2);
 					
 					// draw beam
-					p.fill(237, 212, 69, 100);
+					p.fill(255, 255, 255, 100);
 					p.noStroke();
 					p.beginShape();
 					for(CPoint2 cpos : cs1) {
-						p.curveVertex(cpos.x, cpos.y);
+						p.vertex(cpos.x, cpos.y);
 					}
 					p.endShape(Main.CLOSE);
 
