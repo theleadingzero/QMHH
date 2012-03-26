@@ -1,6 +1,7 @@
 package net.qmat.qmhh.contacts;
 
 import net.qmat.qmhh.models.Tree.Branch;
+
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.contacts.Contact;
 

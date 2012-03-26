@@ -41,10 +41,6 @@ public class Moth extends CreatureBase {
 		// calculate the angle from the linear velocity
 		Vec2 velocity = body.getLinearVelocity();
 		float angle = Main.atan2(velocity.x, velocity.y);
-
-		
-		
-
 		// the amount of body segments to draw
 		int tempCount = 1;  
 		if(stage == 0) 
@@ -74,10 +70,9 @@ public class Moth extends CreatureBase {
 		p.strokeWeight(1);
 		p.stroke(255);
 		//p.rect(0, 0, w, h);
-		
+		p.translate(-w * tempCount / 2.5f/2, -w / 3 * tempCount / 1.5f/2.3f);
 		//body parts
 				for(int i=tempCount; i > 0; i--) {
-
 					//for the eyes in the first iteration
 					if(i == tempCount) drawEyes(i, alpha);
 					// main body part

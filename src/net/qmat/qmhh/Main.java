@@ -13,12 +13,7 @@ import net.qmat.qmhh.models.Background;
 import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.utils.Settings;
 import pbox2d.PBox2D;
-import javax.media.opengl.*;
-import javax.media.opengl.glu.*;
-import com.sun.opengl.util.*;
-import processing.opengl.*;
-import java.nio.*;
-import processing.core.*;
+import processing.core.PApplet;
 
 public class Main extends PApplet {
 	

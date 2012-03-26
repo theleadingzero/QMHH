@@ -2,7 +2,6 @@ package pbox2d;
 
 import java.lang.reflect.Method;
 
-
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;

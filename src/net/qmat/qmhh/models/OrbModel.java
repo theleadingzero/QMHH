@@ -1,12 +1,15 @@
 package net.qmat.qmhh.models;
 
 import java.nio.FloatBuffer;
+
 import javax.media.opengl.GL;
-import com.sun.opengl.util.BufferUtil;
+
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.utils.Settings;
 import processing.core.PVector;
 import processing.opengl.PGraphicsOpenGL;
+
+import com.sun.opengl.util.BufferUtil;
 
 public class OrbModel extends ProcessingObject {
 
