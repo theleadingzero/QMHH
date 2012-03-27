@@ -14,7 +14,7 @@ public class SoftBody extends CreatureBase {
 	private float springing = .0009f, damping = .98f;
 
 	//corner nodes
-	int nodes = 0;
+	int nodes = 8;
 	private float nodeStartX[];
 	private float nodeStartY[];
 	private float[]nodeX;
@@ -29,12 +29,7 @@ public class SoftBody extends CreatureBase {
 
 	SoftBody() {
 		super();
-		if(stage == 0) 
-			nodes = 5;
-		if(stage == 1)
-			nodes = 8;
-		if(stage == 2)
-			nodes = 11;
+
 		nodeStartX = new float[nodes];
 		nodeStartY = new float[nodes];
 		nodeX = new float[nodes];
@@ -60,10 +55,8 @@ public class SoftBody extends CreatureBase {
 		Vec2 position = box2d.getBodyPixelCoord(body);
 		float angleB = body.getAngle();
 		// calculate the angle from the linear velocity
-		//Vec2 velocity = body.getLinearVelocity();
-		//float angle = Main.atan2(velocity.x, velocity.y);
-		//centerY=position.y;
-		//centerX=position.x;
+		Vec2 velocity = body.getLinearVelocity();
+		float angle = Main.atan2(velocity.x, velocity.y);
 		/*
 		 * w and h are also part of the CreatureBase class and they are
 		 * the width and height of the creature. The field p is a reference to
@@ -72,35 +65,76 @@ public class SoftBody extends CreatureBase {
 		 */
 		p.pushMatrix();
 		p.translate(position.x, position.y);
-		//p.rotateZ(angleB);
-		//p.fill(100);
-		p.stroke(255);
-		
+		p.rotateZ(angle);
+
 		/*
 		 * SoftBody part
 		 * calculate node  starting locations
 		 */
+		int temp=4;
+		if(stage == 0) 
+			temp = 4;
+		if(stage == 1)
+			temp = 6;
+		if(stage == 2)
+			temp = 8;
 
-		  for (int i=0; i<nodes; i++){
+		  for (int i=0; i<temp; i++){
 		    nodeStartX[i] = centerX+Main.cos(Main.radians(rotAngle))*radius1;
 		    nodeStartY[i] = centerY+Main.sin(Main.radians(rotAngle))*radius1;
-		    rotAngle += 360.0f/nodes;
+		    rotAngle += 360.0f/temp;
 		  }
 		  //drawTail();
 		  
 		  // draw polygon
 		  
 		  //p.curveTightness(organicConstant);
-		  p.fill(255);
-		  p.noStroke();
+		  p.fill(255,190,230,70);
+		  //first layer
+		  //p.noStroke();
+		  p.strokeWeight(0.1f);
+		  p.stroke(255,0,255,110);
 		  p.beginShape();
-		  for (int i=0; i<nodes+3; i++){
-			  p.curveVertex(nodeX[i%nodeX.length], nodeY[i%nodeY.length]);
+		  for (int i=0; i<temp+3; i++){
+			  p.curveVertex(nodeX[i%temp], nodeY[i%temp]);
 		  }/*
 		  for (int i=0; i<nodes-1; i++){
 			  p.curveVertex(nodeX[i], nodeY[i]);
 		  }*/
 		  p.endShape(Main.CLOSE); 
+		  //second layer
+		  p.beginShape();
+		  p.strokeWeight(0.2f);
+		  p.stroke(255,190,230,70);
+		  for (int i=0; i<temp+3; i++){
+			  p.curveVertex(nodeX[i%temp]*2/3, nodeY[i%temp]*2/3);
+		  }/*
+		  for (int i=0; i<nodes-1; i++){
+			  p.curveVertex(nodeX[i], nodeY[i]);
+		  }*/
+		  p.endShape(Main.CLOSE); 
+		  //third layer
+		  p.strokeWeight(0.1f);
+		  p.stroke(255,90,180,110);
+		  p.beginShape();
+		   for (int i=0; i<temp+3; i++){
+			  p.curveVertex(nodeX[i%temp]*1.3f/3, nodeY[i%temp]*1.1f/3);
+		  }
+		   /*for (int i=0; i<nodes-1; i++){
+			  p.curveVertex(nodeX[i], nodeY[i]);
+		  }*/
+  
+		  p.endShape(Main.CLOSE); 
+		  //star
+		  p.strokeWeight(0.08f);
+		  p.stroke(255,60,180,70);
+		  //p.noStroke();
+		  p.fill(255,255,255,120);
+		  p.ellipse(-radius1*1.3f/4, -radius1*1.3f/18, radius1*1.3f/2, radius1*1.3f/9);
+		  p.ellipse(-radius1*1.3f/18, -radius1*1.3f/4, radius1*1.3f/9, radius1*1.3f/2);
+		  p.noStroke();
+		  p.fill(255,255,255,220);
+		  p.ellipse(-radius1/22, -radius1/22, radius1/11, radius1/11);
 		  
 		p.popMatrix();
 		
@@ -109,7 +143,7 @@ public class SoftBody extends CreatureBase {
 		 * or Main. For example, if you'd like to access TWO_PI you can so like 
 		 * this: Main.TWO_PI
 		 */
-		morf(position.x, position.y);
+		morf(position.x, position.y, temp);
 		/*
 		 * If you'd like to try out your creature change the 
 		 * preferences.properties file in /data/. Look for the PR_CREATURE_CLASS
@@ -117,7 +151,7 @@ public class SoftBody extends CreatureBase {
 		 */
 	}
 	
-	private void morf(float x, float y){
+	private void morf(float x, float y, int temp){
 		
 		/*
 		 * for the continious "morfing"
@@ -146,7 +180,7 @@ public class SoftBody extends CreatureBase {
 		  organicConstant = 1f + (float)(1f-((Main.abs(accelX)+Main.abs(accelY))*.1f));
 
 		  //move nodes
-		  for (int i=0; i<nodes; i++){
+		  for (int i=0; i<temp; i++){
 		    nodeX[i] = nodeStartX[i]+Main.sin(Main.radians(angle[i]))*(accelX*2);
 		    nodeY[i] = nodeStartY[i]+Main.sin(Main.radians(angle[i]))*(accelY*2);
 		    angle[i]+=frequency[i];

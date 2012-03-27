@@ -4,7 +4,8 @@ import net.qmat.qmhh.Main;
 import org.jbox2d.common.Vec2;
 
 public class Blurb  extends CreatureBase {
-	
+	private float indexOffset;
+	private float cycle = 2000.0f;
 	
 	Blurb(){
 		super();	
@@ -18,7 +19,7 @@ public class Blurb  extends CreatureBase {
 
 		int now2 = p.millis();
 
-		float index = 0;//(now2 % cycle) / cycle + indexOffset;
+		float index = (now2 % cycle) / cycle + indexOffset;
 
 		for(int i=0; i<steps+1; i++) {
 
