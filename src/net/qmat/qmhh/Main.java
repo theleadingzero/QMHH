@@ -128,19 +128,8 @@ public class Main extends PApplet {
 		Settings.init();
 
 		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
-			int primary_display = 0; //index into Graphic Devices array...  
-			int primary_width;
-			GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice devices[] = environment.getScreenDevices();
-			String location;
-			if(devices.length>1 ){ //we have a 2nd display/projector
-				primary_width = devices[0].getDisplayMode().getWidth();
-				location = "--location="+(primary_width+75)+",0";
-			} else {//leave on primary display
-				location = "--location=0,0";
-			}
-			String display = "--display="+(primary_display+1);  //processing considers the first display to be # 1
-			PApplet.main(new String[] {location, display, "net.qmat.qmhh.Main" });
+			String location = "--location=80,0";
+			PApplet.main(new String[] {location, "--present", "net.qmat.qmhh.Main" });
 		} else {
 			PApplet.main(new String[] { "net.qmat.qmhh.Main" });
 		}
