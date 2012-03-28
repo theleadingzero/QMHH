@@ -30,4 +30,15 @@ public class PPoint2 {
 	public static PPoint2 fromBody(Body body) {
 		return (new CPoint2(Main.box2d.getBodyPixelCoord(body)).toPPoint2());
 	}
+	
+	public static float averageAngles(float... angles) {
+		float sineSum = 0f;
+		float cosineSum = 0f;
+		for(float angle : angles) {
+			sineSum += Main.sin(angle);
+			cosineSum += Main.cos(angle);
+		}
+		return Main.atan2(sineSum, cosineSum);
+		
+	}
 }
