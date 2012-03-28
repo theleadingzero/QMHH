@@ -130,8 +130,9 @@ public class Main extends PApplet {
 		Settings.init();
 
 		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
-			String location = "--location=80,0";
-			PApplet.main(new String[] {location, "--present", "net.qmat.qmhh.Main" });
+			//String location = "--location=80,0";
+			//PApplet.main(new String[] {location, "--present", "net.qmat.qmhh.Main" });
+			PApplet.main(new String[] {"--present", "net.qmat.qmhh.Main" });
 		} else {
 			PApplet.main(new String[] { "net.qmat.qmhh.Main" });
 		}
