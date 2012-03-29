@@ -83,12 +83,12 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 	
 	public void drawLine(Vector<CPoint2> points, Branch branch){
 		for(int i=0;(branch.stoppedGrowing&&i<points.size())||i<points.size()-1;i++){
-			p.randomSeed(p.millis());
+			//p.randomSeed(p.millis());
 			float mx,my;
-			float tx=branch.length*i/18+p.random(-0.4f,0.4f);
-			float ty=branch.length*i/18+p.random(-0.4f,0.4f);
-			if(i%2==0){
-				tx*=-1; ty*=-1;	
+			float tx=branch.length*(i)/21+p.random(-0.4f,0.4f);
+			float ty=branch.length*(i)/21+p.random(-0.4f,0.4f);
+			if(i%2==0){;
+				//tx*=-1; ty*=-1;	
 			}
 			if (i>0){
 				mx=points.get(i-1).x+(points.get(i).x-points.get(i-1).x)/2+tx;
@@ -102,14 +102,16 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 		}
 	}
 	public CPoint2 drawLastLine(Vector<CPoint2> points, Branch branch){
-		int i=points.size()-1;
+		int i=points.size()-1,tempi=points.size()-1;
 		float mx,my;				
 		float howLong;
 		howLong = (float)((double)(System.nanoTime() - branch.startGrowTimestamp) / (double)Tree.BRANCH_GROW_TIME);
 		if(howLong>=1)howLong=1;
-		
-		float tx=howLong*branch.length*howLong*howLong*i/18+p.random(-0.4f,0.4f);
-		float ty=howLong*branch.length*howLong*howLong*i/18+p.random(-0.4f,0.4f);		
+		if(i>1){;
+			//tempi=(points.size()-i);
+		}
+		float tx=howLong*branch.length*howLong*howLong*tempi/21+p.random(-0.4f,0.4f);
+		float ty=howLong*branch.length*howLong*howLong*tempi/21+p.random(-0.4f,0.4f);		
 		PPoint2  beforePPoint=points.get(i-1).toPPoint2();
 		PPoint2 lastPPoint = points.get(i).toPPoint2();
 		lastPPoint.r = (lastPPoint.r-beforePPoint.r)*howLong*howLong+beforePPoint.r;
