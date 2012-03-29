@@ -79,7 +79,7 @@ public class Tree extends ProcessingObject {
 		p.stroke(0, 255, 0);
 		p.fill(0, 55, 0);
 		p.ellipseMode(Main.CENTER);
-		p.ellipse(Main.centerX, Main.centerY, 20.0f, 20.0f);
+		//p.ellipse(Main.centerX, Main.centerY, 20.0f, 20.0f);
 		root.draw();
 	}
 	

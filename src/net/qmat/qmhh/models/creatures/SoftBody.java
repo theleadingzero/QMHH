@@ -66,19 +66,25 @@ public class SoftBody extends CreatureBase {
 		p.pushMatrix();
 		p.translate(position.x, position.y);
 		p.rotateZ(angle);
+		
 
 		/*
 		 * SoftBody part
 		 * calculate node  starting locations
 		 */
 		int temp=4;
-		if(stage == 0) 
-			temp = 4;
-		if(stage == 1)
-			temp = 6;
-		if(stage == 2)
+		if(stage == 0){ 
 			temp = 8;
-
+			p.curveTightness(0.0f);
+		}
+		if(stage == 1){
+			temp = 4;
+			p.curveTightness(3.9f);
+		}
+		if(stage == 2){
+			temp = 6;
+			p.curveTightness(3.9f);
+		}
 		  for (int i=0; i<temp; i++){
 		    nodeStartX[i] = centerX+Main.cos(Main.radians(rotAngle))*radius1;
 		    nodeStartY[i] = centerY+Main.sin(Main.radians(rotAngle))*radius1;
@@ -130,8 +136,8 @@ public class SoftBody extends CreatureBase {
 		  p.stroke(255,60,180,70);
 		  //p.noStroke();
 		  p.fill(255,255,255,120);
-		  p.ellipse(-radius1*1.3f/4, -radius1*1.3f/18, radius1*1.3f/2, radius1*1.3f/9);
-		  p.ellipse(-radius1*1.3f/18, -radius1*1.3f/4, radius1*1.3f/9, radius1*1.3f/2);
+		  p.ellipse(0, 0, radius1*1.3f/2, radius1*1.3f/9);
+		  p.ellipse(0, 0, radius1*1.3f/9, radius1*1.3f/2);
 		  p.noStroke();
 		  p.fill(255,255,255,220);
 		  p.ellipse(-radius1/22, -radius1/22, radius1/11, radius1/11);

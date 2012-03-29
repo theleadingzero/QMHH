@@ -89,7 +89,7 @@ public class Models {
     	//models.playheadModel.draw();
     	models.creaturesModel.draw();
     	models.sporesModel.draw();
-    	models.orbModel.draw();
+    	//models.orbModel.draw();
     }
     
     public static void update() {

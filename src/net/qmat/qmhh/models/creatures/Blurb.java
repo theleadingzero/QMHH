@@ -9,7 +9,7 @@ public class Blurb  extends CreatureBase {
 	
 	Blurb(){
 		super();	
-		
+		indexOffset=p.random(1.0f);	
 	}
 	
 	public void draw(){
