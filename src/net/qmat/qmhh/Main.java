@@ -79,12 +79,11 @@ public class Main extends PApplet {
 		*/
 		
 		// Add a hand for testing
-		
+		/*
 		Models.getHandsModel().addHand(1L, 80f, 700f); //740f, 325.0f);
 		Models.getHandsModel().addHand(2L, 730f, 40f); //740f, 325.0f);
 		Models.getHandsModel().addHand(3L, 730f, 730f); //740f, 325.0f);
 		Models.getHandsModel().addHand(4L, 30f, 30f); //740f, 325.0f);
-		/*
 		Models.getHandsModel().addHand(5L, 320f, 30f); //740f, 325.0f);
 		Models.getHandsModel().addHand(6L, 320f, 730f); //740f, 325.0f);
 		Models.getHandsModel().addHand(7L, 730f, 326f); //740f, 325.0f);
@@ -96,13 +95,28 @@ public class Main extends PApplet {
 
 	public void draw() {
 		Controllers.update();
-
-		bg.draw();
+		//draw background
+		//bg.draw();
+		p.background(255);
 		Models.update();
 		Models.draw();
 
 		box2d.step();
 		frameCount++;
+		
+		/*
+		if(frameCount == 60) {
+			// Add a hand for testing
+			Controllers.getHandsController().addHand(1L, 0.0f, 0.0f); //740f, 325.0f);
+			Controllers.getHandsController().addHand(2L, 1.0f, 1.0f); //740f, 325.0f);
+			Controllers.getHandsController().removeHand(1L);
+			Controllers.getHandsController().removeHand(2L);
+			Controllers.getHandsController().addHand(1L, 0.1f, 0.9f); //740f, 325.0f);
+			Controllers.getHandsController().addHand(2L, 0.9f, 0.1f); //740f, 325.0f);
+			Controllers.getHandsController().addHand(3L, 0.9f, 0.9f); //740f, 325.0f);
+			Controllers.getHandsController().addHand(4L, 0.1f, 0.1f); //740f, 325.0f);
+		}
+		*/
 	}
 
 	/*
@@ -136,19 +150,8 @@ public class Main extends PApplet {
 		Settings.init();
 
 		if(Settings.getBoolean(Settings.PR_FULLSCREEN)) {
-			int primary_display = 0; //index into Graphic Devices array...  
-			int primary_width;
-			GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice devices[] = environment.getScreenDevices();
-			String location;
-			if(devices.length>1 ){ //we have a 2nd display/projector
-				primary_width = devices[0].getDisplayMode().getWidth();
-				location = "--location="+(primary_width+75)+",0";
-			} else {//leave on primary display
-				location = "--location=0,0";
-			}
-			String display = "--display="+(primary_display+1);  //processing considers the first display to be # 1
-			PApplet.main(new String[] {location, display, "net.qmat.qmhh.Main" });
+			String location = "--location=0,0";
+			PApplet.main(new String[] {location, "net.qmat.qmhh.Main" });
 		} else {
 			PApplet.main(new String[] { "net.qmat.qmhh.Main" });
 		}
@@ -166,6 +169,6 @@ public class Main extends PApplet {
 	}
 
 	public void mousePressed() {
-		//
+		Models.getSporesModel().startRipple(10f);
 	}
 }

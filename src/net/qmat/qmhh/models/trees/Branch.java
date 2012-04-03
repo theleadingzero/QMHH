@@ -1,6 +1,7 @@
 package net.qmat.qmhh.models.trees;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Transform;
@@ -23,7 +24,7 @@ public class Branch extends ProcessingObject {
 	protected float length;
 	protected ArrayList<Branch> branches = new ArrayList<Branch>();
 	public Body body;
-	protected Branch parent;
+	public Branch parent;
 
 	protected float startX, startY;
 	protected float endX, endY;
@@ -54,14 +55,14 @@ public class Branch extends ProcessingObject {
 		endY = y + this.length * Main.sin(angle);
 		startX = x;
 		startY = y;
-		
+
 		if(!this.withinEcosystemP()) {
 			throw new Exception("Branch is not within ecosystem. Abort! Abort!");
 		}
 
-		makeBody(x, y, endX, endY, angle);
+		makeBody(x, y, endX, endY, angle, level);
 
-		
+
 		if(level < Tree.MAX_BRANCH_LEVELS) {
 			try {
 				Branch b1 = new Branch(tree,
@@ -98,7 +99,7 @@ public class Branch extends ProcessingObject {
 		PPoint2 ppos1 = new CPoint2(endX, endY).toPPoint2();
 		PPoint2 ppos2 = new CPoint2(startX, startY).toPPoint2();
 		return ppos1.r < Main.outerRingInnerRadius - 10.f &&
-			   ppos2.r < Main.outerRingInnerRadius - 10.f;
+				ppos2.r < Main.outerRingInnerRadius - 10.f;
 	}
 
 	public void activate() {
@@ -115,18 +116,18 @@ public class Branch extends ProcessingObject {
 		if(branches.size() == 0)
 			return true;
 		// if any of the subbranches is not active, return false
-				for(Branch branch : branches) {
-					if(!branch.activeP) {
-						return false;
-					}
-				}
+		for(Branch branch : branches) {
+			if(!branch.activeP) {
+				return false;
+			}
+		}
 		return true;
 	}
 
 	public boolean isStillGrowingP() {
 		return System.nanoTime() - startGrowTimestamp < tree.BRANCH_GROW_TIME;
 	}
-	
+
 	public boolean isStillSproutingP() {
 		return (System.nanoTime() - startSproutTimestamp) < tree.BRANCH_GROW_TIME;
 	}
@@ -150,7 +151,8 @@ public class Branch extends ProcessingObject {
 			float y, 
 			float endX,
 			float endY,
-			float angle) {
+			float angle,
+			int level) {
 		// Define a polygon (this is what we use for a rectangle)
 		PolygonShape sd = new PolygonShape();
 		sd.setAsBox(box2d.scalarPixelsToWorld(length/2.0f), 
@@ -160,9 +162,13 @@ public class Branch extends ProcessingObject {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = sd;
 		// Parameters that affect physics
-		fd.density = 0.01f;
+		//float density = 1f - 0.35f*level;
+		float density = 1f - 0.35f*level;
+		fd.density = density < 0.001f ? 0.001f : density;
+		//fd.density =  1f-0.5f*level < 0.01f ? 0.01f : 1.f-0.5f*level;
 		fd.friction = 0.2f;
-		fd.restitution = 0.3f;
+		//fd.restitution = 0.15f*level > 1 ? 1 : 0.15f*level;
+		fd.restitution = 0.15f*(level-1)*(level-1) > 1 ? 1 : 0.15f*(level-1)*(level-1);
 		fd.filter.groupIndex = tree.branchGroup;
 
 		// Define the body and make it from the shape
@@ -207,6 +213,27 @@ public class Branch extends ProcessingObject {
 		return new CPoint2(0, 0);
 	}
 
+	protected CPoint2 getMiddleStartPosition() {
+		return getMiddlePosition(0, 3);
+	}
+
+	protected CPoint2 getMiddleEndPosition() {
+		return getMiddlePosition(2, 1);
+	}
+
+	protected CPoint2 getMiddlePosition(int a, int b) {
+		Transform transform = body.getTransform();
+		for(Fixture f=body.getFixtureList(); f!=null; f=f.getNext()) {
+			PolygonShape shape = (PolygonShape) f.getShape();
+			Vec2 vpos1 = box2d.coordWorldToPixels(Transform.mul(transform, shape.getVertex(a)));
+			Vec2 vpos2 = box2d.coordWorldToPixels(Transform.mul(transform, shape.getVertex(b)));
+			vpos1.addLocal(vpos2);
+			vpos1.mulLocal(0.5f);
+			return new CPoint2(vpos1);
+		}
+		return new CPoint2(0, 0);
+	}
+
 	public void draw() {
 		// only draw the branch if it is marked as active
 		if(activeP) {
@@ -214,10 +241,21 @@ public class Branch extends ProcessingObject {
 			drawChildren();
 		}
 	}
-	
+
 	public void drawChildren() {
 		for(Branch branch : branches) {
 			branch.draw();
 		}
+	}
+
+	public Vector<CPoint2> getParentPoints() {
+		Vector<CPoint2> parentPoints;
+		if(parent != null) {
+			parentPoints = parent.getParentPoints();
+		} else {
+			parentPoints = new Vector<CPoint2>();
+		}
+		parentPoints.add(getMiddleStartPosition());
+		return parentPoints;
 	}
 }

@@ -15,6 +15,14 @@ public class CreaturesModel extends ProcessingObject {
 	public ArrayList<CreatureBase> creatures;
 	private Class<? extends CreatureBase> creatureClass;
 	
+	private int targetColorIndex = 0;
+	private int targetColors[] = 
+		{ p.color(150),
+		  p.color(150, 0, 0, 200),
+		  p.color(0, 150, 0, 200)
+		  //p.color(0, 0, 150, 100)
+		};
+	
 	@SuppressWarnings("unchecked")
 	public CreaturesModel() {
 		creatures = new ArrayList<CreatureBase>();
@@ -26,6 +34,12 @@ public class CreaturesModel extends ProcessingObject {
 			System.err.println("Can't find the creature class defined in the preferences file.");
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public int getTargetColor() {
+		targetColorIndex++;
+		return targetColors[targetColorIndex % targetColors.length];
 	}
 	
 	private void initCreatures() {
@@ -73,6 +87,7 @@ public class CreaturesModel extends ProcessingObject {
 		p.noFill();
 		p.stroke(200);
 		for(CreatureBase creature : creatures) {
+			creature.drawTargetFeedback();
 			creature.draw();
 		}
 	}
@@ -90,9 +105,9 @@ public class CreaturesModel extends ProcessingObject {
 					return -1;
 				// so they both don't have targets, or they both do, check angles
 				// TODO: check whether the ones with targets have companion hunters
-				if(calculateAngularDistance(angle, c1p.t) < calculateAngularDistance(angle, c2p.t))
+				if(PPoint2.calculateAngularDistance(angle, c1p.t) < PPoint2.calculateAngularDistance(angle, c2p.t))
 					return -1;
-				else if(calculateAngularDistance(angle, c2p.t) > calculateAngularDistance(angle, c1p.t))
+				else if(PPoint2.calculateAngularDistance(angle, c2p.t) > PPoint2.calculateAngularDistance(angle, c1p.t))
 					return 1;
 				else
 					return 0;
@@ -100,12 +115,4 @@ public class CreaturesModel extends ProcessingObject {
 		});
 		return orderedCreatures;
 	}
-	
-	private float calculateAngularDistance(float a1, float a2) {
-		float d = a1 - a2;
-		if(d < -Main.PI) return d + Main.PI;
-		if(d > Main.PI) return d - Main.PI;
-		return d;
-	}
-	
 }

@@ -64,6 +64,7 @@ public class OrbModel extends ProcessingObject {
 		p.noStroke();
 		
 		p.ellipseMode(Main.CENTER);
+		/*
 		p.fill(120, 120, 245, 50);
 		p.ellipse(Main.centerX, Main.centerY, 2*radius*3, 2*radius*3);
 		p.fill(120, 120, 245, 50);
@@ -74,6 +75,7 @@ public class OrbModel extends ProcessingObject {
 		p.ellipse(Main.centerX, Main.centerY, 25f, 25f);
 		p.fill(198, 20, 20);
 		p.arc(Main.centerX, Main.centerY, 25f, 25f, 0.0f, Main.TWO_PI * chargeIndex);
+		*/
 		
 		waveR();
 		for(int i=0; i<numSystems; i++) {
@@ -99,6 +101,7 @@ public class OrbModel extends ProcessingObject {
 	    pgl.endGL();
 	    
 	    // draw feedback
+	    /*
 	    p.noStroke();
 		p.fill(23, 31, 77, 150);
 		p.ellipse(Main.centerX, Main.centerY, 25f, 25f);
@@ -106,6 +109,7 @@ public class OrbModel extends ProcessingObject {
 		p.fill(255, 225, 11, 100);
 		p.stroke(255, 225, 11, 200);
 		p.arc(Main.centerX, Main.centerY, 25f, 25f, 0.0f, Main.TWO_PI * chargeIndex);
+		*/
 	}
 
 	private void waveR()

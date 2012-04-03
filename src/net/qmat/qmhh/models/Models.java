@@ -82,14 +82,14 @@ public class Models {
     public static void draw() {
     	// Call all the models' draw functions here.
     	Models models = Models.getInstance();
-    	models.handsModel.draw();
     	models.feedbackPointsModel.draw();
     	
     	models.treesModel.draw();
     	//models.playheadModel.draw();
     	models.creaturesModel.draw();
+    	models.handsModel.draw();
     	models.sporesModel.draw();
-    	models.orbModel.draw();
+    	//models.orbModel.draw();
     }
     
     public static void update() {

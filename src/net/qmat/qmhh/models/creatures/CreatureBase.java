@@ -43,7 +43,7 @@ public class CreatureBase extends ProcessingObject {
 	private float maxSpeed = 10.0f;
 	private Hand target = null;
 	protected Body body;
-	private int followDebugColor = 0;
+	private int targetColor;
 	// these timestamps/durations are in seconds
 	private Long lastGrowthTimestamp = 0L;
 	private Float minimalGrowthInterval; 
@@ -97,14 +97,7 @@ public class CreatureBase extends ProcessingObject {
 
 	public void draw() {
 
-		if(target != null) {
-			p.fill(followDebugColor);
-		} else {
-			p.noFill();
-		}
-
-		// TODO: delete the next line when debugging targeting
-		p.fill(followDebugColor);
+		p.noFill();
 		p.ellipseMode(Main.CENTER);
 		p.pushMatrix();
 		Vec2 loc = box2d.getBodyPixelCoord(body);
@@ -112,16 +105,93 @@ public class CreatureBase extends ProcessingObject {
 		p.rotate(body.getAngle());
 		p.ellipse(0, 0, w, h);
 		p.popMatrix();
-
-		if(target != null) {
-			p.pushMatrix();
+	}
+	
+	public void drawTargetFeedback() {
+		if(stage > 0 && target != null) {
+			float handWidth = 135f;
+			p.ellipseMode(Main.CENTER);
+			p.fill(targetColor);
+			p.noStroke();
+			
+			Vec2 position = box2d.getBodyPixelCoord(body);
+			p.ellipse(position.x, position.y, w+5, h+5);
+			
 			CPoint2 targetPos = target.getCPosition();
-			p.translate(targetPos.x + p.random(0, 10), targetPos.y + p.random(0, 10));
-			p.fill(followDebugColor);
-			p.ellipse(0, 0, w, h);
-			p.popMatrix();
+			p.ellipse(targetPos.x, targetPos.y, handWidth, handWidth);
+			
+			float angleOffset;
+			PPoint2 crP  = new CPoint2(position).toPPoint2();
+			angleOffset = Main.atan((w/2f)/crP.r);
+			PPoint2 crP1 = new PPoint2(crP.r, crP.t-angleOffset);
+			PPoint2 crP2 = new PPoint2(crP.r, crP.t+angleOffset);
+			
+			PPoint2 handP  = targetPos.toPPoint2();
+			angleOffset = Main.atan((handWidth/2f)/handP.r);
+			PPoint2 hP1 = new PPoint2(handP.r, handP.t-angleOffset);
+			PPoint2 hP2 = new PPoint2(handP.r, handP.t+angleOffset);
+			
+			float middleOffsetR = 0;
+			float middleOffsetT = -0.06f;
+			PPoint2 middleP1 = new PPoint2((handP.r+crP.r)/2f, PPoint2.averageAngles(handP.t, crP.t));
+			PPoint2 middleP2 = new PPoint2(middleP1.r+middleOffsetR, middleP1.t+middleOffsetT);
+			middleP1.r -= middleOffsetR;
+			middleP1.t -= middleOffsetT;
+			
+			CPoint2 crCP1 = crP1.toCPoint2();
+			CPoint2 crCP2 = crP2.toCPoint2();
+			CPoint2 hCP1 = hP1.toCPoint2();
+			CPoint2 hCP2 = hP2.toCPoint2();
+			CPoint2 middleCP1 = middleP1.toCPoint2();
+			CPoint2 middleCP2 = middleP2.toCPoint2();
+			
+			float reverse = PPoint2.calculateAngularDistance(handP.t, crP.t) < 0 ? 1 : -1;
+			// 
+			CPoint2 guide1a = new PPoint2((middleP1.r*0.3f+crP1.r*0.7f), PPoint2.averageAngles(crP.t, middleP1.t) - reverse * 2 * middleOffsetT).toCPoint2();
+			CPoint2 guide1b = new PPoint2((middleP1.r*0.7f+crP1.r*0.3f)/2, PPoint2.averageAngles(crP.t, middleP1.t) - reverse * 1 * middleOffsetT).toCPoint2();
+			CPoint2 guide2a = new CPoint2(middleCP1.x-(guide1b.x-middleCP1.x), middleCP1.y-(guide1b.y-middleCP1.y));
+			CPoint2 guide2a2 = new CPoint2(middleCP2.x-(guide1b.x-middleCP2.x), middleCP2.y-(guide1b.y-middleCP2.y));
+			CPoint2 guide2b = new PPoint2(middleP1.r, handP.t + reverse * 1 * middleOffsetT).toCPoint2();
+			
+			p.text("g1a", guide1a.x, guide1a.y);
+			p.text("g1b", guide1b.x, guide1b.y);
+			p.text("g2a", guide2a.x, guide2a.y);
+			p.text("g2a2", guide2a2.x, guide2a2.y);
+			p.text("g2b", guide2b.x, guide2b.y);
+			/*
+			p.stroke(targetColor);
+			p.noFill();
+			p.beginShape();
+			// first control point
+			p.curveVertex(crCPguide.x, crCPguide.y);
+			p.curveVertex(crCP1.x, crCP1.y);
+			p.curveVertex(middleCP1.x, middleCP1.y);
+			p.curveVertex(hCP1.x, hCP1.y);
+			p.curveVertex(hCPguide.x, hCPguide.y);
+			p.curveVertex(hCP2.x, hCP2.y);
+			p.curveVertex(middleCP2.x, middleCP2.y);
+			p.curveVertex(crCP2.x, crCP2.y);
+			// last control point
+			p.curveVertex(crCPguide.x, crCPguide.y);
+			p.endShape(Main.CLOSE);
+			*/
+			
+			//p.fill(targetColor);
+			//p.noStroke();
+			p.noFill();
+			p.stroke(targetColor);
+			p.beginShape();
+			p.vertex(crCP1.x, crCP1.y);
+			p.bezierVertex(guide1a.x, guide1a.y, guide1b.x, guide1b.y, middleCP1.x, middleCP1.y);
+			p.bezierVertex(guide2a.x, guide2a.y, guide2b.x, guide2b.y, hCP1.x, hCP1.y);
+			p.bezierVertex(hCP2.x, hCP2.y, hCP2.x, hCP2.y, hCP2.x, hCP2.y);
+			p.bezierVertex(guide2b.x, guide2b.y, guide2a2.x, guide2a2.y, middleCP2.x, middleCP2.y);
+			p.bezierVertex(guide1b.x, guide1b.y, guide1a.x, guide1a.y, crCP2.x, crCP2.y);
+			p.endShape();
+
+			//p.bezier(crCP1.x, crCP1.y, middleCP1.x, middleCP1.y, middleCP2.x, middleCP2.y, hCP1.x, hCP1.y);
+			//p.bezier(crCP2.x, crCP2.y, middleCP1.x, middleCP1.y, middleCP2.x, middleCP2.y, hCP2.x, hCP2.y);
 		}
-		p.noFill();
 	}
 
 	// TODO: DRY this out!
@@ -144,49 +214,41 @@ public class CreatureBase extends ProcessingObject {
 		} else if(stage == 1) {
 			// too far outwards?
 			if(ppos.r > zoneWidth * 2.0f) {
-				followDebugColor = p.color(155, 0 ,0);
 				body.setLinearVelocity(body.getLinearVelocity().mulLocal(0.98f));
 				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				body.applyForce(towards, loc);
 			// too far inwards?
 			} else if(ppos.r < zoneWidth) {
-				followDebugColor = p.color(0, 155 ,0);
 				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				towards.negateLocal();
 				body.applyForce(towards, loc);
 			// in the zone? booyah!
 			} else {
-				followDebugColor = p.color(0);
 				flock(creatures);
 			}
 		} else if(stage == 0) {
 			// too far outwards?
 			if(ppos.r > zoneWidth) {
-				followDebugColor = p.color(55, 0 ,0);
 				// slow down
 				body.setLinearVelocity(body.getLinearVelocity().mulLocal(0.98f));
 				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				body.applyForce(towards, loc);
 				// in the zone
 			} else if(ppos.r < zoneWidth / 2.0f) {
-				followDebugColor = p.color(0, 155 ,0);
 				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				towards.negateLocal();
 				body.applyForce(towards, loc);
 			} else {
-				followDebugColor = p.color(0);
 				flock(creatures);
 			}
 			// in stage 2, get back into the third zone, or flock
 		} else {
 			if(ppos.r < zoneWidth * 2.0f) {
-				followDebugColor = p.color(0, 255 ,0);
 				Vec2 towards = seek(box2d.coordPixelsToWorld(vCenter), force);
 				towards.negateLocal();
 				body.applyForce(towards, loc);
 				// in the zone
 			} else {
-				followDebugColor = p.color(0);
 				flock(creatures);
 			}
 
@@ -195,7 +257,7 @@ public class CreatureBase extends ProcessingObject {
 
 	public void setTarget(Hand target) {
 		if(target != null) {
-			followDebugColor = p.color(p.random(100, 255), p.random(100, 255), p.random(100, 255));
+			targetColor = Models.getCreaturesModel().getTargetColor();
 			this.target = target;
 			body.setLinearVelocity(body.getLinearVelocity().mulLocal(0.0f));
 		}
