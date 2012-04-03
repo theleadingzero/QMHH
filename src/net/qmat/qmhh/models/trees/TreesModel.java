@@ -15,7 +15,7 @@ import org.jbox2d.dynamics.FixtureDef;
 public class TreesModel extends ProcessingObject {
 	
 	private static int NUMBER_OF_TREES = 13;
-	public static float CENTER_BODY_RADIUS = 6f;//10.0f;
+	public static float CENTER_BODY_RADIUS = 40.0f;
 	
 	private ArrayList<Tree> trees;
 	private Body body;
