@@ -40,18 +40,18 @@ public class Background extends ProcessingObject {
 		backdropImageUnrevealed = p.loadImage(Settings.getString(Settings.PR_BACKDROP_UNREVEALED));
 		
 		// scale the backdrop
-		backdropRevealed = p.createGraphics(p.width, p.height, Main.P3D);
+		backdropRevealed = p.createGraphics(p.centerX*2, p.centerY*2, Main.P3D);
 		backdropRevealed.beginDraw();
-		backdropRevealed.translate(p.width/2, p.height/2);
+		backdropRevealed.translate(p.centerX, p.centerY);
 		backdropRevealed.imageMode(Main.CENTER);
 		backdropRevealed.image(backdropImageRevealed, 0, 0, backdropRevealed.width, backdropRevealed.height);
 		backdropRevealed.endDraw();
 		backdropMask = p.createGraphics(backdropRevealed.width, backdropRevealed.height, Main.P3D);
 		backdropRevealed.mask(backdropMask);
 		
-		backdropUnrevealed = p.createGraphics(p.width, p.height, Main.P3D);
+		backdropUnrevealed = p.createGraphics(p.centerX*2, p.centerY*2, Main.P3D);
 		backdropUnrevealed.beginDraw();
-		backdropUnrevealed.translate(p.width/2, p.height/2);
+		backdropUnrevealed.translate(p.centerX, p.centerY);
 		backdropUnrevealed.imageMode(Main.CENTER);
 		backdropUnrevealed.image(backdropImageUnrevealed, 0, 0, backdropUnrevealed.width, backdropUnrevealed.height);
 		backdropUnrevealed.endDraw();
@@ -81,12 +81,10 @@ public class Background extends ProcessingObject {
 		p.fill(0);
 		p.noStroke();
 		p.rectMode(Main.CORNER);
-		p.rect(0, 0, p.width/2-innerRadius, p.height);
-		p.rect(0, 0, p.width, p.height/2-innerRadius);
-		p.rect(p.width-((p.width/2)-innerRadius), 0, p.width, p.height);
-		p.rect(0, p.height-((p.height/2)-innerRadius), p.width, p.height);
-		
-		
+		p.rect(0, 0, p.centerX-innerRadius, p.height);
+		p.rect(0, 0, p.width, p.centerY-innerRadius);
+		p.rect(p.centerX+innerRadius, 0, p.width, p.height);
+		p.rect(0, p.centerY+innerRadius, p.width, p.height);
 		
 		p.pushMatrix();
 		p.translate(centerX, centerY);
