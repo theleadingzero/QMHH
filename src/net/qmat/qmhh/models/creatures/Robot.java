@@ -91,7 +91,6 @@ public class Robot extends CreatureBase {
 		float an, r;
 		Cercle c;
 		float x, y;
-		//	int circRad = (int) random(5, 100);
 		Robot cf;
 
 		Poin(float _an, float _r, Cercle _c, Robot _cf)
@@ -111,11 +110,11 @@ public class Robot extends CreatureBase {
 				Cercle ci = cf.cercles.get(a);
 				if(ci != c)
 				{
-					if((c.r - ci.r) < 4*(stage+1))
+					if((c.r - ci.r) < 16 * (stage + 1))
 					{
 						for(int b = 0; b < ci.mespoints.size(); b ++)
 						{
-							if(getDistance(x, y, ci.mespoints.get(b).x, ci.mespoints.get(b).y) < 4*(stage+1))
+							if(getDistance(x, y, ci.mespoints.get(b).x, ci.mespoints.get(b).y) < 16 * (stage + 1))
 							{
 								p.stroke(255, p.random(60, 250));
 								p.strokeWeight(p.random(0, 2));
