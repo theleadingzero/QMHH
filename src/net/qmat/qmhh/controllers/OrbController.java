@@ -16,7 +16,7 @@ public class OrbController {
 	float baseRadius = 38.0f;
 	float ellipseBaseRadius = 5.0f;
 	float extraRadius = 30.0f;
-	Double rippleIndex = 1.1;
+	Double rippleIndex = 0.1;
 	
 	public OrbController() {
 		 timeToWait = emitInterval;

@@ -71,7 +71,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 				p.endShape();
 
 
-				p.stroke(255, 155, 200, 255);
+				p.stroke(190, 90, 205, 255);
 				p.strokeWeight(0.8f);
 				for(int i=0; i<points.size();i++){	
 					float tx=branch.length*i/18;
@@ -95,7 +95,8 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.popMatrix();
 
 					//tree points for the middlepoints
-					p.stroke(255, 155, 200, 255);
+					p.stroke(190, 90, 205, 255);
+					//p.stroke(180, 240, 120, 255);
 					p.fill(255, 0, 0, 255);
 					//drawPoint(mx, my);
 					
@@ -105,7 +106,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.pushMatrix();
 					p.scale(1.3f);
 					p.translate(-(Main.centerX-Main.centerX/1.3f),-(Main.centerY-Main.centerY/1.3f));
-					p.fill(180, 240, 120, 40);
+					p.fill(150, 180, 120, 50);
 					if(!branch.stoppedGrowing&&i==points.size()-1){
 						//p.fill(255, 0, 0, 255);
 						//drawPoint(growingEndPoint.x, growingEndPoint.y);
@@ -121,7 +122,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.popMatrix();
 
 					//tree points for the endpoints
-					p.stroke(255, 155, 200, 255);
+					p.stroke(190, 90, 205, 255);
 					if(!branch.stoppedGrowing&&i==points.size()-1){
 						p.fill(255, 0, 0, 255);
 						//drawPoint(growingEndPoint.x, growingEndPoint.y);
@@ -173,8 +174,8 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 			if(tempi>=points.size())tempi=i;
 
 			float mx,my;
-			float tx=branch.length*(tempi)/18;
-			float ty=branch.length*(tempi)/18;
+			float tx=branch.length*(i)/18;
+			float ty=branch.length*(i)/18;
 			if(Tree.MAX_BRANCH_LEVELS-((points.size()-1-i))%2==0){;
 			tx*=-1; ty*=-1;	
 			}
@@ -205,8 +206,8 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 		howLong = (float)((double)(System.nanoTime() - branch.startGrowTimestamp) / (double)Tree.BRANCH_GROW_TIME);
 		if(howLong>=1)howLong=1;
 
-		float tx=howLong*branch.length*howLong*howLong*tempi/18;
-		float ty=howLong*branch.length*howLong*howLong*tempi/18;
+		float tx=howLong*branch.length*howLong*howLong*i/18;
+		float ty=howLong*branch.length*howLong*howLong*i/18;
 
 		if(Tree.MAX_BRANCH_LEVELS-((points.size()-1-i))%2==0){
 			tx*=-1; ty*=-1;	

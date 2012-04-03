@@ -168,7 +168,7 @@ public class Branch extends ProcessingObject {
 		//fd.density =  1f-0.5f*level < 0.01f ? 0.01f : 1.f-0.5f*level;
 		fd.friction = 0.2f;
 		//fd.restitution = 0.15f*level > 1 ? 1 : 0.15f*level;
-		fd.restitution = 0.15f*(level-1)*(level-1) > 1 ? 1 : 0.15f*(level-1)*(level-1);
+		fd.restitution =( 0.15f*(level-1)*(level-1) < 1)|| 0.15f*level*level> 1 ? 1 : 0.15f*0.15f*level*level;
 		fd.filter.groupIndex = tree.branchGroup;
 
 		// Define the body and make it from the shape

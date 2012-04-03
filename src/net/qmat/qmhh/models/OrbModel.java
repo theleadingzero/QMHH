@@ -16,7 +16,7 @@ public class OrbModel extends ProcessingObject {
 	private float radius, r;
 	private float maxRadius, minRadius;
 
-	private int numSystems = 60;
+	private int numSystems = 40;
 	private int numParticles = 15;
 	private OrbPSystem[] ps;
 	private float theta, theta2 = 0.0f;
@@ -31,13 +31,13 @@ public class OrbModel extends ProcessingObject {
 		ps =  new OrbPSystem[numSystems];
 		maxRadius = Settings.getInteger(Settings.PR_ORB_MAX_RADIUS);
 		minRadius = Settings.getInteger(Settings.PR_ORB_MIN_RADIUS);
-		radius = 8.0f;
+		radius = 5.5f;//8.0f;
 		particleRadius = radius;
 		r = 7.0f;
 		amplitude = 50.0f;
 		
-		float inx = p.width/2.0f;
-		float iny = p.height/2.0f;
+		float inx = Main.centerX;
+		float iny = Main.centerY;
 		float x, y;
 		
 		totalParticles = numParticles * numSystems;

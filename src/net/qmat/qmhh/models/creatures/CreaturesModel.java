@@ -87,7 +87,7 @@ public class CreaturesModel extends ProcessingObject {
 		p.noFill();
 		p.stroke(200);
 		for(CreatureBase creature : creatures) {
-			creature.drawTargetFeedback();
+			//creature.drawTargetFeedback();
 			creature.draw();
 		}
 	}

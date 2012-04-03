@@ -48,7 +48,8 @@ public class Settings {
 	public static String PR_HAND_CHARGE_TIME = "PR_HAND_CHARGE_TIME";
 
 	// background settings
-	public static String PR_BACKDROP_FILE = "PR_BACKDROP_FILE";
+	public static String PR_BACKDROP_REVEALED = "PR_BACKDROP_REVEALED";
+	public static String PR_BACKDROP_UNREVEALED = "PR_BACKDROP_UNREVEALED";
 	
 	// what class draws the branches
 	public static String PR_BRANCH_DRAWER = "PR_BRANCH_DRAWER";
