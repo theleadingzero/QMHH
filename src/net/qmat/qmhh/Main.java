@@ -26,11 +26,6 @@ public class Main extends PApplet {
 	public static Main p;
 	public static PBox2D box2d;
 	public int frameCount = 0;
-	
-	/* 
-	 * The static visual stuff..
-	 */
-	private Background bg;
 
 	/*
 	 * Cache for speed.
@@ -60,9 +55,7 @@ public class Main extends PApplet {
 		box2d.createWorld();
 		box2d.setGravity(0.0f, 0.0f);
 		box2d.world.setContactListener(new ContactController());
-
-		bg = new Background();
-
+		
 		/* 
 		 * N.B. The controllers should be loaded at the end of setup(), otherwise
 		 * the tuio events might trigger actions before everything is set up properly.
@@ -95,16 +88,12 @@ public class Main extends PApplet {
 
 	public void draw() {
 		Controllers.update();
-		//draw background
-		bg.draw();
-		//p.background(255);
 		Models.update();
 		Models.draw();
 
 		box2d.step();
 		frameCount++;
 		
-		/*
 		if(frameCount == 60) {
 			// Add a hand for testing
 			Controllers.getHandsController().addHand(1L, 0.0f, 0.0f); //740f, 325.0f);
@@ -116,7 +105,6 @@ public class Main extends PApplet {
 			Controllers.getHandsController().addHand(3L, 0.9f, 0.9f); //740f, 325.0f);
 			Controllers.getHandsController().addHand(4L, 0.1f, 0.1f); //740f, 325.0f);
 		}
-		*/
 	}
 
 	/*

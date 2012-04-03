@@ -19,8 +19,10 @@ public class Models {
 	private SporesModel sporesModel;
 	private TreesModel treesModel;
 	private FeedbackPointsModel feedbackPointsModel;
+	private Background background;
 	
 	protected Models() {
+		background = new Background();
 		handsModel = new HandsModel();
 		orbModel = new OrbModel();
 		creaturesModel = new CreaturesModel();
@@ -79,9 +81,14 @@ public class Models {
     	return instance.feedbackPointsModel;
     }
     
+    public static Background getBackground() {
+    	return instance.background;
+    }
+    
     public static void draw() {
     	// Call all the models' draw functions here.
     	Models models = Models.getInstance();
+    	models.background.draw();
     	models.feedbackPointsModel.draw();
     	
     	models.treesModel.draw();

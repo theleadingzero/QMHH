@@ -26,6 +26,7 @@ import net.qmat.qmhh.models.creatures.CreatureBase;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 
+import processing.core.PGraphics;
 import processing.opengl.*;
 import codeanticode.glgraphics.*;
 
@@ -340,14 +341,16 @@ public class Hand extends ProcessingObject {
 					cs1.addAll(cs2);
 					
 					// draw beam
+					PGraphics p = Models.getBackground().getBackdropMask();
+					p.beginDraw();
+					p.beginShape();
 					p.fill(255, 255, 255, 100);
 					p.noStroke();
-					p.beginShape();
 					for(CPoint2 cpos : cs1) {
 						p.vertex(cpos.x, cpos.y);
 					}
 					p.endShape(Main.CLOSE);
-
+					p.endDraw();
 				}
 			}
 			

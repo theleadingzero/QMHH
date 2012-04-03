@@ -21,8 +21,12 @@ public class Background extends ProcessingObject {
 	private float innerRadius, outerRadius;
 	private Body body;
 	private Vec2[] vertices;
-	private PImage backdrop, backdropGradient;
+	private PImage backdropImageRevealed;
+	private PImage backdropImageUnrevealed;
+	private PImage backdropGradient;
+	private PGraphics backdropRevealed;
 	private PGraphics backdropMask;
+	private PGraphics backdropUnrevealed;
 	
 	public Background() {
 		centerX = Settings.getInteger(Settings.PR_CENTER_X);
@@ -32,39 +36,66 @@ public class Background extends ProcessingObject {
 		innerRadius = innerDiameter / 2.0f;
 		outerRadius = outerDiameter / 2.0f;
 		
-		backdrop = p.loadImage(Settings.getString(Settings.PR_BACKDROP_FILE));
+		backdropImageRevealed = p.loadImage(Settings.getString(Settings.PR_BACKDROP_REVEALED));
+		backdropImageUnrevealed = p.loadImage(Settings.getString(Settings.PR_BACKDROP_UNREVEALED));
+		
+		// scale the backdrop
+		backdropRevealed = p.createGraphics(p.width, p.height, Main.P3D);
+		backdropRevealed.beginDraw();
+		backdropRevealed.translate(p.width/2, p.height/2);
+		backdropRevealed.imageMode(Main.CENTER);
+		backdropRevealed.image(backdropImageRevealed, 0, 0, backdropRevealed.width, backdropRevealed.height);
+		backdropRevealed.endDraw();
+		backdropMask = p.createGraphics(backdropRevealed.width, backdropRevealed.height, Main.P3D);
+		backdropRevealed.mask(backdropMask);
+		
+		backdropUnrevealed = p.createGraphics(p.width, p.height, Main.P3D);
+		backdropUnrevealed.beginDraw();
+		backdropUnrevealed.translate(p.width/2, p.height/2);
+		backdropUnrevealed.imageMode(Main.CENTER);
+		backdropUnrevealed.image(backdropImageUnrevealed, 0, 0, backdropUnrevealed.width, backdropUnrevealed.height);
+		backdropUnrevealed.endDraw();
+		
+		// gradient on top
 		backdropGradient = p.loadImage("backdrop_gradient.png");
-		createBackdropMask();
-		backdrop.mask(backdropMask);
 		
 		createRingBox2D();
 	}
 	
-	private void createBackdropMask() {
-		backdropMask = p.createGraphics(backdrop.width, backdrop.height, Main.P3D);
-		backdropMask.beginDraw();
-		backdropMask.ellipseMode(Main.CENTER);
-		backdropMask.background(0);
-		backdropMask.fill(255);
-		backdropMask.translate(backdropMask.width/2, backdropMask.height/2);
-		backdropMask.ellipse(0, 0, innerDiameter, innerDiameter);
-		backdropMask.endDraw();
-	}
 	
 	@SuppressWarnings("static-access")
 	public void draw() {
 		p.background(0);
+		
+		backdropRevealed.mask(backdropMask);
 		p.pushMatrix();
 		p.translate(centerX, centerY);
 		
 		// draw backdrop
 		p.imageMode(Main.CENTER);
-		p.image(backdrop, 0, 0); //, innerRadius*2, innerRadius*2);
-		// draw gradient over it
+		p.image(backdropUnrevealed, 0, 0);
 		p.image(backdropGradient, 0, 0, innerRadius*2, innerRadius*2);
-		
 		p.popMatrix();
 		
+		// make the sides black
+		p.fill(0);
+		p.noStroke();
+		p.rectMode(Main.CORNER);
+		p.rect(0, 0, p.width/2-innerRadius, p.height);
+		p.rect(0, 0, p.width, p.height/2-innerRadius);
+		p.rect(p.width-((p.width/2)-innerRadius), 0, p.width, p.height);
+		p.rect(0, p.height-((p.height/2)-innerRadius), p.width, p.height);
+		
+		
+		
+		p.pushMatrix();
+		p.translate(centerX, centerY);
+		p.image(backdropRevealed, 0, 0);	
+		p.popMatrix();
+		
+		backdropMask.beginDraw();
+		backdropMask.background(0);
+		backdropMask.endDraw();
 		
 		/* Debug the ring boundary.
 		int steps = 60;
@@ -111,6 +142,10 @@ public class Background extends ProcessingObject {
 			shape.setAsBox(0.1f, 5.0f, vertices[i], angle);
 			body.createFixture(shape, 0.0f);
 		}
+	}
+	
+	public PGraphics getBackdropMask() {
+		return backdropMask;
 	}
 
 }
