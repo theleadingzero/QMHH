@@ -63,9 +63,7 @@ public class SoftBody extends CreatureBase {
 		 * the Processing applet. This has all the draw functions. So if you'd
 		 * want to use a Processing function, prepend it with 'p.'.  
 		 */
-		p.pushMatrix();
-		p.translate(position.x, position.y);
-		p.rotateZ(angle);
+
 		
 
 		/*
@@ -92,57 +90,42 @@ public class SoftBody extends CreatureBase {
 		  }
 		  //drawTail();
 		  
-		  // draw polygon
+		  // draw poly as shadow
+		  p.noStroke();
+		  p.pushMatrix();
+		  p.translate(Main.centerX,Main.centerY);
+		  p.scale(1.3f);
+		  p.translate(position.x-Main.centerX, position.y-Main.centerY);
+		  p.scale(1.5f);
+		  //p.translate(-(Main.centerX-Main.centerX/1.3f),-(Main.centerY-Main.centerY/1.3f));
+		  p.rotateZ(angle);
+		  p.fill(150, 180, 120, 50);
+		  drawPoly(temp, false);
+		  p.popMatrix();
 		  
+		  
+		  p.pushMatrix();
+		  p.translate(position.x, position.y);
+		  p.rotateZ(angle);
+		  // draw real poly 
 		  //p.curveTightness(organicConstant);
-		  p.fill(255,190,230,70);
+		  p.fill(255,190,230,90);
 		  //first layer
 		  //p.noStroke();
 		  p.strokeWeight(0.1f);
 		  p.stroke(255,0,255,110);
-		  p.beginShape();
-		  for (int i=0; i<temp+3; i++){
-			  p.curveVertex(nodeX[i%temp], nodeY[i%temp]);
-		  }/*
-		  for (int i=0; i<nodes-1; i++){
-			  p.curveVertex(nodeX[i], nodeY[i]);
-		  }*/
-		  p.endShape(Main.CLOSE); 
-		  //second layer
-		  p.beginShape();
-		  p.strokeWeight(0.2f);
-		  p.stroke(255,190,230,70);
-		  for (int i=0; i<temp+3; i++){
-			  p.curveVertex(nodeX[i%temp]*2/3, nodeY[i%temp]*2/3);
-		  }/*
-		  for (int i=0; i<nodes-1; i++){
-			  p.curveVertex(nodeX[i], nodeY[i]);
-		  }*/
-		  p.endShape(Main.CLOSE); 
-		  //third layer
-		  p.strokeWeight(0.1f);
-		  p.stroke(255,90,180,110);
-		  p.beginShape();
-		   for (int i=0; i<temp+3; i++){
-			  p.curveVertex(nodeX[i%temp]*1.3f/3, nodeY[i%temp]*1.1f/3);
-		  }
-		   /*for (int i=0; i<nodes-1; i++){
-			  p.curveVertex(nodeX[i], nodeY[i]);
-		  }*/
-  
-		  p.endShape(Main.CLOSE); 
+		  drawPoly(temp,true);
 		  //star
 		  p.strokeWeight(0.08f);
 		  p.stroke(255,60,180,70);
 		  //p.noStroke();
-		  p.fill(255,255,255,120);
+		  p.fill(255,255,255,140);
 		  p.ellipse(0, 0, radius1*1.3f/2, radius1*1.3f/9);
 		  p.ellipse(0, 0, radius1*1.3f/9, radius1*1.3f/2);
 		  p.noStroke();
 		  p.fill(255,255,255,220);
-		  p.ellipse(-radius1/22, -radius1/22, radius1/11, radius1/11);
-		  
-		p.popMatrix();
+		  p.ellipse(-radius1/22, -radius1/22, radius1/11, radius1/11);	  
+		  p.popMatrix();
 		
 		/*
 		 * Remember that all the constants and processing stuff is now part of p
@@ -156,7 +139,43 @@ public class SoftBody extends CreatureBase {
 		 * setting and change it to your class' name. 
 		 */
 	}
-	
+	private void drawPoly(int temp, boolean m){
+		 p.beginShape();
+		  for (int i=0; i<temp+3; i++){
+			  p.curveVertex(nodeX[i%temp], nodeY[i%temp]);
+		  }/*
+		  for (int i=0; i<nodes-1; i++){
+			  p.curveVertex(nodeX[i], nodeY[i]);
+		  }*/
+		  p.endShape(Main.CLOSE); 
+		  //second layer
+		  p.beginShape();
+		  if(m){
+		  p.strokeWeight(0.2f);
+		  p.stroke(255,190,230,70);
+		  } else p.noStroke();
+		  for (int i=0; i<temp+3; i++){
+			  p.curveVertex(nodeX[i%temp]*2/3, nodeY[i%temp]*2/3);
+		  }/*
+		  for (int i=0; i<nodes-1; i++){
+			  p.curveVertex(nodeX[i], nodeY[i]);
+		  }*/
+		  p.endShape(Main.CLOSE); 
+		  //third layer
+		  if(m){
+		  p.strokeWeight(0.1f);
+		  p.stroke(190, 90, 205,110);
+		  } else p.noStroke();
+		  p.beginShape();
+		   for (int i=0; i<temp+3; i++){
+			  p.curveVertex(nodeX[i%temp]*1.3f/3, nodeY[i%temp]*1.1f/3);
+		  }
+		   /*for (int i=0; i<nodes-1; i++){
+			  p.curveVertex(nodeX[i], nodeY[i]);
+		  }*/
+ 
+		  p.endShape(Main.CLOSE); 
+	}
 	private void morf(float x, float y, int temp){
 		
 		/*
