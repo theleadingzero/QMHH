@@ -16,8 +16,8 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 
 public class Tree extends ProcessingObject {
 	
-	public static int MAX_BRANCH_LEVELS = 8;
-	public static float BRANCH_START_LENGTH = 50.0f;
+	public static int MAX_BRANCH_LEVELS = 5;
+	public static float BRANCH_START_LENGTH = 80.0f;
 	public static float BRANCH_NEXT_LENGTH_MP = 0.95f;
 	public static Long BRANCH_GROW_TIME = 6L * 1000000000L; // 4 seconds in nanoseconds
 	

@@ -36,8 +36,8 @@ public class OrbModel extends ProcessingObject {
 		r = 7.0f;
 		amplitude = 10.0f;
 		
-		float inx = p.width/2.0f;
-		float iny = p.height/2.0f;
+		float inx = Main.centerX;
+		float iny = Main.centerY;
 		float x, y;
 		
 		totalParticles = numParticles * numSystems;
