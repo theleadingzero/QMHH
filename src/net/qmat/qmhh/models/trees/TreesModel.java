@@ -15,6 +15,7 @@ import org.jbox2d.dynamics.FixtureDef;
 public class TreesModel extends ProcessingObject {
 	
 	private static int NUMBER_OF_TREES = 13;
+	public static float CENTER_BODY_RADIUS = 40.0f;
 	
 	private ArrayList<Tree> trees;
 	private Body body;
@@ -35,7 +36,7 @@ public class TreesModel extends ProcessingObject {
 		Vec2 center = box2d.coordPixelsToWorld(Main.centerX, Main.centerY);
 		bd.position.set(center);
 		CircleShape circle = new CircleShape();
-		circle.m_radius = box2d.scalarPixelsToWorld(10.0f);
+		circle.m_radius = box2d.scalarPixelsToWorld(CENTER_BODY_RADIUS);
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
 		//fixtureDef.filter.groupIndex = Settings.getInteger(Settings.PR_SPORE_COLLISION_GROUP);

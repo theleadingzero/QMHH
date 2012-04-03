@@ -60,7 +60,7 @@ public class Branch extends ProcessingObject {
 			throw new Exception("Branch is not within ecosystem. Abort! Abort!");
 		}
 
-		makeBody(x, y, endX, endY, angle);
+		makeBody(x, y, endX, endY, angle, level);
 
 
 		if(level < Tree.MAX_BRANCH_LEVELS) {
@@ -151,7 +151,8 @@ public class Branch extends ProcessingObject {
 			float y, 
 			float endX,
 			float endY,
-			float angle) {
+			float angle,
+			int level) {
 		// Define a polygon (this is what we use for a rectangle)
 		PolygonShape sd = new PolygonShape();
 		sd.setAsBox(box2d.scalarPixelsToWorld(length/2.0f), 
@@ -161,9 +162,13 @@ public class Branch extends ProcessingObject {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = sd;
 		// Parameters that affect physics
-		fd.density = 0.01f;
+		//float density = 1f - 0.35f*level;
+		float density = 1f - 0.35f*level;
+		fd.density = density < 0.001f ? 0.001f : density;
+		//fd.density =  1f-0.5f*level < 0.01f ? 0.01f : 1.f-0.5f*level;
 		fd.friction = 0.2f;
-		fd.restitution = 0.3f;
+		//fd.restitution = 0.15f*level > 1 ? 1 : 0.15f*level;
+		fd.restitution = 0.15f*(level-1)*(level-1) > 1 ? 1 : 0.15f*(level-1)*(level-1);
 		fd.filter.groupIndex = tree.branchGroup;
 
 		// Define the body and make it from the shape

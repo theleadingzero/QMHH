@@ -30,4 +30,11 @@ public class PPoint2 {
 	public static PPoint2 fromBody(Body body) {
 		return (new CPoint2(Main.box2d.getBodyPixelCoord(body)).toPPoint2());
 	}
+	
+	public static float calculateAngularDistance(float a1, float a2) {
+		float d = a1 - a2;
+		if(d < -Main.PI) return d + Main.TWO_PI;
+		if(d > Main.PI) return d - Main.TWO_PI;
+		return d;
+	}
 }

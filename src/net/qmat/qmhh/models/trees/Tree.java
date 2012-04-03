@@ -47,7 +47,7 @@ public class Tree extends ProcessingObject {
 	private void buildTree(float startLength, 
 						   float startAngle, 
 						   Body centerBody) {
-		CPoint2 cpos = new PPoint2(10.0f, -startAngle).toCPoint2();
+		CPoint2 cpos = new PPoint2(TreesModel.CENTER_BODY_RADIUS, -startAngle).toCPoint2();
 		try {
 			root = new Branch(this,
 							  null, 
@@ -66,7 +66,7 @@ public class Tree extends ProcessingObject {
         rjd.bodyA = centerBody;
         rjd.bodyB = root.body;
         rjd.collideConnected = false;
-        Vec2 anchor = box2d.coordPixelsToWorld(new Vec2(Main.centerX, Main.centerY));
+        Vec2 anchor = box2d.coordPixelsToWorld(cpos.toVec2());
         rjd.localAnchorA = centerBody.getLocalPoint(anchor);
         rjd.localAnchorB = root.body.getLocalPoint(anchor);
         rjd.lowerAngle = -startAngle - 1.9f * internalAngle;
