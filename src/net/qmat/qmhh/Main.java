@@ -100,10 +100,10 @@ public class Main extends PApplet {
 			Controllers.getHandsController().addHand(2L, 1.0f, 1.0f); //740f, 325.0f);
 			Controllers.getHandsController().removeHand(1L);
 			Controllers.getHandsController().removeHand(2L);
-			Controllers.getHandsController().addHand(1L, 0.1f, 0.9f); //740f, 325.0f);
-			Controllers.getHandsController().addHand(2L, 0.9f, 0.1f); //740f, 325.0f);
+			Controllers.getHandsController().addHand(1L, 0.15f, 0.85f); //740f, 325.0f);
+			/*Controllers.getHandsController().addHand(2L, 0.9f, 0.1f); //740f, 325.0f);
 			Controllers.getHandsController().addHand(3L, 0.9f, 0.9f); //740f, 325.0f);
-			Controllers.getHandsController().addHand(4L, 0.1f, 0.1f); //740f, 325.0f);
+			Controllers.getHandsController().addHand(4L, 0.1f, 0.1f); //740f, 325.0f);*/
 		}
 	}
 
