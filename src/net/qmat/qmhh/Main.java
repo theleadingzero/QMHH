@@ -88,6 +88,7 @@ public class Main extends PApplet {
 
 	public void draw() {
 		Controllers.update();
+
 		Models.update();
 		Models.draw();
 
