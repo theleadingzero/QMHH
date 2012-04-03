@@ -34,7 +34,7 @@ public class OrbModel extends ProcessingObject {
 		radius = 8.0f;
 		particleRadius = radius;
 		r = 7.0f;
-		amplitude = 10.0f;
+		amplitude = 50.0f;
 		
 		float inx = p.width/2.0f;
 		float iny = p.height/2.0f;
@@ -90,12 +90,12 @@ public class OrbModel extends ProcessingObject {
 	    gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
 	    gl.glVertexPointer(2, GL.GL_FLOAT, 0, vbuffer);
 
-	    gl.glPointSize(4.0f);
-	    gl.glColor4f(0.39f, 0.5f, 1.0f, 0.05f);
+	    gl.glPointSize(1.5f);
+	    gl.glColor4f(1.0f, 0.98f, 0.847f, 0.05f);
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 
 	    gl.glPointSize(1.0f);
-	    gl.glColor4f(0.47f, 0.47f, 1.0f, 0.59f);
+	    gl.glColor4f(0.99f, 0.95f, 0.85f, 0.59f);
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 	     
 	    pgl.endGL();

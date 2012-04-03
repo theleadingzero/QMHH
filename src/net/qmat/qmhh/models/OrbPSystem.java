@@ -29,7 +29,7 @@ public class OrbPSystem extends ProcessingObject {
 					new PVector(), 
 					new PVector(),
 					new PVector(ps_loc.x, ps_loc.y, 0), 
-					p.random(50.0f, 70.0f), i));
+					p.random(5.0f, 7.0f), i));
 		}
 	}
 

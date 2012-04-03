@@ -43,14 +43,14 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 				points.set(0, firstCPoint);
 				 */
 				//shadow lines
-				p.noFill();
-				p.stroke(180, 240, 120, 10);
-				p.strokeWeight(2.8f);
-				drawLineShadows(points,branch);
+				//p.noFill();
+				//p.stroke(56, 14, 4, 80);
+				//p.strokeWeight(2.8f);
+				//drawLineShadows(points,branch);
 
 				//lines
 				p.noFill();
-				p.stroke(255, 155, 200, 255);
+				p.stroke(226, 245, 252, 100);
 				p.strokeWeight(0.8f);
 				p.beginShape();
 				p.curveVertex(Main.centerX, Main.centerY);
@@ -91,13 +91,14 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.scale(1.3f);
 					p.translate(-(Main.centerX-Main.centerX/1.3f),-(Main.centerY-Main.centerY/1.3f));
 					p.fill(180, 240, 120, 40);
-					drawPoint(mx, my);
+					//drawPoint(mx, my);
 					p.popMatrix();
 
 					//tree points for the middlepoints
 					p.stroke(255, 155, 200, 255);
 					p.fill(255, 0, 0, 255);
-					drawPoint(mx, my);
+					//drawPoint(mx, my);
+					
 
 					//tree points shadow for the endpoints
 					p.noStroke();
@@ -107,11 +108,15 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.fill(180, 240, 120, 40);
 					if(!branch.stoppedGrowing&&i==points.size()-1){
 						//p.fill(255, 0, 0, 255);
-						drawPoint(growingEndPoint.x, growingEndPoint.y);
+						//drawPoint(growingEndPoint.x, growingEndPoint.y);
+						//drawLeaf(growingEndPoint.x, growingEndPoint.y, branch);
+						
 					}
 					else {
 						//p.fill(255, 255, 0, 255);
-						drawPoint(points.get(i).x, points.get(i).y);
+						//drawPoint(points.get(i).x, points.get(i).y);
+						//drawLeaf(points.get(i).x, points.get(i).y, branch);
+						
 					}
 					p.popMatrix();
 
@@ -119,11 +124,14 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.stroke(255, 155, 200, 255);
 					if(!branch.stoppedGrowing&&i==points.size()-1){
 						p.fill(255, 0, 0, 255);
-						drawPoint(growingEndPoint.x, growingEndPoint.y);
+						//drawPoint(growingEndPoint.x, growingEndPoint.y);
+						drawLeaf(growingEndPoint.x, growingEndPoint.y, branch);
 					}
 					else {
 						p.fill(255, 255, 0, 255);
-						drawPoint(points.get(i).x, points.get(i).y);
+						//drawPoint(points.get(i).x, points.get(i).y);
+						//drawLeaf(mx, my, branch);
+						
 					}
 				}
 
@@ -131,7 +139,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 		}
 	}
 
-	public void drawLineShadows(Vector<CPoint2> points, Branch branch){
+	/*public void drawLineShadows(Vector<CPoint2> points, Branch branch){
 		//shadowing
 		p.pushMatrix();
 
@@ -140,10 +148,10 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 
 		p.beginShape();
 		p.curveVertex(Main.centerX, Main.centerY);
-		/*
+		
 		for(CPoint2 cpos : points) {					
 			p.curveVertex(cpos.x, cpos.y);					
-		}*/
+		}
 		CPoint2 growingEndPoint=new CPoint2(0,0);
 		drawLine(points, branch);
 		//if the last is growing
@@ -158,7 +166,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 		p.popMatrix();
 		///end 
 
-	}
+	}*/
 	public void drawLine(Vector<CPoint2> points, Branch branch){
 		for(int i=0;(branch.stoppedGrowing&&i<points.size())||i<points.size()-1;i++){
 			int tempi=(Tree.MAX_BRANCH_LEVELS-i);
@@ -239,7 +247,59 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 		p.ellipse(x, y, 1.8f, 1.8f);
 		//p.println(y);
 	}
-
+	public void drawLeaf(float x, float y,Branch branch){
+		// only draw the branch if it is marked as active
+				float leafSize = 1.f + Main.sqrt(Main.pow(branch.endX-branch.startX, 2) + 
+												 Main.pow(branch.endY-branch.startY, 2)) / 160.0f;
+				/*if(branch.activeP) {
+					float alpha = 255.0f;
+					// if the branch hasn't stopped growing, the alpha is less than 255.0
+					if(!branch.stoppedGrowing) {
+						alpha = 255.0f * (float)((double)(System.nanoTime() - branch.startGrowTimestamp) / (double)Tree.BRANCH_GROW_TIME);
+						if(alpha >= 255.0f)
+							branch.stoppedGrowing = true;
+					}*/
+					//p.stroke(0, 100, 0, 255);
+					//p.fill(0, 255, 0, 255);
+					
+					// Get the shape of the box2d body, and get its coordinates
+					/*p.beginShape();
+					// get the body transform so that we can convert the shape's coordinates to world coordinates 
+					Transform transform = branch.body.getTransform();
+					Vec2 pos;
+					for(Fixture f=branch.body.getFixtureList(); f!=null; f=f.getNext()) {
+						PolygonShape shape = (PolygonShape) f.getShape();
+						for(int i=0; i<shape.getVertexCount(); i++) {
+							// apply the transform to the shape coordinates, and 
+							// then convert box2d coordinates to processing coordinates
+							pos = box2d.coordWorldToPixels(Transform.mul(transform, shape.getVertex(i)));
+							p.vertex(pos.x, pos.y);
+						}
+					}
+					p.endShape(Main.CLOSE);*/
+					
+					// draw leafs after the other branches
+					p.pushMatrix();
+					CPoint2 leafPos = branch.getLeafPosition();
+					p.translate(x, y);
+					//p.rotate(leafAngle);
+					
+					p.noStroke();
+					
+					p.ellipseMode(Main.CORNER);
+					float s = 0.3f;
+					for(int i=7; i>2; i--) {
+						p.fill(255, 155-(i*3), 200-(i*2), 255 * 0.8f);
+						p.rotate(-branch.body.getAngle() + (-0.1f*i) * Main.PI);// + Main.PI);
+						s = leafSize*i;
+						p.ellipse(0, 0, s, s);
+					}
+					p.ellipse(0, 0, s, s);
+					p.popMatrix();
+					p.strokeWeight(1.0f);
+				//}
+			}
+	//}
 	public boolean shouldDrawP(Branch branch) {
 		// if the branch is not active, then no
 		if(!branch.isActiveP())
@@ -289,4 +349,5 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 
 	}
 
+	
 }
