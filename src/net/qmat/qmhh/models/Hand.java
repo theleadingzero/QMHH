@@ -344,13 +344,14 @@ public class Hand extends ProcessingObject {
 					PGraphics p = Models.getBackground().getBackdropMask();
 					p.beginDraw();
 					p.beginShape();
-					p.fill(255, 255, 255, 100);
+					p.fill(255);
 					p.noStroke();
 					for(CPoint2 cpos : cs1) {
 						p.vertex(cpos.x, cpos.y);
 					}
 					p.endShape(Main.CLOSE);
 					p.endDraw();
+					
 				}
 			}
 			
