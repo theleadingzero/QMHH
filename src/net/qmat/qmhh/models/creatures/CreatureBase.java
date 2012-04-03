@@ -145,7 +145,7 @@ public class CreatureBase extends ProcessingObject {
 			CPoint2 middleCP1 = middleP1.toCPoint2();
 			CPoint2 middleCP2 = middleP2.toCPoint2();
 			
-			float reverse = CreaturesModel.calculateAngularDistance(handP.t, crP.t) < 0 ? 1 : -1;
+			float reverse = PPoint2.calculateAngularDistance(handP.t, crP.t) < 0 ? 1 : -1;
 			// 
 			CPoint2 guide1a = new PPoint2((middleP1.r*0.3f+crP1.r*0.7f), PPoint2.averageAngles(crP.t, middleP1.t) - reverse * 2 * middleOffsetT).toCPoint2();
 			CPoint2 guide1b = new PPoint2((middleP1.r*0.7f+crP1.r*0.3f)/2, PPoint2.averageAngles(crP.t, middleP1.t) - reverse * 1 * middleOffsetT).toCPoint2();

@@ -71,13 +71,33 @@ public class Main extends PApplet {
 		Models.init();
 		Controllers.initTuio(); 
 
+		/*
+		 * Creatures some creatures for testing
+		for(int i=0; i<3; i++) {
+			Models.getCreaturesModel().addCreature();
+		}
+		*/
+		
+		// Add a hand for testing
+		/*
+		Models.getHandsModel().addHand(1L, 80f, 700f); //740f, 325.0f);
+		Models.getHandsModel().addHand(2L, 730f, 40f); //740f, 325.0f);
+		Models.getHandsModel().addHand(3L, 730f, 730f); //740f, 325.0f);
+		Models.getHandsModel().addHand(4L, 30f, 30f); //740f, 325.0f);
+		Models.getHandsModel().addHand(5L, 320f, 30f); //740f, 325.0f);
+		Models.getHandsModel().addHand(6L, 320f, 730f); //740f, 325.0f);
+		Models.getHandsModel().addHand(7L, 730f, 326f); //740f, 325.0f);
+		Models.getHandsModel().addHand(7L, 30f, 326f); //740f, 325.0f);
+		*/
+
 		smooth();
 	}
 
 	public void draw() {
 		Controllers.update();
-
-		bg.draw();
+		//draw background
+		//bg.draw();
+		p.background(255);
 		Models.update();
 		Models.draw();
 
@@ -149,6 +169,6 @@ public class Main extends PApplet {
 	}
 
 	public void mousePressed() {
-		//
+		Models.getSporesModel().startRipple(10f);
 	}
 }

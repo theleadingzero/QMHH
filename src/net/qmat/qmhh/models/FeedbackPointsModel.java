@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.models.trees.TreesModel;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 import org.jbox2d.common.Vec2;
@@ -28,7 +29,7 @@ public class FeedbackPointsModel extends ProcessingObject {
 	
 	public void addFeedbackPoint(CPoint2 cpos) {
 		// filter feedback points close to the center
-		if(cpos.toPPoint2().r > 30.0f)
+		if(cpos.toPPoint2().r > TreesModel.CENTER_BODY_RADIUS*1.1f)
 			points.add(new FeedbackPoint(cpos));
 	}
 	
