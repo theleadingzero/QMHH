@@ -96,8 +96,8 @@ public class Main extends PApplet {
 	public void draw() {
 		Controllers.update();
 		//draw background
-		//bg.draw();
-		p.background(255);
+		bg.draw();
+		//p.background(255);
 		Models.update();
 		Models.draw();
 
