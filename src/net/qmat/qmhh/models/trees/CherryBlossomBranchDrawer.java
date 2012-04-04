@@ -50,7 +50,7 @@ public class CherryBlossomBranchDrawer extends BranchDrawerBase {
 
 				//lines
 				p.noFill();
-				p.stroke(226, 245, 252, 100);
+				p.stroke(29, 10, 3, 100);
 				p.strokeWeight(0.8f);
 				p.beginShape();
 				p.curveVertex(Main.centerX, Main.centerY);
@@ -290,7 +290,7 @@ public class CherryBlossomBranchDrawer extends BranchDrawerBase {
 					p.ellipseMode(Main.CORNER);
 					float s = 0.3f;
 					for(int i=7; i>2; i--) {
-						p.fill(255, 155-(i*3), 200-(i*2), 255 * 0.8f);
+						p.fill(110-(i*3), 180-(i*3), 255-(i*3), 255 * 0.8f);
 						p.rotate(-branch.body.getAngle() + (-0.1f*i) * Main.PI);// + Main.PI);
 						s = leafSize*i;
 						p.ellipse(0, 0, s, s);
