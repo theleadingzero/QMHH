@@ -14,7 +14,7 @@ public class Robot extends CreatureBase {
 
 	Robot() {
 		super();
-		num = (int)p.random(2, 6);
+		num = (int)p.random(3, 6);
 		pas = 200f/num;
 
 		cercles = new Vector<Cercle>();
@@ -110,11 +110,11 @@ public class Robot extends CreatureBase {
 				Cercle ci = cf.cercles.get(a);
 				if(ci != c)
 				{
-					if((c.r - ci.r) < 16 * (stage + 1))
+					if((c.r - ci.r) < 4 * (stage + 1))
 					{
 						for(int b = 0; b < ci.mespoints.size(); b ++)
 						{
-							if(getDistance(x, y, ci.mespoints.get(b).x, ci.mespoints.get(b).y) < 16 * (stage + 1))
+							if(getDistance(x, y, ci.mespoints.get(b).x, ci.mespoints.get(b).y) < 4 * (stage + 1))
 							{
 								p.stroke(255, p.random(60, 250));
 								p.strokeWeight(p.random(0, 2));

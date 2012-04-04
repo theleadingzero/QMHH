@@ -24,7 +24,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 	 * v - the first branch start point should not move
 	 * v - the odd bug of the growing line where it is always around 180 degrees
 	 * v - the "doubling of the lines"
-	 * may be reverse dependancy of how curved branch is to the level of it
+	 * may be reverse dependency of how curved branch is to the level of it
 	 * 
 	 */
 	public void drawBranch(Branch branch) {
@@ -35,19 +35,19 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 
 				Vector<CPoint2> points = branch.getParentPoints();
 				points.add(branch.getMiddleEndPosition());
-				/*
+/*
 				PPoint2 firstPPoint = points.firstElement().toPPoint2();
 				//firstPPoint.r = Tree.BRANCH_START_LENGTH/2f;
 				firstPPoint.r = branch.length/2f;
 				CPoint2 firstCPoint = firstPPoint.toCPoint2();
 				points.set(0, firstCPoint);
-				 */
+				 
 				//shadow lines
 				p.noFill();
 				p.stroke(180, 240, 120, 10);
 				p.strokeWeight(2.8f);
 				drawLineShadows(points,branch);
-
+*/
 				//lines
 				p.noFill();
 				p.stroke(255, 155, 200, 255);
@@ -84,7 +84,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 						mx=points.get(i).x+tx;
 						my=points.get(i).y+ty;
 					}
-					//tree points shadow for the middlepoints
+/*					//tree points shadow for the middlepoints
 					//shadowing
 					p.noStroke();
 					p.pushMatrix();
@@ -93,12 +93,12 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.fill(180, 240, 120, 40);
 					drawPoint(mx, my);
 					p.popMatrix();
-
+*/
 					//tree points for the middlepoints
 					p.stroke(255, 155, 200, 255);
 					p.fill(255, 0, 0, 255);
 					drawPoint(mx, my);
-
+/*
 					//tree points shadow for the endpoints
 					p.noStroke();
 					p.pushMatrix();
@@ -114,7 +114,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 						drawPoint(points.get(i).x, points.get(i).y);
 					}
 					p.popMatrix();
-
+*/
 					//tree points for the endpoints
 					p.stroke(255, 155, 200, 255);
 					if(!branch.stoppedGrowing&&i==points.size()-1){

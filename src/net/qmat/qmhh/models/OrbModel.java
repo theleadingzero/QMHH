@@ -91,11 +91,11 @@ public class OrbModel extends ProcessingObject {
 	    gl.glVertexPointer(2, GL.GL_FLOAT, 0, vbuffer);
 
 	    gl.glPointSize(4.0f);
-	    gl.glColor4f(0.39f, 0.5f, 1.0f, 0.05f);
+	    gl.glColor4f(0.39f, 0.04f, 0.0f, 0.05f);
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 
 	    gl.glPointSize(1.0f);
-	    gl.glColor4f(0.47f, 0.47f, 1.0f, 0.59f);
+	    gl.glColor4f(0.39f, 0.04f, 0.0f, 0.59f);
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 	     
 	    pgl.endGL();
