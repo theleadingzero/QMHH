@@ -50,7 +50,7 @@ public class CherryBlossomBranchDrawer extends BranchDrawerBase {
 
 				//lines
 				p.noFill();
-				p.stroke(29, 10, 3, 100);
+				p.stroke(190, 90, 205, 100);
 				p.strokeWeight(0.8f);
 				p.beginShape();
 				p.curveVertex(Main.centerX, Main.centerY);

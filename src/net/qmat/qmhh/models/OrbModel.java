@@ -95,7 +95,7 @@ public class OrbModel extends ProcessingObject {
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 
 	    gl.glPointSize(1.0f);
-	    gl.glColor4f(0.01f, 0.05f, 0.15f, 0.59f);
+	    gl.glColor4f(0.99f, 0.95f, 0.85f, 0.59f);
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 	     
 	    pgl.endGL();
