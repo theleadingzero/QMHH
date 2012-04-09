@@ -236,8 +236,9 @@ public class TechBranchDrawer extends BranchDrawerBase {
 
 	public void drawPoint(float x, float y){
 		p.noFill();
-//		p.stroke(64, 63, 46, 255);
-		p.strokeWeight(1.8f);
+//		p.stroke(64, 63, 46, p.random(255));
+		p.stroke(184, 131, 17, p.random(255));
+		p.strokeWeight(p.random(1.8f, 9.8f));
 		p.ellipse(x, y, 7.8f, 7.8f);
 		//p.println(y);
 	}
