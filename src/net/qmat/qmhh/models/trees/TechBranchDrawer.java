@@ -165,8 +165,8 @@ public class TechBranchDrawer extends BranchDrawerBase {
 			if(tempi>=points.size())tempi=i;
 
 			float mx,my;
-			float tx=branch.length*(tempi)/18;
-			float ty=branch.length*(tempi)/18;
+			float tx=branch.length*(tempi)/196;
+			float ty=branch.length*(tempi)/196;
 			if(Tree.MAX_BRANCH_LEVELS-((points.size()-1-i))%2==0){;
 			tx*=-1; ty*=-1;	
 			}
@@ -198,7 +198,7 @@ public class TechBranchDrawer extends BranchDrawerBase {
 		if(howLong>=1)howLong=1;
 
 		float tx=howLong*branch.length*howLong*howLong*tempi/18;
-		float ty=howLong*branch.length*howLong*howLong*tempi/18;
+		float ty=howLong*branch.length*howLong*howLong*tempi/196;
 
 		if(Tree.MAX_BRANCH_LEVELS-((points.size()-1-i))%2==0){
 			tx*=-1; ty*=-1;	
@@ -235,8 +235,10 @@ public class TechBranchDrawer extends BranchDrawerBase {
 	}
 
 	public void drawPoint(float x, float y){
-		p.strokeWeight(0.8f);
-		p.ellipse(x, y, 1.8f, 1.8f);
+		p.noFill();
+//		p.stroke(64, 63, 46, 255);
+		p.strokeWeight(1.8f);
+		p.ellipse(x, y, 7.8f, 7.8f);
 		//p.println(y);
 	}
 
