@@ -73,7 +73,7 @@ public class Jellyfish extends CreatureBase {
 	    gl.glRotatef(Main.atan2(velocity.x, velocity.y) * Main.RAD_TO_DEG, 0, 0, 1);
 	    gl.glRotatef(velocity.length()/10.f * Main.RAD_TO_DEG, 1, 0, 0);
 	    
-	    gl.glColor4f(0.98f, 0.96f, 0.89f, 0.1f);
+	    gl.glColor4f(0.98f, 0.96f, 0.89f, 0.3f);
 	    gl.glPointSize(2.0f);
 	    gl.glDrawArrays(GL.GL_LINE_STRIP, 0, nrVertices);
 	    /*
