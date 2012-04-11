@@ -82,11 +82,5 @@ public class Tree extends ProcessingObject {
 		//p.ellipse(Main.centerX, Main.centerY, 20.0f, 20.0f);
 		root.draw();
 	}
-	
-	private float normalizeAngle(float angle) {
-		float na = angle;
-		while(na < 0.0f) na += Main.TWO_PI;
-		return na % Main.TWO_PI;
-	}
 		
 }

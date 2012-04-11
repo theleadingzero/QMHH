@@ -2,18 +2,9 @@ package net.qmat.qmhh.models;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.concurrent.locks.Lock;
 
-import net.qmat.qmhh.Main;
 import net.qmat.qmhh.models.trees.TreesModel;
 import net.qmat.qmhh.utils.CPoint2;
-import net.qmat.qmhh.utils.PPoint2;
-import org.jbox2d.common.Vec2;
-import com.sun.opengl.util.BufferUtil;
-import java.nio.FloatBuffer;
-import javax.media.opengl.GL;
-import processing.opengl.PGraphicsOpenGL;
 
 public class FeedbackPointsModel extends ProcessingObject {
 	

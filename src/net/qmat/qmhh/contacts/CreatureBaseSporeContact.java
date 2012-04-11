@@ -1,6 +1,5 @@
 package net.qmat.qmhh.contacts;
 
-import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.models.Spore;
 import net.qmat.qmhh.models.creatures.CreatureBase;
 

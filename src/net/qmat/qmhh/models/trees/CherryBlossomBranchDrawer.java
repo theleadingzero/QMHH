@@ -1,17 +1,10 @@
 package net.qmat.qmhh.models.trees;
 
-import java.util.Iterator;
 import java.util.Vector;
-
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
-
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.Fixture;
 
 public class CherryBlossomBranchDrawer extends BranchDrawerBase {
 

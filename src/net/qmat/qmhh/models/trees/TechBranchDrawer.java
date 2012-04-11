@@ -1,18 +1,25 @@
 package net.qmat.qmhh.models.trees;
 
 import java.util.Vector;
-
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 import org.jbox2d.common.Vec2;
 
-public class BlobbyBranchDrawer extends BranchDrawerBase {
+public class TechBranchDrawer extends BranchDrawerBase {
 
-	public BlobbyBranchDrawer() {
+	public TechBranchDrawer() {
 		super();
 	}
-	
+	/*
+	 * Fixes needed
+	 * v - depending on the branch level it has to be differently resistant
+	 * v - the first branch start point should not move
+	 * v - the odd bug of the growing line where it is always around 180 degrees
+	 * v - the "doubling of the lines"
+	 * may be reverse dependency of how curved branch is to the level of it
+	 * 
+	 */
 	public void drawBranch(Branch branch) {
 
 		if(branch.activeP) {		
@@ -30,14 +37,14 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 				 
 				//shadow lines
 				p.noFill();
-				p.stroke(150, 180, 120, 50);
-				p.strokeWeight(1.8f);
+				p.stroke(180, 240, 120, 10);
+				p.strokeWeight(2.8f);
 				drawLineShadows(points,branch);
 */
 				//lines
 				p.noFill();
-				p.stroke(190, 90, 205, 255);
-				p.strokeWeight(1.1f);
+				p.stroke(184, 131, 17, 255);
+				p.strokeWeight(0.8f);
 				p.beginShape();
 				p.curveVertex(Main.centerX, Main.centerY);
 				/*
@@ -57,7 +64,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 				p.endShape();
 
 
-				p.stroke(190, 90, 205, 255);
+				p.stroke(184, 131, 17, 255);
 				p.strokeWeight(0.8f);
 				for(int i=0; i<points.size();i++){	
 					float tx=branch.length*i/18;
@@ -76,14 +83,13 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.pushMatrix();
 					p.scale(1.3f);
 					p.translate(-(Main.centerX-Main.centerX/1.3f),-(Main.centerY-Main.centerY/1.3f));
-					p.fill(150, 180, 120, 50);
+					p.fill(180, 240, 120, 40);
 					drawPoint(mx, my);
 					p.popMatrix();
 */
 					//tree points for the middlepoints
-					p.stroke(190, 90, 205, 255);
-					//p.stroke(180, 240, 120, 255);
-					p.fill(255, 0, 0, 255);
+					p.stroke(184, 131, 17, 255);
+					p.fill(71, 124, 238, 255);
 					drawPoint(mx, my);
 /*
 					//tree points shadow for the endpoints
@@ -91,7 +97,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.pushMatrix();
 					p.scale(1.3f);
 					p.translate(-(Main.centerX-Main.centerX/1.3f),-(Main.centerY-Main.centerY/1.3f));
-					p.fill(150, 180, 120, 50);
+					p.fill(180, 240, 120, 40);
 					if(!branch.stoppedGrowing&&i==points.size()-1){
 						//p.fill(255, 0, 0, 255);
 						drawPoint(growingEndPoint.x, growingEndPoint.y);
@@ -103,13 +109,13 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.popMatrix();
 */
 					//tree points for the endpoints
-					p.stroke(190, 90, 205, 255);
+					p.stroke(184, 131, 17, 255);
 					if(!branch.stoppedGrowing&&i==points.size()-1){
-						p.fill(255, 0, 0, 255);
+						p.fill(71, 124, 238, 255);
 						drawPoint(growingEndPoint.x, growingEndPoint.y);
 					}
 					else {
-						p.fill(255, 255, 0, 255);
+						p.fill(71, 124, 238, 255);
 						drawPoint(points.get(i).x, points.get(i).y);
 					}
 				}
@@ -152,8 +158,8 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 			if(tempi>=points.size())tempi=i;
 
 			float mx,my;
-			float tx=branch.length*(i)/18;
-			float ty=branch.length*(i)/18;
+			float tx=branch.length*(tempi)/196;
+			float ty=branch.length*(tempi)/196;
 			if(Tree.MAX_BRANCH_LEVELS-((points.size()-1-i))%2==0){;
 			tx*=-1; ty*=-1;	
 			}
@@ -184,8 +190,8 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 		howLong = (float)((double)(System.nanoTime() - branch.startGrowTimestamp) / (double)Tree.BRANCH_GROW_TIME);
 		if(howLong>=1)howLong=1;
 
-		float tx=howLong*branch.length*howLong*howLong*i/18;
-		float ty=howLong*branch.length*howLong*howLong*i/18;
+		float tx=howLong*branch.length*howLong*howLong*tempi/18;
+		float ty=howLong*branch.length*howLong*howLong*tempi/196;
 
 		if(Tree.MAX_BRANCH_LEVELS-((points.size()-1-i))%2==0){
 			tx*=-1; ty*=-1;	
@@ -222,8 +228,11 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 	}
 
 	public void drawPoint(float x, float y){
-		p.strokeWeight(0.8f);
-		p.ellipse(x, y, 1.8f, 1.8f);
+		p.noFill();
+//		p.stroke(64, 63, 46, p.random(255));
+		p.stroke(184, 131, 17, p.random(255));
+		p.strokeWeight(p.random(1.8f, 9.8f));
+		p.ellipse(x, y, 7.8f, 7.8f);
 		//p.println(y);
 	}
 

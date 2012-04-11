@@ -9,15 +9,11 @@ package net.qmat.qmhh;
 
 import net.qmat.qmhh.controllers.ContactController;
 import net.qmat.qmhh.controllers.Controllers;
-import net.qmat.qmhh.models.Background;
 import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.utils.Settings;
 import pbox2d.PBox2D;
 import codeanticode.glgraphics.GLConstants;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import processing.core.*;
 import processing.core.PApplet;
 
 public class Main extends PApplet {

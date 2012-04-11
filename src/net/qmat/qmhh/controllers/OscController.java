@@ -1,8 +1,6 @@
 package net.qmat.qmhh.controllers;
 
 import java.util.concurrent.LinkedBlockingQueue;
-
-import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.utils.Settings;
 import netP5.NetAddress;
 import oscP5.OscMessage;

@@ -1,7 +1,6 @@
 package net.qmat.qmhh.models;
 
 import net.qmat.qmhh.Main;
-import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 import net.qmat.qmhh.utils.Settings;
 

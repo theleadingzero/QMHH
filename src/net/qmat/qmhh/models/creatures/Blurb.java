@@ -1,8 +1,6 @@
 package net.qmat.qmhh.models.creatures;
 import net.qmat.qmhh.Main;
 
-import org.jbox2d.common.Vec2;
-
 public class Blurb  extends CreatureBase {
 	private float indexOffset;
 	private float cycle = 2000.0f;

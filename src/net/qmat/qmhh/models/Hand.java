@@ -1,8 +1,6 @@
 package net.qmat.qmhh.models;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Vector;
 
 import net.qmat.qmhh.Main;
@@ -12,7 +10,6 @@ import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 
 import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -20,14 +17,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 
-import net.qmat.qmhh.Main;
-import net.qmat.qmhh.controllers.Controllers;
-import net.qmat.qmhh.models.creatures.CreatureBase;
-import net.qmat.qmhh.utils.CPoint2;
-import net.qmat.qmhh.utils.PPoint2;
-
 import processing.core.PGraphics;
-import processing.opengl.*;
 import codeanticode.glgraphics.*;
 
 public class Hand extends ProcessingObject {
