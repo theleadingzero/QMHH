@@ -192,10 +192,14 @@ public class Hand extends ProcessingObject {
 		    // Blending downsampled textures.
 		    blend4.apply(new GLTexture[]{tex2, tex4, tex8, tex16}, new GLTexture[]{bloomMask});
 			
+		    PGraphics p = Models.getBackground().getBackdropMask();
+		    p.beginDraw();
+		    p.imageMode(Main.CENTER);
 			p.pushMatrix();
 			p.translate(x, y);
 			p.image(bloomMask, 0, 0, srcTex.width, srcTex.height);
 			p.popMatrix();
+			p.endDraw();
 		}
 	}
 
