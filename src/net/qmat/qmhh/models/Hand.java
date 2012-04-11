@@ -10,6 +10,7 @@ import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -182,14 +183,14 @@ public class Hand extends ProcessingObject {
 		    // Blending downsampled textures.
 		    blend4.apply(new GLTexture[]{tex2, tex4, tex8, tex16}, new GLTexture[]{bloomMask});
 			
-		    PGraphics p = Models.getBackground().getBackdropMask();
-		    p.beginDraw();
-		    p.imageMode(Main.CENTER);
-			p.pushMatrix();
-			p.translate(x, y);
-			p.image(bloomMask, 0, 0, srcTex.width, srcTex.height);
-			p.popMatrix();
-			p.endDraw();
+		    PGraphics bd = Models.getBackground().getBackdropMask();
+		    bd.beginDraw();
+		    bd.imageMode(Main.CENTER);
+			bd.pushMatrix();
+			bd.translate(x, y);
+			bd.image(bloomMask, 0, 0, srcTex.width, srcTex.height);
+			bd.popMatrix();
+			bd.endDraw();
 		}
 	}
 
@@ -214,26 +215,10 @@ public class Hand extends ProcessingObject {
 			makeBody();
 		}
 
-		private void rebuildShape() {
-			// update size of the body
-			Fixture f = body.getFixtureList();
-			while(f != null) {
-				PolygonShape sd = (PolygonShape)f.m_shape;
-				setShapeVertices();
-				sd.set(vs, 4);
-				f = f.getNext();
-			}
-		}
-
 		private void makeBody() {
-			FixtureDef fd = createFixture();
 			BodyDef bd = new BodyDef();
-			bd.type = BodyType.DYNAMIC;
-			// set position to be in between the center and the hand position
-			//bd.position.set(box2d.coordPixelsToWorld(new Vec2((hand.x + Main.centerX)*0.5f, (hand.y + Main.centerY)*0.5f)));
-			// or set the position of the static body to the middle
-			bd.position.set(box2d.coordPixelsToWorld(new Vec2(Main.centerX, Main.centerY)));
 			body = box2d.createBody(bd);
+			FixtureDef fd = createFixture();
 			body.createFixture(fd);
 			body.setUserData(this);
 		}
@@ -247,6 +232,17 @@ public class Hand extends ProcessingObject {
 			fd.density = 0.0f;
 			fd.isSensor = true;
 			return fd;
+		}
+		
+		private void rebuildShape() {
+			// update size of the body
+			Fixture f = body.getFixtureList();
+			while(f != null) {
+				PolygonShape sd = (PolygonShape)f.m_shape;
+				setShapeVertices();
+				sd.set(vs, 4);
+				f = f.getNext();
+			}
 		}
 
 		private Vec2[] setShapeVertices() {
@@ -335,16 +331,16 @@ public class Hand extends ProcessingObject {
 					cs1.addAll(cs2);
 					
 					// draw beam
-					PGraphics p = Models.getBackground().getBackdropMask();
-					p.beginDraw();
-					p.beginShape();
-					p.fill(255);
-					p.noStroke();
+					PGraphics bd = Models.getBackground().getBackdropMask();
+					bd.beginDraw();
+					bd.beginShape();
+					bd.fill(255);
+					bd.noStroke();
 					for(CPoint2 cpos : cs1) {
-						p.vertex(cpos.x, cpos.y);
+						bd.vertex(cpos.x, cpos.y);
 					}
-					p.endShape(Main.CLOSE);
-					p.endDraw();
+					bd.endShape(Main.CLOSE);
+					bd.endDraw();
 					
 				}
 			}
@@ -357,6 +353,7 @@ public class Hand extends ProcessingObject {
 				for(int i=0; i<shape.getVertexCount(); i++) {
 					Vec2 pos = shape.getVertex(i);
 					Vec2 v2 = box2d.coordWorldToPixels(Transform.mul(transform, pos));
+					//Vec2 v2 = box2d.coordWorldToPixels(pos);
 					p.vertex(v2.x, v2.y);
 				}
 			}

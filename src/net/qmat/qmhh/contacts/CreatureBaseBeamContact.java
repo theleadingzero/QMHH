@@ -8,6 +8,7 @@ public class CreatureBaseBeamContact extends ContactLogic {
 	
 	public void beginContact(Contact contact, Object objA, Object objB) {
 		CreatureBase creature = (CreatureBase)objA;
+		System.out.println("blub");
 		if(creature.stage > 0) {
 			// TODO: this will cause trouble when the hand is suddenly removed asynchronously!
 			Beam beam = (Beam)objB;
