@@ -10,9 +10,6 @@ import net.qmat.qmhh.Main;
 
 public class Settings {
 	
-	// what table are we?
-	public static String TABLE = "TABLE";
-	
 	// size and fullscreen settings
 	public static String PR_WIDTH = "PR_WIDTH";
 	public static String PR_HEIGHT = "PR_HEIGHT";
