@@ -1,8 +1,12 @@
 package net.qmat.qmhh.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.Properties;
+
+import net.qmat.qmhh.Main;
 
 public class Settings {
 	
@@ -55,7 +59,6 @@ public class Settings {
 	public static String PR_BRANCH_DRAWER = "PR_BRANCH_DRAWER";
 	
 	private static Settings instance = null;
-	String propertyFile = "/data/preferences.properties";
 	Properties properties = new Properties();
 	
     public static Settings getInstance() {
@@ -70,7 +73,7 @@ public class Settings {
 	
 	protected Settings() {
 		try {
-			properties.load(new FileReader(new File(System.getProperty("user.dir")+propertyFile)));
+			properties.load(new BufferedReader(new InputStreamReader(this.getClass().getResource("/table"+Main.table+"_preferences.properties").openStream())));
 		} catch (Exception e) {
 			System.err.println("Something went wrong while loading the preferences.");
 			e.printStackTrace();

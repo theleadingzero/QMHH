@@ -26,5 +26,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/oscP5.jar"/>
 	<classpathentry kind="lib" path="libs/GLGraphics.jar"/>
+	<classpathentry kind="lib" path="libs/commons-cli-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

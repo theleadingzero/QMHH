@@ -7,6 +7,12 @@
 
 package net.qmat.qmhh;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
+
 import net.qmat.qmhh.controllers.ContactController;
 import net.qmat.qmhh.controllers.Controllers;
 import net.qmat.qmhh.models.Models;
@@ -21,7 +27,7 @@ public class Main extends PApplet {
 	private static final long serialVersionUID = 1L;
 	public static Main p;
 	public static PBox2D box2d;
-	public int frameCount = 0;
+	public int frameCount = 0; 
 
 	/*
 	 * Cache for speed.
@@ -34,7 +40,6 @@ public class Main extends PApplet {
 		p = this;
 		centerX = Settings.getInteger(Settings.PR_CENTER_X);
 		centerY = Settings.getInteger(Settings.PR_CENTER_Y);
-		table = Settings.getInteger(Settings.TABLE);
 		outerRingInnerRadius = Settings.getInteger(Settings.PR_RING_INNER_RADIUS);
 		outerRingOuterRadius = Settings.getInteger(Settings.PR_RING_OUTER_RADIUS);
 	}
@@ -103,17 +108,26 @@ public class Main extends PApplet {
 		 * Load settings at the start of the program so all the settings
 		 * are cached before the rest of the code needs them. Sadly, can't be 
 		 * loaded before setup(), otherwise code in setup could execute twice.
-		 * 
-		 * You should use the settings manager like so:
-		 * 
-		 *  // returns a string
-		 * 	Settings.get(Settings.SETTING_NAME); 
-		 *  // tries to interpret the setting as a boolean and returns it.
-		 *  Settings.getBoolean(Settings.SETTING_NAME);
-		 *  // tries to interpret the setting as an integer and returns it.
-		 *  Settings.getBoolean(Settings.SETTING_NAME); 
-		 *  
 		 */
+		
+		Options options = new Options();
+		options.addOption("t", true, "specify the table number");
+		
+		
+		CommandLineParser parser = new PosixParser();
+		try {
+			CommandLine cmd = parser.parse(options, args);
+			Main.table = Integer.parseInt(cmd.getOptionValue("t"));
+			if(Main.table < 1 || Main.table > 3)
+				throw new Exception();
+		} catch(ParseException e) {
+			System.err.println("Could not parse command line options, exiting.");
+			System.exit(1);
+		} catch(Exception e) {
+			System.err.println("Please provide a valid table number with the -t option (1, 2, or 3).");
+			System.exit(1);
+		}
+		
 		Settings.init();
 		String location = "--location=0,0";
 		PApplet.main(new String[] {location, "net.qmat.qmhh.Main" });
@@ -124,7 +138,6 @@ public class Main extends PApplet {
 			frame.removeNotify();//make the frame not displayable
 			frame.setResizable(false);
 			frame.setUndecorated(true);
-			println("frame is at "+frame.getLocation());
 			frame.addNotify();
 		}
 		super.init();
