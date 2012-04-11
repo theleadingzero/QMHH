@@ -13,8 +13,8 @@ public class OrbController {
 	Long timeToWait;
 	int nrHands;
 	boolean rippleEmittedP = true;
-	float baseRadius = 9.0f;
-	float ellipseBaseRadius = 15.0f;
+	float baseRadius = 38.0f;
+	float ellipseBaseRadius = 5.0f;
 	float extraRadius = 30.0f;
 	Double rippleIndex = 0.1;
 	

@@ -69,8 +69,7 @@ public class SporesModel extends ProcessingObject {
 			    gl.glVertexPointer(2, GL.GL_FLOAT, 0, vbuffer);
 		
 			    gl.glPointSize(Spore.w);
-			    //gl.glColor4f(0.47f, 0.47f, 1.0f, 0.89f);
-			    gl.glColor4f(0.4f, 0.2f, 0.9f, 0.89f);
+			    gl.glColor4f(0.99f, 0.97f, 0.84f, 0.59f);
 			    gl.glDrawArrays(GL.GL_POINTS, 0, spores.size());
 			     
 			    pgl.endGL();

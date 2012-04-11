@@ -85,16 +85,7 @@ public class Background extends ProcessingObject {
 		p.image(backdropUnrevealed, 0, 0);
 		p.image(backdropGradient, 0, 0, innerRadius*2, innerRadius*2);
 		p.popMatrix();
-
-		// draw revealed background
-		GLTexture backdropMaskTexture = backdropMask.getTexture();
-		maskFilter.setParameterValue("mask_factor", 0.0f);
-		maskFilter.apply(new GLTexture[]{backdropImageRevealed, backdropMaskTexture}, maskedBackdropRevealed);
-		p.pushMatrix();
-		p.translate(centerX, centerY);
-		p.image(maskedBackdropRevealed, 0, 0);
-		p.popMatrix();
-
+		
 		// make the sides black
 		p.fill(0);
 		p.noStroke();
@@ -104,6 +95,14 @@ public class Background extends ProcessingObject {
 		p.rect(p.centerX+innerRadius, 0, p.width, p.height);
 		p.rect(0, p.centerY+innerRadius, p.width, p.height);
 
+		// draw revealed background
+		GLTexture backdropMaskTexture = backdropMask.getTexture();
+		maskFilter.setParameterValue("mask_factor", 0.0f);
+		maskFilter.apply(new GLTexture[]{backdropImageRevealed, backdropMaskTexture}, maskedBackdropRevealed);
+		p.pushMatrix();
+		p.translate(centerX, centerY);
+		p.image(maskedBackdropRevealed, 0, 0);
+		p.popMatrix();
 		
 		backdropMask.beginDraw();
 		backdropMask.background(0);

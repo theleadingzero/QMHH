@@ -6,7 +6,7 @@ public class FeedbackPoint extends ProcessingObject {
 
 	int framesLoop = 30;
 	int loops = 2;
-	float maxDiameter = 30;
+	float maxDiameter = 15;
 	private CPoint2 position;
 	private int startFrame;
 
@@ -22,7 +22,7 @@ public class FeedbackPoint extends ProcessingObject {
 			markForRemoval();
 		else {
 			p.noFill();
-			p.stroke(155, 111, 58);
+			p.stroke(226, 245, 252, 100); //old colors 155,111,58
 
 			p.pushMatrix();
 			p.translate(position.x, position.y);
@@ -41,7 +41,7 @@ public class FeedbackPoint extends ProcessingObject {
 		for(int i=1; i<=nrCircles; i++) {
 			float index = (((p.frameCount - startFrame) + framesLoop / nrCircles * i) % framesLoop)/(float)framesLoop;
 			float diameter = index * maxDiameter; 
-			p.stroke(155, 111, 58, alpha * (1.0f-index) * (2.0f * (1.0f - ((p.frameCount - startFrame) / (float)(framesLoop * loops)))));
+			p.stroke(226, 245, 252, alpha * (0.4f-index) * (0.8f * (0.4f - ((p.frameCount - startFrame) / (float)(framesLoop * loops)))));
 			p.ellipse(0, 0, diameter, diameter);
 		}
 	}
