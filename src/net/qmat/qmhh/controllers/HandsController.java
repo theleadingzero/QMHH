@@ -57,6 +57,7 @@ public class HandsController {
 				Main.relativeToPixelsY(Main.map(p.getY(), minY, maxY, 0.0f, 1.0f)));
 	}
 	
+	@SuppressWarnings("unused")
 	private Vector<CPoint2> mapPoints(Vector<TuioPoint> path) {
 		Vector<CPoint2> v = new Vector<CPoint2>();
 		for(TuioPoint p : path) {
