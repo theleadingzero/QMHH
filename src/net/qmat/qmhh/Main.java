@@ -59,26 +59,6 @@ public class Main extends PApplet {
 		Controllers.init(); 
 		Models.init();
 		Controllers.initTuio(); 
-
-		/*
-		 * Creatures some creatures for testing
-		for(int i=0; i<3; i++) {
-			Models.getCreaturesModel().addCreature();
-		}
-		*/
-		
-		// Add a hand for testing
-		/*
-		Models.getHandsModel().addHand(1L, 80f, 700f); //740f, 325.0f);
-		Models.getHandsModel().addHand(2L, 730f, 40f); //740f, 325.0f);
-		Models.getHandsModel().addHand(3L, 730f, 730f); //740f, 325.0f);
-		Models.getHandsModel().addHand(4L, 30f, 30f); //740f, 325.0f);
-		Models.getHandsModel().addHand(5L, 320f, 30f); //740f, 325.0f);
-		Models.getHandsModel().addHand(6L, 320f, 730f); //740f, 325.0f);
-		Models.getHandsModel().addHand(7L, 730f, 326f); //740f, 325.0f);
-		Models.getHandsModel().addHand(7L, 30f, 326f); //740f, 325.0f);
-		*/
-
 		smooth();
 	}
 
@@ -91,6 +71,7 @@ public class Main extends PApplet {
 		box2d.step();
 		frameCount++;
 		
+		/*
 		if(frameCount == 60) {
 			// Add a hand for testing
 			Controllers.getHandsController().addHand(1L, 0.0f, 0.0f); //740f, 325.0f);
@@ -102,6 +83,7 @@ public class Main extends PApplet {
 			Controllers.getHandsController().addHand(5L, 0.9f, 0.9f); //740f, 325.0f);
 			Controllers.getHandsController().addHand(6L, 0.1f, 0.1f); //740f, 325.0f);
 		}
+		*/
 	}
 
 	/*

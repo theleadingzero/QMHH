@@ -32,8 +32,8 @@ public class CreatureBase extends ProcessingObject {
 	protected int subStage = 0;
 	protected int maxSubStage = 5;
 
-	protected float w = 10.0f;
-	protected float h = 10.0f;
+	protected float w = 15.0f;
+	protected float h = 15.0f;
 	private float tmpW, tmpH;
 	private float goalW;
 	private float goalH;
