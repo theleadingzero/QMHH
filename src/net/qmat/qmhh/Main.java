@@ -76,7 +76,6 @@ public class Main extends PApplet {
 		box2d.step();
 		frameCount++;
 		
-		/*
 		if(frameCount == 60) {
 			// Add a hand for testing
 			Controllers.getHandsController().addHand(1L, 0.0f, 0.0f); //740f, 325.0f);
@@ -88,7 +87,6 @@ public class Main extends PApplet {
 			Controllers.getHandsController().addHand(5L, 0.9f, 0.9f); //740f, 325.0f);
 			Controllers.getHandsController().addHand(6L, 0.1f, 0.1f); //740f, 325.0f);
 		}
-		*/
 	}
 
 	/*

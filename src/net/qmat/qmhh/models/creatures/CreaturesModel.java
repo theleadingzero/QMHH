@@ -60,6 +60,7 @@ public class CreaturesModel extends ProcessingObject {
 	}
 	
 	public CreatureBase addCreature() {
+		System.out.println(creatures.size()+1);
 		Controllers.getSoundController().creatureWasBorn();
 		return instantiateCreature();
 	}

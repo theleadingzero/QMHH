@@ -80,11 +80,13 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					drawPoint(mx, my);
 					p.popMatrix();
 */
+					/*
 					//tree points for the middlepoints
 					p.stroke(190, 90, 205, 255);
 					//p.stroke(180, 240, 120, 255);
 					p.fill(255, 0, 0, 255);
 					drawPoint(mx, my);
+					*/
 /*
 					//tree points shadow for the endpoints
 					p.noStroke();
@@ -103,6 +105,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 					p.popMatrix();
 */
 					//tree points for the endpoints
+					/*
 					p.stroke(190, 90, 205, 255);
 					if(!branch.stoppedGrowing&&i==points.size()-1){
 						p.fill(255, 0, 0, 255);
@@ -112,6 +115,7 @@ public class BlobbyBranchDrawer extends BranchDrawerBase {
 						p.fill(255, 255, 0, 255);
 						drawPoint(points.get(i).x, points.get(i).y);
 					}
+					*/
 				}
 
 			}

@@ -55,6 +55,10 @@ public class Settings {
 	// what class draws the branches
 	public static String PR_BRANCH_DRAWER = "PR_BRANCH_DRAWER";
 	
+	// spore colors
+	public static String PR_SPORE_COLOR_1 = "PR_SPORE_COLOR_1";
+	public static String PR_SPORE_COLOR_2 = "PR_SPORE_COLOR_2";
+	
 	private static Settings instance = null;
 	Properties properties = new Properties();
 	
@@ -94,6 +98,15 @@ public class Settings {
 	
 	public static float getFloat(String key) {
 		return Float.parseFloat(getString(key));
+	}
+	
+	public static float[] getFloatArray(String key) {
+		String array = getString(key);
+		String split[] = array.split(",");
+		float result[] = new float[split.length];
+		for(int i=0; i<split.length; i++)
+			result[i] = Float.parseFloat(split[i]);
+		return result;
 	}
 	
 }

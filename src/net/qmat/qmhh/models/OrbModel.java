@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import javax.media.opengl.GL;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.models.trees.TreesModel;
 import net.qmat.qmhh.utils.Settings;
 import processing.core.PVector;
 import processing.opengl.PGraphicsOpenGL;
@@ -26,6 +27,10 @@ public class OrbModel extends ProcessingObject {
 	private FloatBuffer vbuffer;
 	private int totalParticles;
 	private float chargeIndex;
+	
+	private float[] sporeColor1;
+	private float[] sporeColor2;
+	
 
 	public OrbModel() {
 		ps =  new OrbPSystem[numSystems];
@@ -57,25 +62,20 @@ public class OrbModel extends ProcessingObject {
 			theta += Main.TWO_PI / numSystems;
 		}
 		
+		sporeColor1 = Settings.getFloatArray(Settings.PR_SPORE_COLOR_1);
+		sporeColor2 = Settings.getFloatArray(Settings.PR_SPORE_COLOR_2);
 	}
 
 	public void draw() {
-		
-		p.noStroke();
-		
-		p.ellipseMode(Main.CENTER);
-		/*
-		p.fill(120, 120, 245, 50);
-		p.ellipse(Main.centerX, Main.centerY, 2*radius*3, 2*radius*3);
-		p.fill(120, 120, 245, 50);
-		p.ellipse(Main.centerX, Main.centerY, 2*radius*2, 2*radius*2);
-		
-		p.noStroke();
-		p.fill(23, 31, 77);
-		p.ellipse(Main.centerX, Main.centerY, 25f, 25f);
-		p.fill(198, 20, 20);
-		p.arc(Main.centerX, Main.centerY, 25f, 25f, 0.0f, Main.TWO_PI * chargeIndex);
-		*/
+		p.noFill();
+		p.strokeWeight(4.0f);
+		//p.fill(23, 31, 77);
+		//p.ellipse(Main.centerX, Main.centerY, 25f, 25f);
+		p.stroke(255, 255, 255, 20);
+		p.ellipse(Main.centerX, Main.centerY, TreesModel.CENTER_BODY_RADIUS*2-2, TreesModel.CENTER_BODY_RADIUS*2-2);
+		p.stroke(198, 20, 20, 100);
+		p.arc(Main.centerX, Main.centerY, TreesModel.CENTER_BODY_RADIUS*2-2, TreesModel.CENTER_BODY_RADIUS*2-2, 0.0f, Main.TWO_PI * chargeIndex);
+		p.strokeWeight(1.0f);
 		
 		waveR();
 		for(int i=0; i<numSystems; i++) {
@@ -90,12 +90,12 @@ public class OrbModel extends ProcessingObject {
 	    gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
 	    gl.glVertexPointer(2, GL.GL_FLOAT, 0, vbuffer);
 
-	    gl.glPointSize(1.5f);
-	    gl.glColor4f(0.0f, 0.02f, 0.16f, 0.05f);
+	    gl.glPointSize(3.0f);
+	    gl.glColor4f(sporeColor1[0], sporeColor1[1], sporeColor1[2], sporeColor1[3]);
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 
 	    gl.glPointSize(1.0f);
-	    gl.glColor4f(0.99f, 0.95f, 0.85f, 0.59f);
+	    gl.glColor4f(sporeColor2[0], sporeColor2[1], sporeColor2[2], sporeColor2[3]);
 
 	    gl.glDrawArrays(GL.GL_POINTS, 0, totalParticles);
 	     

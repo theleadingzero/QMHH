@@ -9,6 +9,7 @@ import javax.media.opengl.GL;
 import net.qmat.qmhh.Main;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
+import net.qmat.qmhh.utils.Settings;
 import processing.opengl.PGraphicsOpenGL;
 
 import com.sun.opengl.util.BufferUtil;
@@ -17,9 +18,12 @@ public class SporesModel extends ProcessingObject {
 	
 	ArrayList<Spore> spores;
 	FloatBuffer vbuffer;
+
+	private float[] sporeColor2;
 	
 	public SporesModel() {
 		spores = new ArrayList<Spore>();
+		sporeColor2 = Settings.getFloatArray(Settings.PR_SPORE_COLOR_2);
 	}
 	
 	public void startRipple(float startRadius) {
@@ -69,7 +73,7 @@ public class SporesModel extends ProcessingObject {
 			    gl.glVertexPointer(2, GL.GL_FLOAT, 0, vbuffer);
 		
 			    gl.glPointSize(Spore.w);
-			    gl.glColor4f(0.99f, 0.97f, 0.84f, 0.59f);
+			    gl.glColor4f(sporeColor2[0], sporeColor2[1], sporeColor2[2], sporeColor2[3]);
 			    gl.glDrawArrays(GL.GL_POINTS, 0, spores.size());
 			     
 			    pgl.endGL();
