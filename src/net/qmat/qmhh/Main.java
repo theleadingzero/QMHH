@@ -64,7 +64,6 @@ public class Main extends PApplet {
 		Controllers.init(); 
 		Models.init();
 		Controllers.initTuio(); 
-		smooth();
 	}
 
 	public void draw() {
@@ -87,6 +86,8 @@ public class Main extends PApplet {
 			Controllers.getHandsController().addHand(5L, 0.9f, 0.9f); //740f, 325.0f);
 			Controllers.getHandsController().addHand(6L, 0.1f, 0.1f); //740f, 325.0f);
 		}
+		
+		smooth();
 	}
 
 	/*
