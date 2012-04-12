@@ -19,18 +19,12 @@ public class OscController extends Thread {
 	public OscController() {
 		oscP5 = new OscP5(this, Settings.getInteger(Settings.OSC_LOCAL_PORT));
 		queue = new LinkedBlockingQueue<QueueMessage>();
-		sequencerMachine = new NetAddress(Settings.getString(Settings.OSC_SEQUENCER_REMOTE_IP),
-										  Settings.getInteger(Settings.OSC_SEQUENCER_REMOTE_PORT));
 		soundMachine = new NetAddress(Settings.getString(Settings.OSC_SOUND_REMOTE_IP),
 									  Settings.getInteger(Settings.OSC_SOUND_REMOTE_PORT));
 	}
 	
 	public void queueSoundEvent(String endPoint, Object... objects) {
 		queueEvent(soundMachine, endPoint, objects);
-	}
-	
-	public void queueSequencerEvent(String endPoint, Object... objects) {
-		queueEvent(sequencerMachine, endPoint, objects);
 	}
 	
 	private void queueEvent(NetAddress address, String endPoint, Object[] objects) {
@@ -58,6 +52,10 @@ public class OscController extends Thread {
 		}
 		oscP5.send(m, qm.address);
 	}
+	
+	public void sendBurstingMessage() {
+		queueSoundEvent("/bursting");
+	}
 
 	@Override
 	public void run() {
@@ -84,27 +82,15 @@ public class OscController extends Thread {
 	}
 	
 	void oscEvent(OscMessage theOscMessage) {
-		/*
-		if(theOscMessage.checkAddrPattern("/seq/setAngle")==true) {
-			if(theOscMessage.checkTypetag("f")) {
-				float angle = theOscMessage.get(0).floatValue();
-				Models.getPlayheadModel().setAngle(angle);
-			}  
-		} else if(theOscMessage.checkAddrPattern("/seq/setDuration")==true) {
-			if(theOscMessage.checkTypetag("f")) {
-				float duration = theOscMessage.get(0).floatValue();
-				Models.getPlayheadModel().setDuration(duration);
-			}  
-		} else if(theOscMessage.checkAddrPattern("/seq/start")==true) {
+		if(theOscMessage.checkAddrPattern("/restart")==true) {
 			if(theOscMessage.checkTypetag("")) {
-				Models.getPlayheadModel().start();
-			}  
-		} else if(theOscMessage.checkAddrPattern("/seq/stop")==true) {
-			if(theOscMessage.checkTypetag("")) {
-				Models.getPlayheadModel().stop();
+				/*
+				 * TODO: 
+				 * - burst
+				 * - create new models
+				 * - start over
+				 */
 			}  
 		}
-		*/
-		
 	}
 }

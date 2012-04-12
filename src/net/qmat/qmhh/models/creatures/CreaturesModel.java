@@ -23,9 +23,12 @@ public class CreaturesModel extends ProcessingObject {
 		  //p.color(0, 0, 150, 100)
 		};
 	
+	private int burstingCreatures = 45;
+	
 	@SuppressWarnings("unchecked")
 	public CreaturesModel() {
 		creatures = new ArrayList<CreatureBase>();
+		burstingCreatures = Settings.getInteger(Settings.PR_BURSTING_CREATURES);
 		String clName = "net.qmat.qmhh.models.creatures."+Settings.getString(Settings.PR_CREATURE_CLASS);
 		try {
 			creatureClass = (Class<? extends CreatureBase>) Class.forName(clName);
@@ -60,8 +63,9 @@ public class CreaturesModel extends ProcessingObject {
 	}
 	
 	public CreatureBase addCreature() {
-		System.out.println(creatures.size()+1);
 		Controllers.getSoundController().creatureWasBorn();
+		if(creatures.size()+1 == 45)
+			Controllers.getOscController().sendBurstingMessage();
 		return instantiateCreature();
 	}
 	

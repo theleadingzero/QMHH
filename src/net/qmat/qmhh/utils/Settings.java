@@ -1,8 +1,6 @@
 package net.qmat.qmhh.utils;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
@@ -27,8 +25,6 @@ public class Settings {
 	
 	// osc settings for sound
 	public static String OSC_LOCAL_PORT = "OSC_LOCAL_PORT";
-	public static String OSC_SEQUENCER_REMOTE_IP = "OSC_SEQUENCER_REMOTE_IP";
-	public static String OSC_SEQUENCER_REMOTE_PORT = "OSC_SEQUENCER_REMOTE_PORT";
 	public static String OSC_SOUND_REMOTE_IP = "OSC_SOUND_REMOTE_IP";
 	public static String OSC_SOUND_REMOTE_PORT = "OSC_SOUND_REMOTE_PORT";
 	
@@ -58,6 +54,9 @@ public class Settings {
 	// spore colors
 	public static String PR_SPORE_COLOR_1 = "PR_SPORE_COLOR_1";
 	public static String PR_SPORE_COLOR_2 = "PR_SPORE_COLOR_2";
+	
+	// send a bursting message when there are this many creatures
+	public static String PR_BURSTING_CREATURES = "PR_BURSTING_CREATURES";
 	
 	private static Settings instance = null;
 	Properties properties = new Properties();
