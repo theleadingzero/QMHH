@@ -51,6 +51,8 @@ public class Main extends PApplet {
 				Settings.getInteger(Settings.PR_HEIGHT),
 				GLConstants.GLGRAPHICS);
 		p.hint(DISABLE_DEPTH_TEST);
+		p.hint(DISABLE_OPENGL_2X_SMOOTH);
+		p.hint(ENABLE_OPENGL_4X_SMOOTH);
 
 		box2d = new PBox2D(this);
 		box2d.createWorld();
