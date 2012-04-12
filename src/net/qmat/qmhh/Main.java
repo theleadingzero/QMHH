@@ -99,7 +99,9 @@ public class Main extends PApplet {
 	 */
 
 	public static float relativeToPixelsX(float x) {
-		return x * p.width;
+		// N.B. we're only concerned with the visible part of the sketch
+		// and because that's a square, the height is the limiting factor.
+		return x * p.height;
 	}
 
 	public static float relativeToPixelsY(float y) {
