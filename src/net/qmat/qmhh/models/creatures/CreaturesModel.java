@@ -64,7 +64,7 @@ public class CreaturesModel extends ProcessingObject {
 	
 	public CreatureBase addCreature() {
 		Controllers.getSoundController().creatureWasBorn();
-		if(creatures.size()+1 == 45)
+		if(creatures.size()+1 >= burstingCreatures)
 			Controllers.getOscController().sendBurstingMessage();
 		return instantiateCreature();
 	}
