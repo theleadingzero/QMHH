@@ -55,5 +55,10 @@ public class TreesModel extends ProcessingObject {
 		}
 	}
 	
+	public void destroy() {
+		for(Tree tree : trees) {
+			tree.destroy();
+		}
+	}
 	
 }

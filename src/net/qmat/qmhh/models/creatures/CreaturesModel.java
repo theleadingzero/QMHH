@@ -120,4 +120,10 @@ public class CreaturesModel extends ProcessingObject {
 		});
 		return orderedCreatures;
 	}
+	
+	public void destroy() {
+		for(CreatureBase creature : creatures) {
+			creature.destroy();
+		}
+	}
 }

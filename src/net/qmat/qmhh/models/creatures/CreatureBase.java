@@ -96,7 +96,6 @@ public class CreatureBase extends ProcessingObject {
 	}
 
 	public void draw() {
-
 		p.noFill();
 		p.ellipseMode(Main.CENTER);
 		p.pushMatrix();

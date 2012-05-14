@@ -258,4 +258,11 @@ public class Branch extends ProcessingObject {
 		parentPoints.add(getMiddleStartPosition());
 		return parentPoints;
 	}
+	
+	public void destroy() {
+		for(Branch branch : branches) {
+			branch.destroy();
+		}
+		Main.box2d.destroyBody(body);
+	}
 }

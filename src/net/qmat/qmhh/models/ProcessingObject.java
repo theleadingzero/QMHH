@@ -33,7 +33,7 @@ public class ProcessingObject {
 	/*
 	 *  This does any clean up, should only be necessary when dealing with box2d.
 	 */
-	public void destroy() {}
+	//public void destroy() {}
 	
 
 	public void markForRemoval() {

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.models.creatures.CreatureBase;
 import net.qmat.qmhh.utils.CPoint2;
 import net.qmat.qmhh.utils.PPoint2;
 import net.qmat.qmhh.utils.Settings;
@@ -78,6 +79,12 @@ public class SporesModel extends ProcessingObject {
 			     
 			    pgl.endGL();
 			}
+		}
+	}
+	
+	public void destroy() {
+		for(Spore spore : spores) {
+			spore.destroy();
 		}
 	}
 	

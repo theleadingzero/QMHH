@@ -150,5 +150,6 @@ public class Main extends PApplet {
 
 	public void mousePressed() {
 		Models.getSporesModel().startRipple(10f);
+		Models.getExplosionModel().startExplosion();
 	}
 }

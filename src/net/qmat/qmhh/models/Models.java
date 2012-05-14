@@ -20,6 +20,7 @@ public class Models {
 	private TreesModel treesModel;
 	private FeedbackPointsModel feedbackPointsModel;
 	private Background background;
+	private ExplosionModel explosionModel; 
 	
 	protected Models() {
 		background = new Background();
@@ -30,6 +31,17 @@ public class Models {
 		sporesModel = new SporesModel();
 		treesModel = new TreesModel();
 		feedbackPointsModel = new FeedbackPointsModel();
+		explosionModel = new ExplosionModel();
+	}
+	
+	public static void reset() {
+		Models models = Models.getInstance();
+		models.creaturesModel.destroy(); 
+		models.creaturesModel = new CreaturesModel();
+		models.treesModel.destroy();
+		models.treesModel = new TreesModel();
+		models.sporesModel.destroy();
+		models.sporesModel = new SporesModel();
 	}
 	
     public static Models getInstance() {
@@ -85,6 +97,10 @@ public class Models {
     	return instance.background;
     }
     
+    public static ExplosionModel getExplosionModel() {
+    	return instance.explosionModel;
+    }
+    
     public static void draw() {
     	// Call all the models' draw functions here.
     	Models models = Models.getInstance();
@@ -97,6 +113,7 @@ public class Models {
     	models.handsModel.draw();
     	models.sporesModel.draw();
     	models.orbModel.draw();
+    	models.explosionModel.draw();
     }
     
     public static void update() {

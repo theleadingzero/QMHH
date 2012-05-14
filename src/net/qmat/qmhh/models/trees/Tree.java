@@ -1,5 +1,5 @@
 /*
- * N.B. only change the draw function in the Branch class
+; * N.B. only change the draw function in the Branch class
  */
 
 package net.qmat.qmhh.models.trees;
@@ -81,6 +81,10 @@ public class Tree extends ProcessingObject {
 		p.ellipseMode(Main.CENTER);
 		//p.ellipse(Main.centerX, Main.centerY, 20.0f, 20.0f);
 		root.draw();
+	}
+	
+	public void destroy() {
+		root.destroy();
 	}
 		
 }

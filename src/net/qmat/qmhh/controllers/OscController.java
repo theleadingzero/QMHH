@@ -3,6 +3,7 @@ package net.qmat.qmhh.controllers;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import net.qmat.qmhh.Main;
+import net.qmat.qmhh.models.Models;
 import net.qmat.qmhh.utils.Settings;
 import netP5.NetAddress;
 import oscP5.OscMessage;
@@ -82,14 +83,9 @@ public class OscController extends Thread {
 	}
 	
 	void oscEvent(OscMessage theOscMessage) {
-		if(theOscMessage.checkAddrPattern("/restart")==true) {
+		if(theOscMessage.checkAddrPattern("/explode")==true) {
 			if(theOscMessage.checkTypetag("")) {
-				/*
-				 * TODO: 
-				 * - burst
-				 * - create new models
-				 * - start over
-				 */
+				Models.getExplosionModel().startExplosion();
 			}  
 		}
 	}
