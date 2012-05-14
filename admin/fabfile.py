@@ -6,10 +6,17 @@ env.hosts = ['192.168.0.2', '192.168.0.3', '192.168.0.4']
 env.user = 'qmat'
 
 def restart_machines():
-    reboot(1)
+    try:
+        reboot(1)
+    except:
+        print "couldn't restart machine %s" % env.host_string
 
 def shutdown_machines():
-    sudo('shutdown -h now')
+    try:
+        sudo('shutdown -h now')
+    except:
+        print "couldn't restart machine %s" % env.host_string
+    
 
 '''
 if __name__ == '__main__':
