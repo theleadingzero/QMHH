@@ -125,9 +125,12 @@ public class HandsController {
 	
 	// N.B. takes actual pixel values, not relative ones (like the one from Tuio)
 	private boolean handInBoundsP(float x, float y) {
+		return true;
+		/*
 		PPoint2 ppoint = new CPoint2(x, y).toPPoint2();
 		//return (ppoint.r > ringInnerRadius && ppoint.r < ringOuterRadius);
 		return (ppoint.r > ringInnerRadius);
+		*/
 	}
 	
 	private void addCreatureToHand(Long handID, CreatureBase creature) {
